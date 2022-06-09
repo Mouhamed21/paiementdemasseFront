@@ -1,0 +1,152 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <h5>Gestion Eleve</h5>
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewest()"></button>
+            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedEleves()" [disabled]="!selectedEleves || !selectedEleves.length"></button>
+
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <button pButton pRipple icon="pi pi-arrow-left"  class="p-button-primary mr-2" pTooltip="Retourner à la liste des Classes"  (click)="RetourClasses()"></button>
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+        </ng-template>
+    </p-toolbar>
+    <p-table #dt [value]="eleves" [paginator]="true" [rows]="10"  [globalFilterFields]="['prenom','nom','age']" responsiveLayout="scroll"
+             [(selection)]="selectedEleves"
+             [rowHover]="true" dataKey="id"
+             [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 class="m-0">Classe:  <p-badge value="{{classe.nom}}" size="large" severity="info"></p-badge> </h5>
+                <h5>Effectif:  <p-badge value="{{ nbrEleves }}" size="large" severity="info"></p-badge></h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
+                        </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="prenom">Prenom <p-sortIcon field="prenom"></p-sortIcon></th>
+                <th pSortableColumn="nom">Nom <p-sortIcon field="nom"></p-sortIcon></th>
+                <th pSortableColumn="dateNaissance">Date Naissance <p-sortIcon field="dateNaissance"></p-sortIcon></th>
+                <th pSortableColumn="lieuNaissance">Lieu Naissance <p-sortIcon field="lieuNaissance"></p-sortIcon></th>
+                <th pSortableColumn="adresse">Adresse <p-sortIcon field="adresse"></p-sortIcon></th>
+                <!-- <th pSortableColumn="telephone">Telephone <p-sortIcon field="telephone"></p-sortIcon></th>
+                <th pSortableColumn="numeroContact">Numero Tuteur <p-sortIcon field="numeroContact"></p-sortIcon></th>
+                <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th> -->
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-eleve>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="eleve"></p-tableCheckbox>
+                </td>
+                <td>{{eleve.prenom}}</td>
+                <td>{{eleve.nom}}</td>
+                <td>{{eleve.dateNaissance | date: 'dd/MM/yyyy' }}</td>
+                <td>{{eleve.lieuNaissance}}</td>
+                <td>{{eleve.adresse}}</td>
+                <!-- <td>{{eleve.telephone}}</td>
+                <td>{{eleve.numeroContact}</td>
+                <td>{{eleve.email}</td> -->
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEleve(eleve)" pTooltip="Modifier un Eleve"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteEleve(eleve)" pTooltip="Supprimer un eleve"></button>
+                    <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary" ></button>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="eleveDialog" [style]="{width: '450px'}" header="Ajout d'un Eleve" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="nom">Nom</label>
+                <input type="text" pInputText id="nom" [(ngModel)]="eleve.nom" placeholder="Nom" required autofocus />
+                <small class="p-error" *ngIf="submitted && !eleve.nom">Nom est obligatoire.</small>
+            </div>
+            <div class="field col">
+                <label for="prenom">Prenom</label>
+                <input type="text" pInputText id="prenom" [(ngModel)]="eleve.prenom" placeholder="Prenom"  required autofocus />
+                <small class="p-error" *ngIf="submitted && !eleve.prenom">Prenom est obligatoire.</small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="dateNaissance">Date de Naissance</label>
+<!--                <input type="text" class="datepicker" placeholder="ex. MM/DD/YYYY" pInputText  id="dateNaissance"  (ngModelChange)="updatedate($event)" [ngModel]="eleve.dateNaissance |date:'yyyy-MM-dd'"  required autofocus/>-->
+                <input name="dateT"  pInputText id="dateNaissance" placeholder="MM/DD/YYYY"  (ngModelChange)="updatedate($event)" [ngModel]="eleve.dateNaissance |date:'yyyy-MM-dd'" #dateT="ngModel" type="date"/>
+
+<!--                    <p-calendar type="text" class="datepicker" placeholder="ex. MM/DD/YYYY" pInputText  id="dateNaissance"  [(ngModel)]="eleve.dateNaissance" required autofocus></p-calendar>-->
+
+                <small class="p-error" *ngIf="submitted && !eleve.dateNaissance">Date de Naissance est obligatoire.</small>
+            </div>
+            <div class="field col">
+                <label for="lieuNaissance">Lieu de Naissance</label>
+                <input type="text" pInputText id="lieuNaissance" placeholder="Lieu de Naisssance"  [(ngModel)]="eleve.lieuNaissance" required autofocus />
+                <small class="p-error" *ngIf="submitted && !eleve.lieuNaissance">Lieu de Naissance est obligatoire.</small>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="telephone">Telephone</label>
+                <p-inputNumber id="telephone" [(ngModel)]="eleve.telephone" placeholder="77 747 87 99" ></p-inputNumber>
+            </div>
+            <div class="field col">
+                <label for="numeroContact">Numero Tuteur</label>
+                <p-inputNumber id="numeroContact" [(ngModel)]="eleve.numeroContact" placeholder="77 747 87 99"></p-inputNumber>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="adresse">Adresse</label>
+                <input type="text" pInputText id="adresse" [(ngModel)]="eleve.adresse" placeholder="Adresse" required autofocus />
+                <small class="p-error" *ngIf="submitted && !eleve.adresse">Adresse est obligatoire</small>
+            </div>
+            <div class="field col">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="abc@gmail.com" [(ngModel)]="eleve.email"
+                          pInputText  autofocus/>
+                <small class="p-error" *ngIf="validerEmail==false && eleve.email">Email invalide </small>
+
+<!--                <small  *ngIf="validerEmail==true">Email valide</small>-->
+<!--                <div *ngIf="emailerror.invalid && (emailerror.dirty || emailerror.touched)">-->
+<!--                    <div *ngIf="emailerror.errors.pattern ">-->
+<!--                        <span class="p-error">Email invalide </span>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+            </div>
+
+        </div>
+    </ng-template>
+
+    <div class="espace">
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Enregistrer"  icon="pi pi-check" class="p-button-text"  (click)="postEleve()" ></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
