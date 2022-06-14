@@ -33,6 +33,7 @@ import {EleveComponent} from "./components/eleve/eleve.component";
 import {ClasseDetailComponent} from "./components/classe-detail/classe-detail.component";
 import {StatutComponent} from "./components/statut/statut.component";
 import {TypeoperationComponent} from "./components/typeoperation/typeoperation.component";
+import {ChargemetFichierComponent} from "./components/chargemet-fichier/chargemet-fichier.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -67,8 +68,8 @@ import {TypeoperationComponent} from "./components/typeoperation/typeoperation.c
                     {path: 'uikit/classe/:id', component: ClasseDetailComponent},
                     {path: 'uikit/eleve', component: EleveComponent},
                     {path: 'uikit/statut', component: StatutComponent},
-                    {path: 'uikit/typeoperation', component: TypeoperationComponent}
-
+                    {path: 'uikit/typeoperation', component: TypeoperationComponent},
+                    {path: 'pmenim/chargefichier', component: ChargemetFichierComponent}
                 ],
             },
             {path:'pages/landing', component: LandingComponent},

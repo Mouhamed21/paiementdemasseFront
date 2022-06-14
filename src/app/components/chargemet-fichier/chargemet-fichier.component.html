@@ -1,0 +1,108 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <h5>Gestion des Classes</h5>
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedFichier()" [disabled]="!selectedClasses || !selectedClasses.length"></button>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+        </ng-template>
+    </p-toolbar>
+    <p-table  #dt [value]="fichiers" [paginator]="true" [rows]="10"  [globalFilterFields]="['montantGlobal']" responsiveLayout="scroll"
+              [(selection)]="selectedClasses" [rowHover]="true" dataKey="id"
+              [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 class="m-0">Liste des Fichiers Chargés</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
+                        </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+
+                <th pSortableColumn="evenement"> Evenement <p-sortIcon field="evenement"></p-sortIcon></th>
+                <th pSortableColumn="montantGlobal">Montant Global <p-sortIcon field="montantGlobal"></p-sortIcon></th>
+                <th pSortableColumn="nbrLigne"> Nombre de ligne <p-sortIcon field="nbrLigne"></p-sortIcon></th>
+                <th pSortableColumn="dateChargement"> Date Chargement <p-sortIcon field="dateChargement"></p-sortIcon></th>
+                <th pSortableColumn="certification"> Certification <p-sortIcon field="certification"></p-sortIcon></th>
+                <th>Actions</th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-fichier>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="fichier"></p-tableCheckbox>
+                </td>
+                <td>{{fichier.evenement.moisCampagne}} - {{fichier.evenement.anneeCampagne}}</td>
+                <td>{{fichier.montantGlobal}}</td>
+                <td>{{fichier.nbrLigne}}</td>
+                <td>{{fichier.dateChargement | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center" style="min-width: 8rem;">
+                    <i class="pi" [ngClass]="{'true-icon pi-check-circle text-green-500': fichier.certification, 'false-icon pi-times-circle text-pink-500 ': !fichier.certification}"></i>
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary"  (click)="getDetailFichier(fichier)" pTooltip="Détails" ></button>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
+
+</div>
+
+<p-dialog [(visible)]="classeDialog" [style]="{width: '450px'}" header="Ajout d'une Classe" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field p-col">
+            <label for="montantGlobal">Montant Global</label>
+            <input type="text" pInputText id="montantGlobal"  [(ngModel)]="fichier.montantGlobal" required autofocus />
+            <small class="p-error" *ngIf="submitted && !fichier.montantGlobal">montant Global est obligatoire.</small>
+        </div>
+
+    </ng-template>
+    <div class="espace">
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="saveFile()" ></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="detailDialog" [style]="{width: '550px'}" header="Détail fichier" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field p-col">
+
+        </div>
+
+    </ng-template>
+    <div class="espace">
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDetailFichierDialog()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="saveFile()" ></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+
+

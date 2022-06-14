@@ -146,6 +146,7 @@ import { ClasseDetailComponent } from './components/classe-detail/classe-detail.
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import { StatutComponent } from './components/statut/statut.component';
 import { TypeoperationComponent } from './components/typeoperation/typeoperation.component';
+import { ChargemetFichierComponent } from './components/chargemet-fichier/chargemet-fichier.component';
 
 @NgModule({
     imports: [
@@ -285,6 +286,7 @@ import { TypeoperationComponent } from './components/typeoperation/typeoperation
         ClasseDetailComponent,
         StatutComponent,
         TypeoperationComponent,
+        ChargemetFichierComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
