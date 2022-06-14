@@ -146,6 +146,7 @@ import { ClasseDetailComponent } from './components/classe-detail/classe-detail.
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import { StatutComponent } from './components/statut/statut.component';
 import { TypeoperationComponent } from './components/typeoperation/typeoperation.component';
+import { EvenementComponent } from './components/evenement/evenement.component';
 import { ChargemetFichierComponent } from './components/chargemet-fichier/chargemet-fichier.component';
 
 @NgModule({
@@ -286,6 +287,7 @@ import { ChargemetFichierComponent } from './components/chargemet-fichier/charge
         ClasseDetailComponent,
         StatutComponent,
         TypeoperationComponent,
+        EvenementComponent,
         ChargemetFichierComponent,
     ],
     providers: [

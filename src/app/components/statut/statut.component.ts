@@ -14,8 +14,8 @@ import {ClasseService} from "../../service/classe.service";
 export class StatutComponent implements OnInit {
   statut:Statut;
   statuts:any;
-submitted: boolean;
-statutDialog: boolean;
+  submitted: boolean;
+  statutDialog: boolean;
   constructor(private statutService: StatutService,private messageService: MessageService,
               private confirmationService: ConfirmationService) { }
 

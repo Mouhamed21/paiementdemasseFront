@@ -34,6 +34,7 @@ import {ClasseDetailComponent} from "./components/classe-detail/classe-detail.co
 import {StatutComponent} from "./components/statut/statut.component";
 import {TypeoperationComponent} from "./components/typeoperation/typeoperation.component";
 import {ChargemetFichierComponent} from "./components/chargemet-fichier/chargemet-fichier.component";
+import {EvenementComponent} from "./components/evenement/evenement.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -67,9 +68,11 @@ import {ChargemetFichierComponent} from "./components/chargemet-fichier/chargeme
                     {path: 'uikit/classe', component: ClasseComponent},
                     {path: 'uikit/classe/:id', component: ClasseDetailComponent},
                     {path: 'uikit/eleve', component: EleveComponent},
-                    {path: 'uikit/statut', component: StatutComponent},
-                    {path: 'uikit/typeoperation', component: TypeoperationComponent},
+                    {path: 'pmenim/statut', component: StatutComponent},
+                    {path: 'pmenim/typeoperation', component: TypeoperationComponent},
+                    {path: 'pmenim/evenement', component: EvenementComponent},
                     {path: 'pmenim/chargefichier', component: ChargemetFichierComponent}
+
                 ],
             },
             {path:'pages/landing', component: LandingComponent},
