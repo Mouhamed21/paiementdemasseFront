@@ -26,8 +26,9 @@ export class StatutService {
         return this.httpClient.get(this.baseUrl + '/statuts');
     }
     postStatut(statut:Statut) {
-      //debugger
-
         return this.httpClient.post(this.baseUrl + '/statut',  statut )
+    }
+    updateStatut(id: number,statut:Statut) {
+        return this.httpClient.post(this.baseUrl + '/statut/' + id,  statut )
     }
 }

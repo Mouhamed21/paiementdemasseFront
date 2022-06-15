@@ -44,8 +44,8 @@
                 </td>
                 <td>{{statut.libelle}}</td>
                 <td>
-<!--                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editClasse(classe)" pTooltip="Modifier une classe" ></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteClasse(classe)" pTooltip="Supprimer une classe" ></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editStatut(statut)" pTooltip="Modifier une classe" ></button>
+                   <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteClasse(classe)" pTooltip="Supprimer une classe" ></button>
                     <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary"  (click)="getOneClasse(classe)" pTooltip="Détails" ></button>-->
                 </td>
             </tr>
@@ -79,4 +79,21 @@
     </ng-template>
 </p-dialog>
 
+<p-dialog [(visible)]="statutEditDialog" [style]="{width: '450px'}" header="Modification d'un Statut" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field p-col">
+            <label for="libelle">Libelle</label>
+            <input type="text" pInputText id="libelle"  [(ngModel)]="statut.libelle" required autofocus />
+            <small class="p-error" *ngIf="submitted && !statut.libelle">Libelle est obligatoire.</small>
+        </div>
+
+    </ng-template>
+    <div class="espace">
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="postStatut()" ></button>
+    </ng-template>
+</p-dialog>
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

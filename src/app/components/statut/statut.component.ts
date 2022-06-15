@@ -3,6 +3,7 @@ import {Statut} from "../../modele/statut";
 import {StatutService} from "../../service/statut.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ClasseService} from "../../service/classe.service";
+import {Evenement} from "../../modele/evenement";
 
 
 @Component({
@@ -16,6 +17,7 @@ export class StatutComponent implements OnInit {
   statuts:any;
   submitted: boolean;
   statutDialog: boolean;
+  statutEditDialog: boolean;
   constructor(private statutService: StatutService,private messageService: MessageService,
               private confirmationService: ConfirmationService) { }
 
@@ -32,32 +34,34 @@ export class StatutComponent implements OnInit {
             this.statuts = JSON.parse(JSON.stringify(data))._embedded.statuts;
         })
     }
+    editStatut(statut: Statut) {
+        this.statut = {...statut};
+        this.statutEditDialog = true;
+    }
     public postStatut() {
         this.submitted = true;
 
         if (this.statut.libelle.trim()) {
-    /*        if (this.statut.id) {
+            if (this.statut.id) {
                 this.statutService.updateStatut(this.statut.id,this.statut).subscribe(
                     data => {
                         console.log(data);
-                        this.editClasseDialog = false;
-                        this.classe = {};
-                        this.getClasses();
+                        this.statutEditDialog = false;
+                        this.statut = {};
+                        this.getSatuts();
                     },
                     error => {
                         console.log(error);
                     }
                 );
-                this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Mis à jour Classe', life: 3000});*!/
-            }*/
-           // else {
+                this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Mis à jour Statut', life: 3000});
+            }
+            else {
                 //debugger
                 this.statutService.postStatut(this.statut).subscribe( data =>
                 {
-
                     console.log(this.statut);
                     this.statutDialog = false;
-
                     this.getSatuts();
                 },
                     error => {
@@ -65,14 +69,15 @@ export class StatutComponent implements OnInit {
                     }
                 ),
                     this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Ajout Classe', life: 3000});
-            //}
+            }
 
             this.statuts = [...this.statuts];
             this.statutDialog = false;
+            this.statutEditDialog = false;
             this.statut = {};
         }
     }
-    openNew() {
+    openNew(){
         this.statut = {};
         this.submitted = false;
         this.statutDialog = true;
@@ -80,6 +85,7 @@ export class StatutComponent implements OnInit {
     hideDialog() {
         this.statutDialog = false;
         this.submitted = false;
+        this.statutEditDialog = false;
         //this.editClasseDialog = false;
     }
     first = 0;
