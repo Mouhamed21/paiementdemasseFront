@@ -9,7 +9,7 @@ import {Statut} from "../modele/statut";
 })
 
 export class StatutService {
-    baseUrl = environment.urlApi ;
+    baseUrl = environment.urlApi;
     statuts:any;
   constructor(private httpClient: HttpClient) { }
     httpOptions =
@@ -23,12 +23,12 @@ export class StatutService {
 
 
     getStatuts() {
-        return this.httpClient.get(this.baseUrl + '/statuts');
+        return this.httpClient.get(this.baseUrl + '/allStatut');
     }
     postStatut(statut:Statut) {
         return this.httpClient.post(this.baseUrl + '/statut',  statut )
     }
     updateStatut(id: number,statut:Statut) {
-        return this.httpClient.post(this.baseUrl + '/statut/' + id,  statut )
+        return this.httpClient.put(this.baseUrl + '/statut/' + id,  statut )
     }
 }

@@ -30,8 +30,8 @@ export class StatutComponent implements OnInit {
         return this.statutService.getStatuts().subscribe((data) =>
         {
 
-            console.log(JSON.parse(JSON.stringify(data))._embedded.statuts);
-            this.statuts = JSON.parse(JSON.stringify(data))._embedded.statuts;
+           // console.log(JSON.parse(JSON.stringify(data))._embedded.statuts);
+            this.statuts = data;
         })
     }
     editStatut(statut: Statut) {
@@ -40,7 +40,7 @@ export class StatutComponent implements OnInit {
     }
     public postStatut() {
         this.submitted = true;
-
+        //debugger
         if (this.statut.libelle.trim()) {
             if (this.statut.id) {
                 this.statutService.updateStatut(this.statut.id,this.statut).subscribe(
@@ -67,7 +67,7 @@ export class StatutComponent implements OnInit {
                     error => {
                         console.log(error);
                     }
-                ),
+                );
                     this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Ajout Classe', life: 3000});
             }
 
