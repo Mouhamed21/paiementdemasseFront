@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <h5>Gestion des Classes</h5>
+    <h5>Gestion Des Fichiers</h5>
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
@@ -13,16 +13,16 @@
             <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
         </ng-template>
     </p-toolbar>
-    <p-table  #dt [value]="fichiers" [paginator]="true" [rows]="10"  [globalFilterFields]="['montantGlobal']" responsiveLayout="scroll"
+    <p-table  #dt [value]="fichiers" [paginator]="true" [rows]="10"  [globalFilterFields]="['montantGlobal','evenement','dateChargement']" responsiveLayout="scroll"
               [(selection)]="selectedClasses" [rowHover]="true" dataKey="id"
               [rowsPerPageOptions]="[10,25,50]">
         <ng-template pTemplate="caption">
             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                 <h5 class="m-0">Liste des Fichiers Chargés</h5>
                 <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
-                        </span>
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
+                </span>
             </div>
         </ng-template>
         <ng-template pTemplate="header">

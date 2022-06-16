@@ -19,6 +19,7 @@ export class TypeoperationComponent implements OnInit {
     typeOperations:any;
     submitted: boolean;
     typeoperationDialog: boolean;
+    editTypeoperationDialog:boolean;
     constructor(private typeoperationService: TypeoperationService,private messageService: MessageService,
                 private confirmationService: ConfirmationService) { }
 
@@ -30,36 +31,38 @@ export class TypeoperationComponent implements OnInit {
         console.log('On Init ...');
         return this.typeoperationService.getTypeOperations().subscribe((data) =>
         {
-            console.log(JSON.parse(JSON.stringify(data))._embedded.typeOperations);
-            this.typeOperations = JSON.parse(JSON.stringify(data))._embedded.typeOperations;
+            //console.log(JSON.parse(JSON.stringify(data))._embedded.typeOperations);
+            this.typeOperations = data;
         })
+    }
+    editTypeOperation(typeoperation: Typeoperation) {
+        this.typeoperation = {...typeoperation};
+        this.typeoperationDialog = true;
     }
     public postTypeOperation() {
         this.submitted = true;
 
         if (this.typeoperation.libelle.trim()) {
-            /*        if (this.statut.id) {
-                        this.statutService.updateStatut(this.statut.id,this.statut).subscribe(
+                    if (this.typeoperation.id) {
+                        this.typeoperationService.updateTypeOperation(this.typeoperation.id,this.typeoperation).subscribe(
                             data => {
                                 console.log(data);
-                                this.editClasseDialog = false;
-                                this.classe = {};
-                                this.getClasses();
+                                this.editTypeoperationDialog = false;
+                                this.typeoperation = {};
+                                this.getTypeOperations();
                             },
                             error => {
                                 console.log(error);
                             }
                         );
-                        this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Mis à jour Classe', life: 3000});*!/
-                    }*/
-            // else {
+                        this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Mis à jour Type Opération', life: 3000});
+                    }
+             else {
             //debugger
             this.typeoperationService.postTypeOperation(this.typeoperation).subscribe( data =>
                 {
-
                     console.log(this.typeoperation);
                     this.typeoperationDialog = false;
-
                     this.getTypeOperations();
                 },
                 error => {
@@ -67,10 +70,10 @@ export class TypeoperationComponent implements OnInit {
                 }
             ),
                 this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Ajout Classe', life: 3000});
-            //}
-
+            }
             this.typeOperations = [...this.typeOperations];
             this.typeoperationDialog = false;
+            this.editTypeoperationDialog = false;
             this.typeoperation = {};
         }
     }
@@ -82,6 +85,7 @@ export class TypeoperationComponent implements OnInit {
     hideDialog() {
         this.typeoperationDialog = false;
         this.submitted = false;
+        this.editTypeoperationDialog = false;
         //this.editClasseDialog = false;
     }
     first = 0;

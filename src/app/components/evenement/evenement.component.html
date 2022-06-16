@@ -1,0 +1,159 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <h5>Gestion des Evenements</h5>
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+<!--            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" ></button>-->
+        </ng-template>
+
+<!--        <ng-template pTemplate="right">-->
+<!--            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>-->
+<!--            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>-->
+<!--        </ng-template>-->
+    </p-toolbar>
+    <p-table  #dt [value]="evenements" [paginator]="true" [rows]="10"  [globalFilterFields]="['anneeCampagne','dateCloture','dateCreation','moisCampagne']" responsiveLayout="scroll"
+              [rowHover]="true" dataKey="id"
+              [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 class="m-0">Liste des Evenements</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
+                        </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+
+                <th pSortableColumn="anneeCampagne">Année Campagne <p-sortIcon field="anneeCampagne"></p-sortIcon></th>
+                <th pSortableColumn="dateCloture">Date Cloture <p-sortIcon field="dateCloture"></p-sortIcon></th>
+                <th pSortableColumn="dateCreation">Date Création <p-sortIcon field="dateCreation"></p-sortIcon></th>
+                <th pSortableColumn="moisCampagne">Mois  Campagne <p-sortIcon field="moisCampagne"></p-sortIcon></th>
+                <th pSortableColumn="statut">Statut <p-sortIcon field="statut"></p-sortIcon></th>
+
+                <th>Actions</th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-evenement>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="evenement"></p-tableCheckbox>
+                </td>
+                <td>{{evenement.anneeCampagne}}</td>
+                <td>{{evenement.dateCloture | date: 'dd/MM/yyyy' }} </td>
+                <td>{{evenement.dateCreation | date: 'dd/MM/yyyy'  }}</td>
+                <td>{{evenement.moisCampagne}}</td>
+                <td>{{evenement.status}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEvenement(evenement)" pTooltip="Modifier un evenement" ></button>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
+
+</div>
+
+<p-dialog [(visible)]="evenementDialog" [style]="{width: '450px'}" header="Ajout d'un Evenement" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <div class="formgrid grid">
+                <div class="field col">
+                    <label for="dateCreation">Annee Campagne</label>
+                    <input type="text" pInputText id="dateCreation"  [(ngModel)]="evenement.anneeCampagne" required autofocus />
+                    <small class="p-error" *ngIf="submitted && !evenement.anneeCampagne">annee de Campagne est obligatoire.</small>
+            </div>
+            <div class="field col">
+                <label for="dateCloture">Date Clôture</label>
+                <input  pInputText id="dateCloture" placeholder="MM/DD/YYYY" [(ngModel)]="evenement.dateCloture"
+                          type="date"  required autofocus />
+                <small class="p-error" *ngIf="submitted && !evenement.dateCloture">Date de Cloture est obligatoire.</small>
+            </div>
+        </div>
+
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="dateCreation">Date Création</label>
+                <input type="date" pInputText id="dateCreation"  [(ngModel)]="evenement.dateCreation" required autofocus />
+                <small class="p-error" *ngIf="submitted && !evenement.dateCreation">Date de création est obligatoire.</small>
+            </div>
+            <div class="field col">
+                <label for="moisCampagne">Mois Campagne</label>
+                <input type="text" pInputText id="moisCampagne" [(ngModel)]="evenement.moisCampagne" placeholder="moisCampagne"  required autofocus />
+                <small class="p-error" *ngIf="submitted && !evenement.moisCampagne">Mois de Campagne est obligatoire.</small>
+            </div>
+        </div>
+
+        <div class="field col">
+            <label for="status">Statut</label>
+            <input type="text" pInputText id="status" [(ngModel)]="evenement.status" placeholder="status"  required autofocus />
+            <small class="p-error" *ngIf="submitted && !evenement.status">Statut est obligatoire.</small>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="postEvenement()" ></button>
+    </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="evenementEditDialog" [style]="{width: '450px'}" header="Modification d'un Evenement" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="dateCreation">Annee Campagne</label>
+                <input type="text" pInputText id="dateCreation"  [(ngModel)]="evenement.anneeCampagne" required autofocus />
+                <small class="p-error" *ngIf="submitted && !evenement.anneeCampagne">annee de Campagne est obligatoire.</small>
+            </div>
+            <div class="field col">
+                <label for="dateCloture">Date Clôture</label>
+
+                <input name="dateT" pInputText id="dateCloture" placeholder="MM/DD/YYYY"
+                       (ngModelChange)="updatedate($event)" [ngModel]="evenement.dateCloture |date:'yyyy-MM-dd'"
+                       #dateT="ngModel"  type="date"  required autofocus />
+
+
+                <small class="p-error" *ngIf="submitted && !evenement.dateCloture">Date de Cloture est obligatoire.</small>
+            </div>
+        </div>
+
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="dateCreation">Date Création</label>
+                <input type="date" pInputText id="dateCreation" (ngModelChange)="updatedate($event)"
+                       [ngModel]="evenement.dateCreation |date:'yyyy-MM-dd'" disabled required autofocus />
+                <small class="p-error" *ngIf="submitted && !evenement.dateCreation">Date de création est obligatoire.</small>
+            </div>
+            <div class="field col">
+                <label for="moisCampagne">Mois Campagne</label>
+                <input type="text" pInputText id="moisCampagne" [(ngModel)]="evenement.moisCampagne" placeholder="moisCampagne"  required autofocus />
+                <small class="p-error" *ngIf="submitted && !evenement.moisCampagne">Mois de Campagne est obligatoire.</small>
+            </div>
+        </div>
+
+        <div class="field col">
+            <label for="status">Statut</label>
+            <input type="text" pInputText id="status" [(ngModel)]="evenement.status" placeholder="status"  required autofocus />
+            <small class="p-error" *ngIf="submitted && !evenement.status">Statut est obligatoire.</small>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="postEvenement()" ></button>
+    </ng-template>
+</p-dialog>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

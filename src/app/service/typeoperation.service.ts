@@ -22,10 +22,14 @@ export class TypeoperationService {
 
 
     getTypeOperations() {
-        return this.httpClient.get(this.baseUrl + '/typeOperations');
+        return this.httpClient.get(this.baseUrl + '/allTypeOperation');
     }
+
     postTypeOperation(typeOperation:Typeoperation) {
-        //debugger
         return this.httpClient.post(this.baseUrl + '/typeOperation', typeOperation)
+    }
+
+    updateTypeOperation(id:number,typeOperation:Typeoperation) {
+        return this.httpClient.put(this.baseUrl + '/typeOperation/' + id, typeOperation)
     }
 }

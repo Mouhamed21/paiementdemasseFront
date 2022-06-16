@@ -5,13 +5,13 @@
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" ></button>
+<!--            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" ></button>-->
         </ng-template>
 
-        <ng-template pTemplate="right">
-            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
-        </ng-template>
+<!--        <ng-template pTemplate="right">-->
+<!--            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>-->
+<!--            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>-->
+<!--        </ng-template>-->
     </p-toolbar>
     <p-table  #dt [value]="statuts" [paginator]="true" [rows]="10"  [globalFilterFields]="['libelle']" responsiveLayout="scroll"
                [rowHover]="true" dataKey="id"
@@ -65,6 +65,9 @@
     <ng-template pTemplate="content">
         <div class="p-field p-col">
             <label for="libelle">Libelle</label>
+            <div class="espace1">
+
+            </div>
             <input type="text" pInputText id="libelle"  [(ngModel)]="statut.libelle" required autofocus />
             <small class="p-error" *ngIf="submitted && !statut.libelle">Libelle est obligatoire.</small>
         </div>
@@ -83,6 +86,9 @@
     <ng-template pTemplate="content">
         <div class="p-field p-col">
             <label for="libelle">Libelle</label>
+            <div class="espace1">
+
+            </div>
             <input type="text" pInputText id="libelle"  [(ngModel)]="statut.libelle" required autofocus />
             <small class="p-error" *ngIf="submitted && !statut.libelle">Libelle est obligatoire.</small>
         </div>

@@ -5,13 +5,13 @@
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" ></button>
+<!--            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" ></button>-->
         </ng-template>
 
-        <ng-template pTemplate="right">
-            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
-        </ng-template>
+<!--        <ng-template pTemplate="right">-->
+<!--            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>-->
+<!--            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>-->
+<!--        </ng-template>-->
     </p-toolbar>
     <p-table  #dt [value]="typeOperations" [paginator]="true" [rows]="10"  [globalFilterFields]="['libelle']" responsiveLayout="scroll"
               [rowHover]="true" dataKey="id"
@@ -44,9 +44,9 @@
                 </td>
                 <td>{{typeoperation.libelle}}</td>
                 <td>
-                    <!--                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editClasse(classe)" pTooltip="Modifier une classe" ></button>
-                                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteClasse(classe)" pTooltip="Supprimer une classe" ></button>
-                                        <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary"  (click)="getOneClasse(classe)" pTooltip="Détails" ></button>-->
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editTypeOperation(typeoperation)" pTooltip="Modifier un type d'opérations" ></button>
+                <!--<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteClasse(classe)" pTooltip="Supprimer une classe" ></button>
+                <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary"  (click)="getOneClasse(classe)" pTooltip="Détails" ></button>-->
                 </td>
             </tr>
         </ng-template>
@@ -62,6 +62,27 @@
 </div>
 
 <p-dialog [(visible)]="typeoperationDialog" [style]="{width: '450px'}" header="Ajout d'un type d'opérations" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field p-col">
+            <label for="libelle">Libelle</label>
+            <div class="espace1">
+
+            </div>
+            <input type="text" pInputText id="libelle"  [(ngModel)]="typeoperation.libelle" required autofocus />
+            <small class="p-error" *ngIf="submitted && !typeoperation.libelle">Libelle est obligatoire.</small>
+        </div>
+
+    </ng-template>
+    <div class="espace">
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="postTypeOperation()" ></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="editTypeoperationDialog" [style]="{width: '450px'}" header="Modification d'un type d'opérations" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="p-field p-col">
             <label for="libelle">Libelle</label>
