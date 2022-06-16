@@ -46,8 +46,8 @@ export class EvenementComponent implements OnInit {
         this.submitted = true;
 
         if (this.evenement.anneeCampagne.toString().trim() && this.evenement.dateCloture.toString().trim()
-        && this.evenement.dateCreation.toString().trim() && this.evenement.moisCampagne.trim() &&
-            this.evenement.status.trim()) {
+        && this.evenement.dateCreation.toString().trim() && this.evenement.moisCampagne.trim()
+            ) {
                     if (this.evenement.id) {
                         this.evenementService.updateEvenement(this.evenement.id,this.evenement).subscribe(
                             data => {

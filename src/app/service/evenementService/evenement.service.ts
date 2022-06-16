@@ -26,6 +26,7 @@ export class EvenementService {
     }
 
     postEvenement(evenement:Evenement) {
+        evenement.status = "En cours";
         return this.httpClient.post(this.baseUrl + '/new/evenements',  evenement )
     }
 

@@ -99,8 +99,8 @@
 
         <div class="field col">
             <label for="status">Statut</label>
-            <input type="text" pInputText id="status" [(ngModel)]="evenement.status" placeholder="status"  required autofocus />
-            <small class="p-error" *ngIf="submitted && !evenement.status">Statut est obligatoire.</small>
+            <input type="text" pInputText id="status" [(ngModel)]="evenement.status" placeholder="En cours" disabled required autofocus />
+
         </div>
     </ng-template>
 
@@ -143,13 +143,20 @@
                 <small class="p-error" *ngIf="submitted && !evenement.moisCampagne">Mois de Campagne est obligatoire.</small>
             </div>
         </div>
+        <div class="field col" >
 
-        <div class="field col">
             <label for="status">Statut</label>
-            <input type="text" pInputText id="status" [(ngModel)]="evenement.status" placeholder="status"  required autofocus />
-            <small class="p-error" *ngIf="submitted && !evenement.status">Statut est obligatoire.</small>
+
+                <select name="status" class="dropdown" [(ngModel)]="evenement.status"  id="status">
+                    <option>En cours</option>
+                    <option>Terminer</option>
+                </select>
+            <!--input type="text" pInputText id="status" [(ngModel)]="evenement.status" placeholder="status"  required autofocus />
+            <small class="p-error" *ngIf="submitted && !evenement.status">Statut est obligatoire.</small>-->
         </div>
+
     </ng-template>
+
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>

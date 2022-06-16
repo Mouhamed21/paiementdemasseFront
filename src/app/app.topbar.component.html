@@ -14,17 +14,25 @@
     </a>
 
     <div class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active':appMain.topMenuActive}">
-         <a href="#" class="p-link layout-topbar-button">
+<!--         <a href="#" class="p-link layout-topbar-button">
             <i class="pi pi-calendar"></i>
             <span>Calendar</span>
         </a>
         <a href="#" class="p-link layout-topbar-button">
             <i class="pi pi-cog"></i>
             <span>Settings</span>
-        </a>
-        <a href="#" class="p-link layout-topbar-button">
-            <i class="pi pi-user"></i>
-            <span>Profile</span>
-        </a>
+        </a>-->
+
+       <div>
+           <p-badge style="margin-right:15px" value="{{user.dg_structure.libelle}}" size="large" severity="info"></p-badge>
+
+       </div>
+        <div>
+            <p-badge value="{{users.firstName}} {{ users.lastName}}" size="large" severity="info"></p-badge>
+
+        </div>
+
+
+
     </div>
 </div>
