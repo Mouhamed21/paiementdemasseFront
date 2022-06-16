@@ -8,7 +8,8 @@ describe('TypeoperationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TypeoperationComponent ]
+      declarations: [ TypeoperationComponent ],
+
     })
     .compileComponents();
   });

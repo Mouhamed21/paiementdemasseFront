@@ -35,12 +35,14 @@ import {StatutComponent} from "./components/statut/statut.component";
 import {TypeoperationComponent} from "./components/typeoperation/typeoperation.component";
 import {ChargemetFichierComponent} from "./components/chargemet-fichier/chargemet-fichier.component";
 import {EvenementComponent} from "./components/evenement/evenement.component";
+import {AuthGuard} from "./components/keycloack/auth.guard";
 // @ts-ignore
 @NgModule({
     imports: [
         RouterModule.forRoot([
+
             {
-                path: '', component: AppMainComponent,
+                path: '', component: AppMainComponent, canActivate:[AuthGuard],
                 children: [
                     {path: '', component: DashboardComponent},
                     {path: 'uikit/formlayout', component: FormLayoutComponent},
@@ -71,7 +73,8 @@ import {EvenementComponent} from "./components/evenement/evenement.component";
                     {path: 'pmenim/statut', component: StatutComponent},
                     {path: 'pmenim/typeoperation', component: TypeoperationComponent},
                     {path: 'pmenim/evenement', component: EvenementComponent},
-                    {path: 'pmenim/chargefichier', component: ChargemetFichierComponent}
+                    {path: 'pmenim/chargefichier', component: ChargemetFichierComponent},
+
 
                 ],
             },

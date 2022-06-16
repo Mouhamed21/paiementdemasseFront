@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -148,9 +148,12 @@ import { StatutComponent } from './components/statut/statut.component';
 import { TypeoperationComponent } from './components/typeoperation/typeoperation.component';
 import { EvenementComponent } from './components/evenement/evenement.component';
 import { ChargemetFichierComponent } from './components/chargemet-fichier/chargemet-fichier.component';
+import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
+import {initializeKeycloak} from "./components/keycloack/app.init";
 
 @NgModule({
     imports: [
+        KeycloakAngularModule,
         BrowserModule,
         FormsModule,
         AppRoutingModule,
@@ -293,7 +296,13 @@ import { ChargemetFichierComponent } from './components/chargemet-fichier/charge
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService, MenuService, ConfigService
+        PhotoService, ProductService, MenuService, ConfigService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeKeycloak,
+            multi: true,
+            deps: [KeycloakService],
+        }
     ],
     bootstrap: [AppComponent]
 })
