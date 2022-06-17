@@ -12,8 +12,11 @@ export class UserServiceService {
     constructor(private httpClient: HttpClient) { }
 
     getUserByEmail(email):Observable<any> {
-
         return this.httpClient.get(this.baseUrl + '/user/email/' + email);
+    }
+
+    getUserById(id:number):Observable<any> {
+        return this.httpClient.get(this.baseUrl + '/user/' + id);
     }
 
 }

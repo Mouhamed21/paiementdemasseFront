@@ -22,7 +22,6 @@ export class AppTopBarComponent {
             console.log(res);
             this.users = res;
             this.email= res.email;
-
             console.log(res.email);
             this.getStructure(res.email);
 

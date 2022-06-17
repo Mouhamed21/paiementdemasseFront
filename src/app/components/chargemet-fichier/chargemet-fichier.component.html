@@ -86,20 +86,184 @@
     </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="detailDialog" [style]="{width: '550px'}" header="Détail fichier" [modal]="true" styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="p-field p-col">
+<p-dialog [(visible)]="detailDialog" [style]="{width: '800px'}" header="Détail fichier " [modal]="true" styleClass="p-fluid">
+<!--    <ng-template pTemplate="content">
+        <div class="formgrid grid">
+            <div class="field col">
+                <a class="gauche">Evenement:</a> <p-badge class="droite" value="{{fichier.evenement.moisCampagne}} - {{fichier.evenement.anneeCampagne}}" size="large" severity="info"></p-badge>
+            </div>
+            <div class="field col">
+
+                &lt;!&ndash;<a class="gauche">Montant Global:</a><p-badge class="droite"  value="{{fichier.montantGlobal}}" size="large" severity="info"></p-badge>&ndash;&gt;
+            </div>
 
         </div>
+        <br>
+        <div class="formgrid grid">
+            <div class="field col">
+                <a class="gauche">Nombre de Ligne:</a> <p-badge class="droite" value="{{fichier.nbrLigne}}" size="large" severity="info"></p-badge>
+            </div>
+            <div class="field col">
+&lt;!&ndash;                <a class="gauche">Certification:</a> <p-badge *ngIf="fichier.certification == true" class="droite" value="Certifier" size="large" severity="success"></p-badge>
+                <p-badge *ngIf="fichier.certification == false" class="droite" value="Non Certifier" size="large" severity="danger"></p-badge>&ndash;&gt;
+            </div>
+        </div>
+        <br>
+        <div class="formgrid grid">
+            <div class="field col">
+
+                <a class="gauche">Date de Chargement:</a><p-badge class="droite"  value="{{fichier.dateChargement | date: 'dd/MM/yyyy'}}" size="large" severity="info"></p-badge>
+            </div>
+            <div class="field col">
+&lt;!&ndash;                <a class="gauche">Responsable:</a><p-badge class="droite"  value="{{user.prenom}} {{user.nom}}" size="large" severity="info"></p-badge>&ndash;&gt;
+            </div>
+
+        </div>
+        <br>
+        <div class="formgrid grid">
+            <div class="field col">
+                <a class="gauche">Montant Global:</a><p-badge class="droite"  value="{{fichier.montantGlobal}}" size="large" severity="info"></p-badge>
+&lt;!&ndash;                <a class="gauche">Fonction Responsable:</a><p-badge class="droite"  value="{{user.dg_fonction.libelle}}" size="large" severity="info"></p-badge>&ndash;&gt;
+            </div>
+            <div class="field col">
+&lt;!&ndash;                <a class="gauche">Structure Responsable:</a><p-badge class="droite"  value="{{user.dg_structure.libelle}}" size="large" severity="info"></p-badge>&ndash;&gt;
+            </div>
+
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                 <a class="gauche">Certification:</a> <p-badge *ngIf="fichier.certification == true" class="droite" value="Certifier" size="large" severity="success"></p-badge>
+                <p-badge *ngIf="fichier.certification == false" class="droite" value="Non Certifier" size="large" severity="danger"></p-badge>
+
+            </div>
+            <div class="field col">
+                &lt;!&ndash;                <a class="gauche">Structure Responsable:</a><p-badge class="droite"  value="{{user.dg_structure.libelle}}" size="large" severity="info"></p-badge>&ndash;&gt;
+            </div>
+
+        </div>
+
+
+    </ng-template>-->
+    <ng-template pTemplate="content">
+        <h4 style="text-align: center">chargé par {{ user.prenom }} {{ user.nom }}</h4>
+        <br>
+        <div class="global">
+            <table class="tableaugauche">
+
+                <tr>
+                    <td>
+                        <a class="gauche">Evenement:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite" value="{{fichier.evenement.moisCampagne}} - {{fichier.evenement.anneeCampagne}}" size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Montant Global:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{fichier.montantGlobal}}" size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Nombre de Ligne:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{fichier.nbrLigne}}" size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Date de Chargement:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{fichier.dateChargement  | date: 'dd/MM/yyyy' }}" size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Certification:</a>
+                    </td>
+                    <td>
+                         <p-badge *ngIf="fichier.certification == true" class="droite" value="Certifié" size="large" severity="success"></p-badge>
+                        <p-badge *ngIf="fichier.certification == false" class="droite" value="Non Certifié" size="large" severity="danger"></p-badge>
+                    </td>
+
+                </tr>
+            </table>
+            <table class="tableaudroite">
+
+
+                <tr>
+                    <td>
+                        <a class="gauche">Prenom:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{user.prenom}} " size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Nom:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{user.nom}}" size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Structure:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{user.dg_structure.libelle}}" size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Fonction:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{user.dg_fonction.libelle}}" size="large" severity="info"></p-badge>
+                    </td>
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Matricule:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{user.matricule}}" size="large" severity="info"></p-badge>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
 
     </ng-template>
     <div class="espace">
 
     </div>
-    <ng-template pTemplate="footer">
+<!--    <ng-template pTemplate="footer">
         <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDetailFichierDialog()"></button>
         <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="saveFile()" ></button>
-    </ng-template>
+    </ng-template>-->
 </p-dialog>
 
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

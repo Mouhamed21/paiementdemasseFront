@@ -5,6 +5,8 @@ import {ChargefichierService} from "../../service/chargefichier/chargefichier.se
 import {Router} from "@angular/router";
 import {Fichier} from "../../modele/fichier";
 import {Subject} from "rxjs";
+import {UserServiceService} from "../../service/userService/user-service.service";
+import {KeycloakService} from "keycloak-angular";
 
 @Component({
   selector: 'app-chargemet-fichier',
@@ -33,12 +35,18 @@ export class ChargemetFichierComponent implements OnInit {
     classeSubject = new Subject<void>();
     first = 0;
     rows = 10;
-
+    id:number;
+    user:any;
   constructor(private chargefichierService: ChargefichierService, private router: Router,
-              private messageService: MessageService, private confirmationService: ConfirmationService) { }
+              private messageService: MessageService, private confirmationService: ConfirmationService,private userService: UserServiceService,
+              public keycloak: KeycloakService) {
+  }
+
+
 
   ngOnInit(): void {
     this.getAllFichier();
+
   }
 
     public getAllFichier(){
@@ -82,8 +90,20 @@ export class ChargemetFichierComponent implements OnInit {
         return this.fichier ? this.first === 0 : true;
     }
 
-    getDetailFichier(fichier: any) {
+    getDetailFichier(fichier: Fichier) {
+        this.fichier = {...fichier};
         this.detailDialog = true;
+        this.id = this.fichier.idUserChargement;
+        this.getUserChargement(this.fichier.idUserChargement);
+    }
+
+    public getUserChargement(id:number)
+    {
+        return this.userService.getUserById(id).subscribe(res =>
+        {
+            console.log(res);
+            this.user  = res;
+        })
     }
 
     hideDetailFichierDialog() {
