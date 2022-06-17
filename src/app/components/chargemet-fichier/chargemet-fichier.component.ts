@@ -37,6 +37,7 @@ export class ChargemetFichierComponent implements OnInit {
     rows = 10;
     id:number;
     user:any;
+    valSwitch:boolean;
   constructor(private chargefichierService: ChargefichierService, private router: Router,
               private messageService: MessageService, private confirmationService: ConfirmationService,private userService: UserServiceService,
               public keycloak: KeycloakService) {
@@ -109,10 +110,20 @@ export class ChargemetFichierComponent implements OnInit {
     hideDetailFichierDialog() {
         this.detailDialog = false;
         this.submitted = false;
+        this.getAllFichier();
         //this.editClasseDialog = false;
     }
 
-    saveFile() {
+    onCertifier(fichier: Fichier) {
+        this.chargefichierService.certifie(fichier)
+            .subscribe(data => {
+                fichier.certification = data.certification;
+                //this.valSwitch = !this.valSwitch;
+            })
+
+    }
+
+        saveFile() {
 
     }
 

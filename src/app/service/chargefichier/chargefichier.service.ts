@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import { Fichier } from 'src/app/modele/fichier';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +27,11 @@ export class ChargefichierService {
     getAllFichier(){
         return this.httpClient.get(this.baseUrl+'/fichiers')
             //{headers: new HttpHeaders({Authorization:'Bearer '+this.kcSecurityService.kc.token})})
+    }
+
+    certifie(fichier: Fichier): Observable<Fichier> {
+        fichier.certification=!fichier.certification;
+        return this.httpClient.patch<Fichier>(this.baseUrl+"/certifierfichier/"+fichier.id, fichier)
+
     }
 }
