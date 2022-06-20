@@ -27,6 +27,15 @@ export class ChargefichierService {
         return this.httpClient.get(this.baseUrl+'/fichiers')
             //{headers: new HttpHeaders({Authorization:'Bearer '+this.kcSecurityService.kc.token})})
     }
+    getAllFichierNonCertifier(){
+        return this.httpClient.get(this.baseUrl+'/fichiersNonCertifie')
+        //{headers: new HttpHeaders({Authorization:'Bearer '+this.kcSecurityService.kc.token})})
+    }
+
+    getAllFichierCertifier(){
+        return this.httpClient.get(this.baseUrl+'/fichiersCertifie')
+        //{headers: new HttpHeaders({Authorization:'Bearer '+this.kcSecurityService.kc.token})})
+    }
 
     certifie(fichier: Fichier): Observable<Fichier> {
         fichier.certification=!fichier.certification;

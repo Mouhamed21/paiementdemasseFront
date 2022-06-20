@@ -57,8 +57,11 @@ export class ChargemetFichierComponent implements OnInit {
               private statutService: StatutService, private formBuilder: FormBuilder) {
   }
 
+
+
   ngOnInit(): void {
-    this.getAllFichier();
+    this.getAllFichierNonCertifier();
+   // this.getAllFichier();
     this.getEvenementsEnCours();
     this.getStatuts();
 
@@ -105,8 +108,8 @@ export class ChargemetFichierComponent implements OnInit {
         console.log(this.statutFK);
     }
 
-    public getAllFichier(){
-        return this.chargefichierService.getAllFichier().subscribe((data) =>
+    public getAllFichierNonCertifier(){
+        return this.chargefichierService.getAllFichierNonCertifier().subscribe((data) =>
         {
             console.log(data);
             this.fichiers = data;
@@ -149,8 +152,8 @@ export class ChargemetFichierComponent implements OnInit {
     getDetailFichier(fichier: Fichier) {
         this.fichier = {...fichier};
         this.detailDialog = true;
-        //this.id = this.fichier.idUserChargement;
-        //console.log("id : "+this.id);
+        this.id = this.fichier.idUserChargement;
+        this.valSwitch = this.fichier.certification;
         this.getUserChargement(this.fichier.idUserChargement);
     }
 
@@ -158,7 +161,7 @@ export class ChargemetFichierComponent implements OnInit {
     {
         return this.userService.getUserById(id).subscribe(res =>
         {
-            //console.log(res);
+            console.log(res);
             this.user  = res;
         })
     }
@@ -166,7 +169,7 @@ export class ChargemetFichierComponent implements OnInit {
     hideDetailFichierDialog() {
         this.detailDialog = false;
         this.submitted = false;
-        this.getAllFichier();
+        this.getAllFichierNonCertifier();
         //this.editClasseDialog = false;
     }
 

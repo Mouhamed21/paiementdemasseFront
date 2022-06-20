@@ -150,6 +150,7 @@ import { EvenementComponent } from './components/evenement/evenement.component';
 import { ChargemetFichierComponent } from './components/chargemet-fichier/chargemet-fichier.component';
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import {initializeKeycloak} from "./components/keycloack/app.init";
+import { FichierCertifieComponent } from './components/fichier-certifie/fichier-certifie.component';
 
 @NgModule({
     imports: [
@@ -293,6 +294,7 @@ import {initializeKeycloak} from "./components/keycloack/app.init";
         TypeoperationComponent,
         EvenementComponent,
         ChargemetFichierComponent,
+        FichierCertifieComponent,
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

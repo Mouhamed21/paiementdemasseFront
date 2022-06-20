@@ -36,6 +36,7 @@ import {TypeoperationComponent} from "./components/typeoperation/typeoperation.c
 import {ChargemetFichierComponent} from "./components/chargemet-fichier/chargemet-fichier.component";
 import {EvenementComponent} from "./components/evenement/evenement.component";
 import {AuthGuard} from "./components/keycloack/auth.guard";
+import {FichierCertifieComponent} from "./components/fichier-certifie/fichier-certifie.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -74,7 +75,7 @@ import {AuthGuard} from "./components/keycloack/auth.guard";
                     {path: 'pmenim/typeoperation', component: TypeoperationComponent},
                     {path: 'pmenim/evenement', component: EvenementComponent},
                     {path: 'pmenim/chargefichier', component: ChargemetFichierComponent},
-
+                    {path: 'pmenim/fichiersCertifier', component: FichierCertifieComponent},
 
                 ],
             },

@@ -38,10 +38,11 @@ export class AppMenuComponent implements OnInit {
                 items: [
 /*                    {label: 'Classes', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/classe']},
                     {label: 'Eleves', icon: 'pi pi-fw pi-circle', routerLink: ['/uikit/eleve']},*/
-                    {label: 'Statuts', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pmenim/statut']},
-                    {label: 'TypeOperations', icon: 'pi pi-fw pi-id-card', routerLink: ['/pmenim/typeoperation']},
                     {label: 'Evenements', icon: 'pi pi-fw pi-check-square', routerLink: ['/pmenim/evenement']},
-                    {label: 'Fichier', icon: 'pi pi-fw pi-id-card', routerLink: ['pmenim/chargefichier']},
+                    {label: 'Fichiers', icon: 'pi pi-fw pi-id-card', routerLink: ['pmenim/chargefichier']},
+                    {label: 'Fichiers Certifiés', icon: 'pi pi-fw pi-id-card', routerLink: ['pmenim/fichiersCertifier']},
+                    {label: 'Statuts', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pmenim/statut']},
+                    {label: "Type D'Operations", icon: 'pi pi-fw pi-id-card', routerLink: ['/pmenim/typeoperation']},
                     {label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout']},
                     {label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input']},
                     {label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel']},

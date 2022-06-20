@@ -2,7 +2,7 @@
 
 <div class="card">
     <h5>Gestion Des Fichiers</h5>
-    <p-toolbar styleClass="mb-4">
+<!--    <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
             <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedFichier()" [disabled]="!selectedClasses || !selectedClasses.length"></button>
@@ -12,7 +12,7 @@
             <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
             <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
         </ng-template>
-    </p-toolbar>
+    </p-toolbar>-->
     <p-table  #dt [value]="fichiers" [paginator]="true" [rows]="10"  [globalFilterFields]="['montantGlobal','evenement','dateChargement']" responsiveLayout="scroll"
               [(selection)]="selectedClasses" [rowHover]="true" dataKey="id"
               [rowsPerPageOptions]="[10,25,50]">
@@ -69,38 +69,19 @@
 </div>
 
 <p-dialog [(visible)]="classeDialog" [style]="{width: '450px'}" header="Ajout d'une Classe" [modal]="true" styleClass="p-fluid">
-    <ng-template pTemplate="content" [formGroup] = "uploadForm">
-        <div class="p-field p-col" formControlName="evenement">
-                <h5>Evénement</h5>
-                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" >
-                    <option selected>Choisir un événement</option>
-                    <option *ngFor="let evenement of evenements" [value]="evenement.id">
-                        {{evenement.moisCampagne}} - {{evenement.anneeCampagne}}
-                    </option>
-                </select>
-        </div>
-        <div class="p-field p-col" formControlName="statut">
-                <h5>Statut</h5>
-                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" >
-                    <option selected>Choisir un statut</option>
-                    <option *ngFor="let statut of statuts" [value]="statut.id">
-                        {{statut.libelle}}
-                    </option>
-                </select>
-        </div>
-        <div class="p-field p-col" formControlName="myFile">
-                <h5>Fichier</h5>
-                <input (change)="onFileSelect($event)" class="form-control form-control-lg" id="formFileLg" type="file">
-        </div>
-            <!--<label for="montantGlobal">Montant Global</label>
+    <ng-template pTemplate="content">
+        <div class="p-field p-col">
+            <label for="montantGlobal">Montant Global</label>
             <input type="text" pInputText id="montantGlobal"  [(ngModel)]="fichier.montantGlobal" required autofocus />
-            <small class="p-error" *ngIf="submitted && !fichier.montantGlobal">montant Global est obligatoire.</small> -->
+            <small class="p-error" *ngIf="submitted && !fichier.montantGlobal">montant Global est obligatoire.</small>
+        </div>
+
     </ng-template>
     <div class="espace">
 
     </div>
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text p-button-danger" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
         <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="saveFile()" ></button>
     </ng-template>
 </p-dialog>
@@ -111,6 +92,7 @@
         <br>
         <div class="global">
             <table class="tableaugauche">
+
                 <tr>
                     <td>
                         <a class="gauche">Evenement:</a>
@@ -118,6 +100,7 @@
                     <td>
                         <p-badge class="droite" value="{{fichier.evenement.moisCampagne}} - {{fichier.evenement.anneeCampagne}}" size="large" severity="info"></p-badge>
                     </td>
+
                 </tr>
                 <br>
                 <tr>
@@ -127,6 +110,7 @@
                     <td>
                         <p-badge class="droite"  value="{{fichier.montantGlobal}}" size="large" severity="info"></p-badge>
                     </td>
+
                 </tr>
                 <br>
                 <tr>
@@ -154,13 +138,16 @@
                         <a class="gauche">Certification:<p-inputSwitch (click)="onCertifier(fichier)" [(ngModel)]="valSwitch"></p-inputSwitch></a>
                     </td>
                     <td>
-                         <p-badge *ngIf="fichier.certification == true" class="droite" value="Certifié" size="large" severity="success"></p-badge>
+
+                        <p-badge *ngIf="fichier.certification == true" class="droite" value="Certifié" size="large" severity="success"></p-badge>
                         <p-badge *ngIf="fichier.certification == false" class="droite" value="Non Certifié" size="large" severity="danger"></p-badge>
                     </td>
 
                 </tr>
             </table>
             <table class="tableaudroite">
+
+
                 <tr>
                     <td>
                         <a class="gauche">Prenom:</a>
@@ -212,22 +199,24 @@
 
         </div>
 
+
     </ng-template>
     <div class="espace">
 
     </div>
+
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Fermer" icon="pi pi-times" class="p-button-text" (click)="hideDetailFichierDialog()"></button>
-<!--        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="saveFile()" ></button>-->
+        <!--        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="saveFile()" ></button>-->
 
-<!--        <p-inputSwitch (click)="onCertifier(fichier)" ></p-inputSwitch>-->
-<!--            <button  (click)="onCertifier(fichier)" [ngClass]="fichier.certification?'Danger': 'Success'" >-->
-<!--                <span   *ngIf="fichier.certification"> Fichier Certifie </span>-->
-<!--                &lt;!&ndash;      <mat-icon> lock</mat-icon>&ndash;&gt;-->
+        <!--        <p-inputSwitch (click)="onCertifier(fichier)" ></p-inputSwitch>-->
+        <!--            <button  (click)="onCertifier(fichier)" [ngClass]="fichier.certification?'Danger': 'Success'" >-->
+        <!--                <span   *ngIf="fichier.certification"> Fichier Certifie </span>-->
+        <!--                &lt;!&ndash;      <mat-icon> lock</mat-icon>&ndash;&gt;-->
 
-<!--                <span *ngIf="!fichier.certification">Fichier Non Certifie</span>-->
-<!--                &lt;!&ndash;      <mat-icon>lock_open</mat-icon>&ndash;&gt;-->
-<!--            </button>-->
+        <!--                <span *ngIf="!fichier.certification">Fichier Non Certifie</span>-->
+        <!--                &lt;!&ndash;      <mat-icon>lock_open</mat-icon>&ndash;&gt;-->
+        <!--            </button>-->
 
     </ng-template>
 </p-dialog>
