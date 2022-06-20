@@ -1,4 +1,3 @@
-import {Classe} from "./classe";
 import {Statut} from "./statut";
 
 export class Fichier {

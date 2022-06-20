@@ -69,19 +69,38 @@
 </div>
 
 <p-dialog [(visible)]="classeDialog" [style]="{width: '450px'}" header="Ajout d'une Classe" [modal]="true" styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="p-field p-col">
-            <label for="montantGlobal">Montant Global</label>
-            <input type="text" pInputText id="montantGlobal"  [(ngModel)]="fichier.montantGlobal" required autofocus />
-            <small class="p-error" *ngIf="submitted && !fichier.montantGlobal">montant Global est obligatoire.</small>
+    <ng-template pTemplate="content" [formGroup] = "uploadForm">
+        <div class="p-field p-col" formControlName="evenement">
+                <h5>Evénement</h5>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" >
+                    <option selected>Choisir un événement</option>
+                    <option *ngFor="let evenement of evenements" [value]="evenement.id">
+                        {{evenement.moisCampagne}} - {{evenement.anneeCampagne}}
+                    </option>
+                </select>
         </div>
-
+        <div class="p-field p-col" formControlName="statut">
+                <h5>Statut</h5>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" >
+                    <option selected>Choisir un statut</option>
+                    <option *ngFor="let statut of statuts" [value]="statut.id">
+                        {{statut.libelle}}
+                    </option>
+                </select>
+        </div>
+        <div class="p-field p-col" formControlName="myFile">
+                <h5>Fichier</h5>
+                <input (change)="onFileSelect($event)" class="form-control form-control-lg" id="formFileLg" type="file">
+        </div>
+            <!--<label for="montantGlobal">Montant Global</label>
+            <input type="text" pInputText id="montantGlobal"  [(ngModel)]="fichier.montantGlobal" required autofocus />
+            <small class="p-error" *ngIf="submitted && !fichier.montantGlobal">montant Global est obligatoire.</small> -->
     </ng-template>
     <div class="espace">
 
     </div>
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text p-button-danger" (click)="hideDialog()"></button>
         <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="saveFile()" ></button>
     </ng-template>
 </p-dialog>
@@ -145,11 +164,10 @@
 
     </ng-template>-->
     <ng-template pTemplate="content">
-        <h4 style="text-align: center">chargé par {{ user.prenom }} {{ user.nom }}</h4>
+        <h4 style="text-align: center">chargé par <b>{{ user.prenom }} {{ user.nom }}</b></h4>
         <br>
         <div class="global">
             <table class="tableaugauche">
-
                 <tr>
                     <td>
                         <a class="gauche">Evenement:</a>
@@ -157,7 +175,6 @@
                     <td>
                         <p-badge class="droite" value="{{fichier.evenement.moisCampagne}} - {{fichier.evenement.anneeCampagne}}" size="large" severity="info"></p-badge>
                     </td>
-
                 </tr>
                 <br>
                 <tr>
@@ -256,12 +273,10 @@
 
         </div>
 
-
     </ng-template>
     <div class="espace">
 
     </div>
-
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Fermer" icon="pi pi-times" class="p-button-text" (click)="hideDetailFichierDialog()"></button>
 <!--        <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="saveFile()" ></button>-->

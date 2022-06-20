@@ -3,6 +3,7 @@ import {environment} from "../../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { Fichier } from 'src/app/modele/fichier';
 import { Observable } from 'rxjs';
+import {Beneficiaire} from "../../modele/beneficiaire";
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,7 @@ export class ChargefichierService {
     }
 
     saveBeneficiaire(beneficiaire:any){
-        //debugger
-        return this.httpClient.post(this.baseUrl+'/fileupload', beneficiaire)
-            //,{headers: new HttpHeaders({Authorization:'Bearer '+this.kcSecurityService.kc.token})})
+        return this.httpClient.post<Beneficiaire>(this.baseUrl+'/fileupload', beneficiaire)
     }
 
     getAllFichier(){

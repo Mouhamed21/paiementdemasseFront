@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Evenement} from "../../modele/evenement";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +33,13 @@ export class EvenementService {
 
     updateEvenement(id:number,evenement:Evenement) {
         return this.httpClient.put(this.baseUrl + '/evenement/' + id,  evenement )
+    }
+
+    getLastEvenement(): Observable<Evenement> {
+        return this.httpClient.get<Evenement>(this.baseUrl + '/lastevenement');
+    }
+
+    getEvenementsEnCours(): Observable<Evenement> {
+        return this.httpClient.get<Evenement>(this.baseUrl + '/evenements/encours');
     }
 }

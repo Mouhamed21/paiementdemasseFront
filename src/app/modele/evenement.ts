@@ -8,3 +8,4 @@ export class Evenement {
         public status?: string
     ) { }
 }
+

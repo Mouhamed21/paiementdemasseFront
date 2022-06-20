@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import {ClasseService} from "../../service/classe.service";
-import {ConfirmationService, MessageService} from "primeng/api";
+import {ConfirmationService, MessageService, SelectItem} from "primeng/api";
 import {ChargefichierService} from "../../service/chargefichier/chargefichier.service";
 import {Router} from "@angular/router";
 import {Fichier} from "../../modele/fichier";
 import {Subject} from "rxjs";
 import {UserServiceService} from "../../service/userService/user-service.service";
 import {KeycloakService} from "keycloak-angular";
+import {Evenement} from "../../modele/evenement";
+import {EvenementService} from "../../service/evenementService/evenement.service";
+import {Statut} from "../../modele/statut";
+import {StatutService} from "../../service/statut.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-chargemet-fichier',
@@ -38,17 +43,67 @@ export class ChargemetFichierComponent implements OnInit {
     id:number;
     user:any;
     valSwitch:boolean;
+    evenements: any;
+    evenementFK: Evenement;
+    statuts: any;
+    statutFK: Statut;
+    uploadForm: FormGroup;
+
+
+
   constructor(private chargefichierService: ChargefichierService, private router: Router,
               private messageService: MessageService, private confirmationService: ConfirmationService,private userService: UserServiceService,
-              public keycloak: KeycloakService) {
+              public keycloak: KeycloakService, private evenementService: EvenementService,
+              private statutService: StatutService, private formBuilder: FormBuilder) {
   }
-
-
 
   ngOnInit(): void {
     this.getAllFichier();
+    this.getEvenementsEnCours();
+    this.getStatuts();
 
+    this.uploadForm = this.formBuilder.group({
+        evenement: ['', Validators.required],
+        statut: ['', Validators.required],
+        myFile: ['', Validators.required]
+    });
   }
+
+    onFileSelect(event: any) {
+        if (event.target.files.length > 0) {
+            const file = event.target.files[0];
+            // @ts-ignore
+            this.uploadForm.get('myFile').setValue(file);
+        }
+    }
+
+  public getEvenementsEnCours(){
+      return this.evenementService.getEvenementsEnCours().subscribe(data => {
+          this.evenements = data;
+          //console.log(data)
+      }, err => {
+          console.log(err);
+      });
+  }
+
+    getEvenement(evenement:Evenement){
+        this.evenementFK = JSON.parse(JSON.stringify(evenement));
+        console.log(this.evenementFK);
+    }
+
+    getStatuts(){
+      return this.statutService.getStatuts().subscribe(data => {
+          this.statuts = data;
+          console.log(data)
+      }, err => {
+          console.log(err);
+      });
+    }
+
+    getStatut(statut:Statut){
+        this.statutFK = JSON.parse(JSON.stringify(statut));
+        console.log(this.statutFK);
+    }
 
     public getAllFichier(){
         return this.chargefichierService.getAllFichier().subscribe((data) =>
@@ -94,7 +149,8 @@ export class ChargemetFichierComponent implements OnInit {
     getDetailFichier(fichier: Fichier) {
         this.fichier = {...fichier};
         this.detailDialog = true;
-        this.id = this.fichier.idUserChargement;
+        //this.id = this.fichier.idUserChargement;
+        //console.log("id : "+this.id);
         this.getUserChargement(this.fichier.idUserChargement);
     }
 
@@ -102,7 +158,7 @@ export class ChargemetFichierComponent implements OnInit {
     {
         return this.userService.getUserById(id).subscribe(res =>
         {
-            console.log(res);
+            //console.log(res);
             this.user  = res;
         })
     }
@@ -123,11 +179,20 @@ export class ChargemetFichierComponent implements OnInit {
 
     }
 
-        saveFile() {
+    saveFile() {
+        const formData = new FormData();
+        // @ts-ignore
+        formData.append('file', this.uploadForm.get('myFile').value);
+        // @ts-ignore
+        formData.append('evenement', this.uploadForm.get('evenement').value);
+        // @ts-ignore
+        formData.append('statut', this.uploadForm.get('statut').value);
 
-    }
-
-    deleteSelectedFichier() {
-
+        this.chargefichierService.saveBeneficiaire(formData)
+            .subscribe(response => {
+                const that = this;
+            }, err => {
+                console.log(err);
+            });
     }
 }

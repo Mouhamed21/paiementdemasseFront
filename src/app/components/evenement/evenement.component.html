@@ -71,10 +71,10 @@
     <ng-template pTemplate="content">
 
         <div class="formgrid grid">
-                <div class="field col">
-                    <label for="dateCreation">Annee Campagne</label>
-                    <input type="text" pInputText id="dateCreation"  [(ngModel)]="evenement.anneeCampagne" required autofocus />
-                    <small class="p-error" *ngIf="submitted && !evenement.anneeCampagne">annee de Campagne est obligatoire.</small>
+            <div class="field col">
+                <label for="dateCreation">Annee Campagne</label>
+                <input type="text" pInputText id="dateCreation"  [(ngModel)]="evenement.anneeCampagne" required autofocus />
+                <small class="p-error" *ngIf="submitted && !evenement.anneeCampagne">annee de Campagne est obligatoire.</small>
             </div>
             <div class="field col">
                 <label for="dateCloture">Date Clôture</label>
@@ -115,7 +115,7 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="dateCreation">Annee Campagne</label>
-                <input type="text" pInputText id="dateCreation"  [(ngModel)]="evenement.anneeCampagne" required autofocus />
+                <input type="text" pInputText id="dateCreation" [(ngModel)]="evenement.anneeCampagne" required autofocus />
                 <small class="p-error" *ngIf="submitted && !evenement.anneeCampagne">annee de Campagne est obligatoire.</small>
             </div>
             <div class="field col">
