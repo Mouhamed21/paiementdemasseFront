@@ -1,7 +1,7 @@
 import {Evenement} from './evenement';
 import {Statut} from './statut';
 
-export interface Beneficiaire {
+export class Beneficiaire {
     id: number ;
     numPension: string ;
     civilite: string ;
@@ -22,4 +22,5 @@ export interface Beneficiaire {
     telephone: string ;
     evenement?:Evenement;
     status?: Statut ;
+    detailBeneficiaires
 }

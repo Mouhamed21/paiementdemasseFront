@@ -30,7 +30,7 @@ export class ChargemetFichierComponent implements OnInit {
 
     fichiers: any;
 
-    fichier: Fichier
+    fichier: Fichier = new Fichier()
     submitted: boolean;
     classeDialog: boolean;
     detailDialog: boolean;
@@ -118,7 +118,7 @@ export class ChargemetFichierComponent implements OnInit {
     }
 
     openNew() {
-        this.fichier = {};
+        // this.fichier = {};
         this.submitted = false;
         this.classeDialog = true;
     }

@@ -1,0 +1,168 @@
+<div class="card">
+    <h5>Rechercher un bénéficiaire</h5>
+
+
+    <p-toolbar styleClass="mb-5">
+    <div class="col-12 md:col-6">
+        <div class="p-inputgroup">
+            <input type="text" pInputText placeholder="Taper le numéro de pension" cols="40" [(ngModel)]="numPensionArechercher">
+            <button type="button" (click)="displayResults=false" pButton pRipple label="Search" (click)="getBeneficiaireByNumPension(numPensionArechercher)"></button>
+        </div>
+    </div>
+        </p-toolbar>
+</div>
+
+
+<!--<div class="col-12" >-->
+    <div class="card" [hidden]="displayResults">
+<!--        <div class="card">-->
+            <h5>Résultat</h5>
+            <p-tabView orientation="center" [(activeIndex)]="activeIndex1">
+                <p-tabPanel header="INFOS" class="line-height-3 m-0">
+<!--                    <div class="card" styleClass="mb-5">-->
+                        <h5>Advanced</h5>
+                        <div class="p-fluid p-formgrid grid">
+                            <div class="field col-12 md:col-6">
+                                <label htmlFor="firstname2">Nom du bénéficiaire</label>
+                                <input pInputText id="firstname2" value="{{beneficiaireByNumPension.nomPrenom}}" disabled style="color :black" type="text" />
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label htmlFor="lastname2">Numéro Pension</label>
+                                <input pInputText id="lastname2" value="{{beneficiaireByNumPension.numPension}}" disabled style="color :black" type="text" />
+                            </div>
+                            <div class="field col-12 md:col-6" >
+                                <label htmlFor="address">Addresse</label>
+                                <input pInputTextarea id="address" value="{{beneficiaireByNumPension.adresse}}" disabled style="color :black" rows="4" />
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label htmlFor="zip">nationalite</label>
+                                <input pInputText id="nationalite" value="{{beneficiaireByNumPension.nationalite}}" disabled style="color :black" type="text" />
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label htmlFor="zip">telephone</label>
+                                <input pInputText id="telephone" value="{{beneficiaireByNumPension.telephone}}" [(ngModel)]="beneficiaireByNumPension.telephone" style="color :black" type="text" />
+                            </div>
+
+                            <div class="field col-12 md:col-6"></div>
+
+                            <div class="field col-12 md:col-6">
+                                <label htmlFor="zip">typePiece</label>
+                                <input pInputText id="typePiece" value="{{beneficiaireByNumPension.typePiece}}" [(ngModel)]="beneficiaireByNumPension.typePiece" style="color :black" type="text" />
+<!--                                <input pInputText *ngIf="!beneficiaireByNumPension.typePiece" id="typePiece1" [(ngModel)]="beneficiaireByNumPension.typePiece"  style="color :black" type="text" />-->
+                            </div>
+
+                            <div class="field col-12 md:col-6">
+                                <label htmlFor="zip">numPiece</label>
+                                <input pInputText id="numPiece" value="{{beneficiaireByNumPension.numPiece}}" [(ngModel)]="beneficiaireByNumPension.numPiece" style="color :black" type="text" />
+                            </div>
+
+
+                            <div class="field col-12 md:col-6">
+                                <label htmlFor="zip">dateExpirationPiece</label>
+                                <input pInputText id="dateExpirationPiece" value="{{beneficiaireByNumPension.dateExpirationPiece}}" [(ngModel)]="beneficiaireByNumPension.dateExpirationPiece" style="color :black" type="text" />
+                            </div>
+
+                        </div>
+<!--                    </div>-->
+<!--                    <p-button (click)="activeIndex1 = 0" styleClass="p-button-text" label="Activate 1rd"></p-button>-->
+<!--                    <p-button (click)="activeIndex1 = 1" styleClass="p-button-text" label="CONFIRMER" style="{'margin-left': '.5em'}"></p-button>-->
+                    <div style="text-align:center">
+                    <button style="text-align:center" pButton pRipple type="button" (click)="activeIndex1 = 1;updateBeneficiaire()" label="CONFIRMER" class="p-button-raised p-button-info mr-2 mb-2"></button>
+                    </div>
+
+
+
+
+                </p-tabPanel>
+
+                <p-tabPanel header="EVENEMENTS" class="line-height-3 m-0" [disabled]="true">
+                    <p-table [value]="beneficiaireByNumPension.detailBeneficiaires" responsiveLayout="scroll">
+                        <ng-template pTemplate="caption">
+                            <div class="flex align-items-center justify-content-between">
+                                Evenements
+                                <p-button icon="pi pi-refresh"></p-button>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>dateCreation</th>
+                                <th>moisCampagne</th>
+                                <th>anneeCampagne</th>
+                                <th>dateCloture</th>
+                                <th>status Evenement</th>
+<!--                                <th>Montant</th>-->
+<!--                                <th>Statut Beneficiaire</th>-->
+                                <th></th>
+                                <!--                        <th>Status</th>-->
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-details>
+                            <tr>
+                                <td>{{details.fichier.evenement.dateCreation | date:'dd/MM/yy'}}</td> <!-- | date:'M/d/yy'-->
+                                <td>{{details.fichier.evenement.moisCampagne}}</td>
+                                <td>{{details.fichier.evenement.anneeCampagne}}</td>
+                                <td>{{details.fichier.evenement.dateCloture | date:'dd/MM/yy'}}</td>
+                                <td>{{details.fichier.evenement.status}}</td>
+<!--                                <td>{{details.montant}}</td>-->
+<!--                                <td>{{details.statut.libelle}}</td>-->
+<!--                                <td><p-button  styleClass="p-button-text" label="Activate 3rd" style="{'margin-left': '.5em'}"></p-button></td>-->
+                                <button pButton pRipple type="button" label="Choisir" (click)="choix(details)"  (click)="activeIndex1 = 2"  class="p-button-raised mr-2 mb-2"></button>
+
+
+                                <!--              g          <td><p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating></td>-->
+                                <!--                        <td><span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span></td>-->
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary">
+                            <div class="flex align-items-center justify-content-between">
+                                In total there are {{beneficiaireByNumPension.detailBeneficiaires ? beneficiaireByNumPension.detailBeneficiaires.length : 0 }} results
+                            </div>
+                        </ng-template>
+                    </p-table>
+                    <p-button (click)="activeIndex1 = 2" styleClass="p-button-text" label="Activate 3rd" style="{'margin-left': '.5em'}"></p-button>
+
+                </p-tabPanel>
+
+                <p-tabPanel header="PAIEMENT" [disabled]="true" class="line-height-3 m-0">
+<!--                    <ng-template pTemplate="infos"></ng-template>-->
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="firstname2">Montant</label>
+                            <input pInputText  value="{{detailBeneficiaireChoisi.montant}}" disabled style="color :black" type="text" />
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="lastname2">Statut</label>
+                            <input pInputText  value="{{detailBeneficiaireChoisi.statut.libelle}}" disabled style="color :black" type="text" />
+                        </div>
+                    </div>
+
+                    <div style="text-align:center" *ngIf="detailBeneficiaireChoisi.paye">
+
+                        <button style="text-align:center" pButton pRipple type="button"  label="PAYER" (click)="displayDialog=true;verificationPaiement()" class="p-button-raised p-button-info mr-2 mb-2"></button>
+                    </div>
+                    <p-dialog header="Confirmer le paiement" [(visible)]="displayDialog" modal="modal" showEffect="fade" [style]="{width: '30vw'}" [breakpoints]="{'960px': '75vw'}">
+                        <p>Nom : {{beneficiaireByNumPension.nomPrenom}}</p>
+                        <p>Num Pension : {{beneficiaireByNumPension.numPension}}</p>
+                        <p>Type Pièce : {{beneficiaireByNumPension.typePiece}}</p>
+                        <p>Num Pièce : {{beneficiaireByNumPension.numPiece}}</p>
+                        <p>Evenenement : {{detailBeneficiaireChoisi.fichier.evenement.moisCampagne}} {{detailBeneficiaireChoisi.fichier.evenement.anneeCampagne}}</p>
+                        <p>Montant : {{detailBeneficiaireChoisi.montant}}</p>
+                        <ng-template pTemplate="footer">
+<!--                            <p *ngIf="!existenceCaisse">VOUS NE POSSEDEZ PAS DE CAISSE</p>-->
+                            <p-message *ngIf="!existenceCaisse" severity="error" text="VOUS NE POSSEDEZ PAS DE CAISSE"></p-message>
+                            <button *ngIf="existenceCaisse" pButton icon="pi pi-check" (click)="displayDialog=false;savePaiement()" label="Ok" class="p-button-outlined"></button>
+
+                        </ng-template>
+                    </p-dialog>
+
+                </p-tabPanel>
+
+            </p-tabView>
+<!--        </div>-->
+
+
+
+    </div>
+<!--</div>-->
+
+

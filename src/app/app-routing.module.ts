@@ -37,6 +37,7 @@ import {ChargemetFichierComponent} from "./components/chargemet-fichier/chargeme
 import {EvenementComponent} from "./components/evenement/evenement.component";
 import {AuthGuard} from "./components/keycloack/auth.guard";
 import {FichierCertifieComponent} from "./components/fichier-certifie/fichier-certifie.component";
+import { PaiementComponent } from './components/paiement/paiement.component';
 // @ts-ignore
 @NgModule({
     imports: [
@@ -76,6 +77,8 @@ import {FichierCertifieComponent} from "./components/fichier-certifie/fichier-ce
                     {path: 'pmenim/evenement', component: EvenementComponent},
                     {path: 'pmenim/chargefichier', component: ChargemetFichierComponent},
                     {path: 'pmenim/fichiersCertifier', component: FichierCertifieComponent},
+                    {path: 'pmenim/paiement', component: PaiementComponent}
+
 
                 ],
             },

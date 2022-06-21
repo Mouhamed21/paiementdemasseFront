@@ -1,4 +1,5 @@
 import {Statut} from "./statut";
+import { Evenement } from './evenement';
 
 export class Fichier {
     constructor(
@@ -9,7 +10,7 @@ export class Fichier {
         public dateChargement?: Date,
         public idUserChargement?: number,
         public statut?: Statut,
-        public evenement?: any
+        public evenement: Evenement = new Evenement()
     ) {
     }
 }
