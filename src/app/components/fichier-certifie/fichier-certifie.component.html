@@ -88,7 +88,7 @@
 
 <p-dialog [(visible)]="detailDialog" [style]="{width: '800px'}" header="Détail fichier" [closable]="false" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
-        <h4 style="text-align: center">chargé par <b>{{ user.prenom }} {{ user.nom }}</b></h4>
+        <h4 style="text-align: center" *ngIf="user">chargé par <b>{{ user.prenom }} {{ user.nom }}</b></h4>
         <br>
         <div class="global">
             <table class="tableaugauche">
@@ -145,7 +145,7 @@
 
                 </tr>
             </table>
-            <table class="tableaudroite">
+            <table class="tableaudroite" *ngIf="user">
 
 
                 <tr>

@@ -198,4 +198,5 @@ export class ChargemetFichierComponent implements OnInit {
                 console.log(err);
             });
     }
+
 }

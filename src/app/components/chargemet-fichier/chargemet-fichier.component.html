@@ -4,14 +4,9 @@
     <h5>Gestion Des Fichiers</h5>
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="Nouvelle" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-            <button pButton pRipple label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedFichier()" [disabled]="!selectedClasses || !selectedClasses.length"></button>
+            <button pButton pRipple label="Charger un fichier" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
         </ng-template>
 
-        <ng-template pTemplate="right">
-            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
-        </ng-template>
     </p-toolbar>
     <p-table  #dt [value]="fichiers" [paginator]="true" [rows]="10"  [globalFilterFields]="['montantGlobal','evenement','dateChargement']" responsiveLayout="scroll"
               [(selection)]="selectedClasses" [rowHover]="true" dataKey="id"
@@ -74,7 +69,7 @@
                 <h5>Evénement</h5>
                 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" >
                     <option selected>Choisir un événement</option>
-                    <option *ngFor="let evenement of evenements" [value]="evenement.id">
+                    <option *ngFor="let evenement of evenements" [value]="evenement.id" (click)="getEvenement(evenement)">
                         {{evenement.moisCampagne}} - {{evenement.anneeCampagne}}
                     </option>
                 </select>
@@ -83,7 +78,7 @@
                 <h5>Statut</h5>
                 <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" >
                     <option selected>Choisir un statut</option>
-                    <option *ngFor="let statut of statuts" [value]="statut.id">
+                    <option *ngFor="let statut of statuts" [value]="statut.id" (click)="getStatut(statut)">
                         {{statut.libelle}}
                     </option>
                 </select>
@@ -107,7 +102,7 @@
 
 <p-dialog [(visible)]="detailDialog" [style]="{width: '800px'}" header="Détail fichier" [closable]="false" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
-        <h4 style="text-align: center">chargé par <b>{{ user.prenom }} {{ user.nom }}</b></h4>
+        <h4  *ngIf="user" style="text-align: center">chargé par <b>{{ user.prenom }} {{ user.nom }}</b></h4>
         <br>
         <div class="global">
             <table class="tableaugauche">
@@ -160,7 +155,7 @@
 
                 </tr>
             </table>
-            <table class="tableaudroite">
+            <table class="tableaudroite"  *ngIf="user">
                 <tr>
                     <td>
                         <a class="gauche">Prenom:</a>
