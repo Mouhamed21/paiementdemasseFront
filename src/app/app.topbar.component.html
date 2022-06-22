@@ -24,11 +24,16 @@
         </a>-->
 
        <div>
-           <p-badge style="margin-right:15px " value="{{user.dg_structure.libelle}}" size="large" severity="info"></p-badge>
+           <p-badge class="structure" value="{{user.dg_structure.libelle}}" size="large" severity="info"></p-badge>
 
        </div>
         <div>
-            <p-badge value="{{users.firstName}} {{ users.lastName}}" size="large" severity="info"></p-badge>
+            <p-badge class="user"  value="{{users.firstName}} {{ users.lastName}}" size="large" severity="info"></p-badge>
+
+       </div>
+        <div>
+            <button (click)="deconnexion()" pButton type="button" label="Deconnexion" class="p-button-danger"></button>
+
 
         </div>
 

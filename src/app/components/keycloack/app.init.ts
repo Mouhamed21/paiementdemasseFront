@@ -4,8 +4,8 @@ export  function  initializeKeycloak(keycloak: KeycloakService): () => Promise<a
     return () =>
         keycloak.init({
             config: {
-                url:"http://10.14.14.232:8180/auth/",
-                //url:"http://localhost:9191/auth",
+                //url:"http://10.14.14.232:8180/auth/",
+               url:"http://localhost:8080/auth",
   realm:"Digital-Poste",
   clientId:"paiementDeMasse-ui",
             } ,

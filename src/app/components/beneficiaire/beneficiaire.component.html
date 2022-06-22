@@ -1,0 +1,243 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <h5>Gestion Des Bénéficiaires</h5>
+
+    <p-table  #dt [value]="beneficiaires" [paginator]="true" [rows]="10"  [globalFilterFields]="['montantGlobal','evenement','dateChargement']" responsiveLayout="scroll"
+              [rowHover]="true" dataKey="id"
+              [rowsPerPageOptions]="[10,25,50]">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 class="m-0">Liste des Bénéficiaires</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Recherche..." />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="evenement"> Nom et Prenom <p-sortIcon field="evenement"></p-sortIcon></th>
+                <th pSortableColumn="numPension">Numéro Pension <p-sortIcon field="numPension"></p-sortIcon></th>
+                <th pSortableColumn="civilite">Civilite <p-sortIcon field="civilite"></p-sortIcon></th>
+                <th pSortableColumn="adresse"> Adresse <p-sortIcon field="adresse"></p-sortIcon></th>
+                <th pSortableColumn="codePostal"> Code Postal <p-sortIcon field="codePostal"></p-sortIcon></th>
+                <th>Actions</th>
+
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-beneficiaire>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="beneficiaire"></p-tableCheckbox>
+                </td>
+                <td>{{beneficiaire.nomPrenom}}</td>
+                <td>{{beneficiaire.numPension}}</td>
+                <td>{{beneficiaire.civilite}}</td>
+                <td>{{beneficiaire.adresse}}</td>
+                <td>{{beneficiaire.codePostal}}</td>
+
+                <td>
+                    <button pButton pRipple icon="pi pi-bookmark-fill" class="p-button-rounded p-button-primary" (click)="getDetailBeneficiaire(beneficiaire)"  pTooltip="Détails" ></button>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+        </ng-template>
+        <ng-template pTemplate="paginatorright">
+            <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+        </ng-template>
+    </p-table>
+
+</div>
+
+<p-dialog [(visible)]="detailDialog" [style]="{width: '800px'}" header="Détail Bénéficiaire" [closable]="false" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+
+        <br>
+        <div class="global">
+            <table class="tableaugauche">
+                <tr>
+                    <td>
+                        <a class="gauche">Nom & Prenom:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite" value="{{beneficiaire.nomPrenom}}" size="large" severity="info"></p-badge>
+                    </td>
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Numero de Pension:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{beneficiaire.numPension}}" size="large" severity="info"></p-badge>
+                    </td>
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Civilité:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{beneficiaire.civilite}}" size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Adresse:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{beneficiaire.adresse}}" size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Code Postal:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite" value="{{beneficiaire.codePostal}}" size="large" severity="info"></p-badge>
+
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Numero Piece:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite" value="{{beneficiaire.numPiece}}" size="large" severity="info"></p-badge>
+
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Type Piece:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite" value="{{beneficiaire.typePiece}}" size="large" severity="info"></p-badge>
+
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Nationalité:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite" value="{{beneficiaire.nationalite}}" size="large" severity="info"></p-badge>
+
+                    </td>
+
+                </tr>
+            </table>
+            <table class="tableaudroite">
+                <tr>
+                    <td>
+                        <a class="gauche">Adresse Complementaire:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{beneficiaire.adresseComplementaire}} " size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Commune:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{beneficiaire.commune}}" size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Date de Naissance:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{beneficiaire.dateNaissance  | date: 'dd/MM/yyyy'}}" size="large" severity="info"></p-badge>
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Date d'enregistrement:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{beneficiaire.dateChargement | date: 'dd/MM/yyyy' }}" size="large" severity="info"></p-badge>
+                    </td>
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Téléphone:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite"  value="{{beneficiaire.telephone }}" size="large" severity="info"></p-badge>
+                    </td>
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Date Délivrance Piece:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite" value="{{beneficiaire.dateDelivrancePiece | date: 'dd/MM/yyyy'}}" size="large" severity="info"></p-badge>
+
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Date d'expiration piece:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite" value="{{beneficiaire.dateExpirationPiece | date: 'dd/MM/yyyy'}}" size="large" severity="info"></p-badge>
+
+                    </td>
+
+                </tr>
+                <br>
+                <tr>
+                    <td>
+                        <a class="gauche">Fichier:</a>
+                    </td>
+                    <td>
+                        <p-badge class="droite" value="{{beneficiaire.fileName}}" size="large" severity="info"></p-badge>
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+    </ng-template>
+    <div class="espace">
+
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Fermer" icon="pi pi-times" class="p-button-text" (click)="hideDetailFichierDialog()"></button>
+
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

@@ -7,7 +7,8 @@ import {UserServiceService} from "./service/userService/user-service.service";
 
 @Component({
     selector: 'app-topbar',
-    templateUrl: './app.topbar.component.html'
+    templateUrl: './app.topbar.component.html',
+    styleUrls: ['./app.topbar.component.scss'],
 })
 export class AppTopBarComponent {
     user : any;
@@ -34,5 +35,10 @@ export class AppTopBarComponent {
             console.log(data);
             this.user = data;
         })
+    }
+    public deconnexion()
+    {
+        console.log("fggh");
+        return this.keycloak.logout();
     }
 }
