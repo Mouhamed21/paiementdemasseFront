@@ -40,7 +40,6 @@ export class FichierCertifieComponent implements OnInit {
 
     ngOnInit(): void {
         this.getAllFichierCertifier();
-
     }
 
     public getAllFichierCertifier(){
