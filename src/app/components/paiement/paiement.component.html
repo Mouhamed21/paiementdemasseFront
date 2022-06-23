@@ -35,33 +35,33 @@
                                 <input pInputTextarea id="address" value="{{beneficiaireByNumPension.adresse}}" disabled style="color :black" rows="4" />
                             </div>
                             <div class="field col-12 md:col-6">
-                                <label htmlFor="zip">nationalite</label>
+                                <label htmlFor="zip">Nationalite</label>
                                 <input pInputText id="nationalite" value="{{beneficiaireByNumPension.nationalite}}" disabled style="color :black" type="text" />
                             </div>
                             <div class="field col-12 md:col-6">
-                                <label htmlFor="zip">telephone</label>
+                                <label htmlFor="zip">Téléphone</label>
                                 <input pInputText id="telephone" value="{{beneficiaireByNumPension.telephone}}" [(ngModel)]="beneficiaireByNumPension.telephone" style="color :black" type="text" />
                             </div>
 
                             <div class="field col-12 md:col-6"></div>
 
                             <div class="field col-12 md:col-6">
-                                <label htmlFor="zip">typePiece</label>
-                                <input pInputText id="typePiece" value="{{beneficiaireByNumPension.typePiece}}" [(ngModel)]="beneficiaireByNumPension.typePiece" style="color :black" type="text" />
-<!--                                <input pInputText *ngIf="!beneficiaireByNumPension.typePiece" id="typePiece1" [(ngModel)]="beneficiaireByNumPension.typePiece"  style="color :black" type="text" />-->
+                                <label htmlFor="zip">Type Piece</label>
+<!--                                <input pInputText id="typePiece" *ngIf="!beneficiaireByNumPension.typePiece" value="{{beneficiaireByNumPension.typePiece}} id="typePiece1"  style="color :black" type="text" />-->
+                                <p-dropdown id="typePiece2" [options]="typesDePieces" [(ngModel)]="beneficiaireByNumPension.typePiece" placeholder=""  [showClear]="true"></p-dropdown>
+
                             </div>
 
                             <div class="field col-12 md:col-6">
-                                <label htmlFor="zip">numPiece</label>
+                                <label htmlFor="zip">Numéro Piece</label>
                                 <input pInputText id="numPiece" value="{{beneficiaireByNumPension.numPiece}}" [(ngModel)]="beneficiaireByNumPension.numPiece" style="color :black" type="text" />
                             </div>
 
 
                             <div class="field col-12 md:col-6">
-                                <label htmlFor="zip">dateExpirationPiece</label>
+                                <label htmlFor="zip">Date d'expiration Piece</label>
                                 <input pInputText id="dateExpirationPiece" value="{{beneficiaireByNumPension.dateExpirationPiece}}" [(ngModel)]="beneficiaireByNumPension.dateExpirationPiece" style="color :black" type="text" />
                             </div>
-
                         </div>
 <!--                    </div>-->
 <!--                    <p-button (click)="activeIndex1 = 0" styleClass="p-button-text" label="Activate 1rd"></p-button>-->
@@ -97,7 +97,7 @@
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-details>
-                            <tr>
+                            <tr *ngIf="!details.paye">
                                 <td>{{details.fichier.evenement.dateCreation | date:'dd/MM/yy'}}</td> <!-- | date:'M/d/yy'-->
                                 <td>{{details.fichier.evenement.moisCampagne}}</td>
                                 <td>{{details.fichier.evenement.anneeCampagne}}</td>
@@ -113,13 +113,13 @@
                                 <!--                        <td><span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span></td>-->
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="summary">
-                            <div class="flex align-items-center justify-content-between">
-                                In total there are {{beneficiaireByNumPension.detailBeneficiaires ? beneficiaireByNumPension.detailBeneficiaires.length : 0 }} results
-                            </div>
-                        </ng-template>
+<!--                        <ng-template pTemplate="summary">-->
+<!--                            <div class="flex align-items-center justify-content-between">-->
+<!--                                In total there are {{beneficiaireByNumPension.detailBeneficiaires ? beneficiaireByNumPension.detailBeneficiaires.length : 0 }} results-->
+<!--                            </div>-->
+<!--                        </ng-template>-->
                     </p-table>
-                    <p-button (click)="activeIndex1 = 2" styleClass="p-button-text" label="Activate 3rd" style="{'margin-left': '.5em'}"></p-button>
+<!--                    <p-button (click)="activeIndex1 = 2" styleClass="p-button-text" label="Activate 3rd" style="{'margin-left': '.5em'}"></p-button>-->
 
                 </p-tabPanel>
 
@@ -134,10 +134,14 @@
                             <label htmlFor="lastname2">Statut</label>
                             <input pInputText  value="{{detailBeneficiaireChoisi.statut.libelle}}" disabled style="color :black" type="text" />
                         </div>
+
+<!--                        <div class="field col-12 md:col-6">-->
+<!--&lt;!&ndash;                            <label htmlFor="lastname2">Statut</label>&ndash;&gt;-->
+<!--                            <p-dropdown [options]="listeDesStatuts" [(ngModel)]="statutSelected" placeholder="Select a City" optionLabel="libelle" [showClear]="true"></p-dropdown>-->
+<!--                        </div>-->
                     </div>
 
-                    <div style="text-align:center" *ngIf="detailBeneficiaireChoisi.paye">
-
+                    <div style="text-align:center" *ngIf="!detailBeneficiaireChoisi.paye">
                         <button style="text-align:center" pButton pRipple type="button"  label="PAYER" (click)="displayDialog=true;verificationPaiement()" class="p-button-raised p-button-info mr-2 mb-2"></button>
                     </div>
                     <p-dialog header="Confirmer le paiement" [(visible)]="displayDialog" modal="modal" showEffect="fade" [style]="{width: '30vw'}" [breakpoints]="{'960px': '75vw'}">
@@ -164,5 +168,9 @@
 
     </div>
 <!--</div>-->
+
+
+<!--<p-dropdown [options]="listeDesStatuts" [(ngModel)]="statutSelected" placeholder="Select a City" optionLabel="libelle" [showClear]="true"></p-dropdown>
+-->
 
 
