@@ -12,7 +12,9 @@ import {EvenementService} from "../../service/evenementService/evenement.service
 import {Statut} from "../../modele/statut";
 import {StatutService} from "../../service/statut.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-
+import * as xlsx from 'xlsx';
+import {Beneficiaire} from "../../modele/beneficiaire";
+import {BeneficiaireService} from "../../service/beneficiaire.service";
 @Component({
   selector: 'app-chargemet-fichier',
   templateUrl: './chargemet-fichier.component.html',
@@ -29,7 +31,11 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class ChargemetFichierComponent implements OnInit {
 
     fichiers: any;
-
+    worksheet: any;
+    filelist: any;
+    wb: xlsx.WorkBook;
+    ws: any[];
+    file: any;
     fichier: Fichier = new Fichier()
     submitted: boolean;
     classeDialog: boolean;
@@ -41,6 +47,7 @@ export class ChargemetFichierComponent implements OnInit {
     first = 0;
     rows = 10;
     id:number;
+    cpt:number;
     user:any;
     valSwitch:boolean;
     evenements: any;
@@ -48,13 +55,16 @@ export class ChargemetFichierComponent implements OnInit {
     statuts: any;
     statutFK: Statut;
     uploadForm: FormGroup;
+    beneficiaire: Beneficiaire = new Beneficiaire();
+    beneficiair: any[];
 
 
 
   constructor(private chargefichierService: ChargefichierService, private router: Router,
               private messageService: MessageService, private confirmationService: ConfirmationService,private userService: UserServiceService,
               public keycloak: KeycloakService, private evenementService: EvenementService,
-              private statutService: StatutService, private formBuilder: FormBuilder) {
+              private statutService: StatutService, private formBuilder: FormBuilder,
+              private beneficiaireService: BeneficiaireService) {
   }
 
 
@@ -80,7 +90,65 @@ export class ChargemetFichierComponent implements OnInit {
         }
     }
 
-  public getEvenementsEnCours(){
+    onFileChange(evt: any) {
+
+        /* wire up file reader */
+        const target: DataTransfer = <DataTransfer>(evt.target);
+        console.log(target.files);
+        if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+        const reader: FileReader = new FileReader();
+        reader.onload = (e: any) => {
+            /* read workbook */
+            let bstr = e.target.result;
+            this.wb = xlsx.read(bstr, {type: 'binary'});
+
+            /* grab first sheet */
+            this.wb.SheetNames.forEach(ele => {
+                this.ws = xlsx.utils.sheet_to_json(this.wb.Sheets[ele])
+                console.log(this.ws);
+            });
+            for (let index = 0; index < this.ws.length; index++) {
+
+                    this.ws[index];
+                    console.log(this.ws[index]);
+
+                    //this.saveBeneficiaire(this.ws[index]);
+
+            }
+            //this.calculemontant(this.ws)
+            //console.log(this.ws);
+            console.log(this.ws.length);
+            for (let i= 0; i<this.ws.length; i++)
+            {
+                this.beneficiaire.nomPrenom = this.ws[i].NomEtatCivilPrenoms;
+                this.beneficiaire.adresse = this.ws[i].Adresse;
+                this.beneficiaire.adresseComplementaire = this.ws[i].AdresseComplementaire;
+                this.beneficiaire.commune = this.ws[i].Commune;
+                this.beneficiaire.civilite = this.ws[i].Civilité;
+                this.beneficiaire.codePostal = this.ws[i].CodePostal;
+                this.beneficiaire.numPension = this.ws[i].NumPension;
+                this.beneficiaire.telephone = this.ws[i].Telephone;
+                //this.beneficiaire.dateChargement = new Date();
+                console.log(this.beneficiaire);
+                this.saveBeneficiaire(this.beneficiaire);
+                console.log('save');
+               // this.beneficiaire.fileName = this.ws[i].FileName;
+            }
+
+
+        };
+        reader.readAsBinaryString(target.files[0]);
+    }
+    saveBeneficiaire(beneficiaire:Beneficiaire)
+    {
+        //console.log(this.beneficiaire);
+        this.beneficiaireService.saveBeneficiaire(beneficiaire).subscribe(data =>
+        {
+            console.log(data);
+        })
+    }
+
+    public getEvenementsEnCours(){
       return this.evenementService.getEvenementsEnCours().subscribe(data => {
           this.evenements = data;
           //console.log(data)

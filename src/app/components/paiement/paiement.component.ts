@@ -80,9 +80,9 @@ export class PaiementComponent implements OnInit {
     }
 
     updateBeneficiaire(){
-        // this.beneficiaireByNumPension.typePiece = this.typePieceSelected
+
         console.log(this.beneficiaireByNumPension)
-        // this.beneficiaireService.updateBeneficiaire(this.beneficiaireByNumPension.id,this.beneficiaireByNumPension).subscribe(res=>{
+        // this.beneficiaireService.updateBeneficiaire(this.beneficiaireByNumPension.id).subscribe(res=>{
         //     console.log(res)
         // })
     }
@@ -110,9 +110,9 @@ export class PaiementComponent implements OnInit {
         console.log("OKKKK")
 
         console.log(this.paiement)
-        //     this.paiementService.savePaiement(this.paiement).subscribe(res=>{
-        //     console.log(res)
-        // })
+/*            this.paiementService.savePaiement(this.paiement).subscribe(res=>{
+            console.log(res)
+        })*/
     }
 
      getUserByEmail(email){

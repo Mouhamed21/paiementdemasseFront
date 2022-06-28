@@ -7,10 +7,11 @@ import {KeycloakService} from "keycloak-angular";
 import {EvenementService} from "../../service/evenementService/evenement.service";
 import {StatutService} from "../../service/statut.service";
 import {FormBuilder} from "@angular/forms";
-import {BeneficiaireService} from "../../service/BeneFiciaire/beneficiaireService";
+
 import {ClasseService} from "../../service/classe.service";
 import {Beneficiaire} from "../../modele/beneficiaire";
 import {Fichier} from "../../modele/fichier";
+import {BeneficiaireService} from "../../service/beneficiaire.service";
 
 @Component({
   selector: 'app-beneficiaire',

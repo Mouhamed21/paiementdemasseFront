@@ -63,7 +63,7 @@
 
 </div>
 
-<p-dialog [(visible)]="classeDialog" [style]="{width: '450px'}" header="Ajout d'une Classe" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="classeDialog" [style]="{width: '450px'}" header="Charger un fichier" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content" [formGroup] = "uploadForm">
         <div class="p-field p-col" formControlName="evenement">
                 <h5>Evénement</h5>
@@ -85,7 +85,7 @@
         </div>
         <div class="p-field p-col" formControlName="myFile">
                 <h5>Fichier</h5>
-                <input (change)="onFileSelect($event)" class="form-control form-control-lg" id="formFileLg" type="file">
+                <input  (change)="onFileChange($event)" class="form-control form-control-lg" id="formFileLg" type="file">
         </div>
             <!--<label for="montantGlobal">Montant Global</label>
             <input type="text" pInputText id="montantGlobal"  [(ngModel)]="fichier.montantGlobal" required autofocus />
@@ -97,6 +97,7 @@
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text p-button-danger" (click)="hideDialog()"></button>
         <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="saveFile()" ></button>
+        <button pButton pRipple label="Upload" icon="pi pi-check" class="p-button-text" (click)="saveBeneficiaire(beneficiaire)" ></button>
     </ng-template>
 </p-dialog>
 

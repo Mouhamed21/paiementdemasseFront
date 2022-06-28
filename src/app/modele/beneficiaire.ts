@@ -11,7 +11,7 @@ export class Beneficiaire {
     codePostal: string ;
     commune: string ;
     montantCFA: number ;
-    dateChargement: string ;
+    dateChargement: Date ;
     fileName: string ;
     nationalite: string;
     typePiece: string ;
