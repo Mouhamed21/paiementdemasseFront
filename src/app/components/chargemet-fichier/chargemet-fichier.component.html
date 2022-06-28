@@ -64,27 +64,33 @@
 </div>
 
 <p-dialog [(visible)]="classeDialog" [style]="{width: '450px'}" header="Charger un fichier" [modal]="true" styleClass="p-fluid">
-    <ng-template pTemplate="content" [formGroup] = "uploadForm">
+    <ng-template pTemplate="content" >
         <div class="p-field p-col" formControlName="evenement">
                 <h5>Evénement</h5>
-                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" >
-                    <option selected>Choisir un événement</option>
-                    <option *ngFor="let evenement of evenements" [value]="evenement.id" (click)="getEvenement(evenement)">
-                        {{evenement.moisCampagne}} - {{evenement.anneeCampagne}}
-                    </option>
-                </select>
+            <p-dropdown [options]="evenements" [(ngModel)]="evenementChoisi" placeholder="evenement" optionLabel="moisCampagne" [showClear]="true"></p-dropdown>
+
+
+            <!--                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="evenementChoisi">-->
+<!--                    <option selected>Choisir un événement</option>-->
+<!--                    <option *ngFor="let evenement of evenements" [value]="evenement" (click)="getEvenement(evenement)">-->
+<!--                        {{evenement.moisCampagne}} - {{evenement.anneeCampagne}}-->
+<!--                    </option>-->
+<!--                </select>-->
         </div>
-        <div class="p-field p-col" formControlName="statut">
+        <div class="p-field p-col" >
                 <h5>Statut</h5>
-                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" >
-                    <option selected>Choisir un statut</option>
-                    <option *ngFor="let statut of statuts" [value]="statut.id" (click)="getStatut(statut)">
-                        {{statut.libelle}}
-                    </option>
-                </select>
+            <p-dropdown [options]="statuts" [(ngModel)]="statutChoisi" placeholder="Statut" optionLabel="libelle" [showClear]="true"></p-dropdown>
+
+            <!--                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" [(ngModel)]="statutChoisi">-->
+<!--                    <option selected>Choisir un statut</option>-->
+<!--                    <option *ngFor="let statut of statuts" [value]="statut" (click)="getStatut(statut)" >-->
+<!--                        {{statut.libelle}}-->
+<!--                    </option>-->
+<!--                </select>-->
         </div>
         <div class="p-field p-col" formControlName="myFile">
                 <h5>Fichier</h5>
+<!--         <p-fileUpload mode="basic" chooseLabel="upload" name="myfile[]" (onUpload)="onFileChange($event)"></p-fileUpload>  &lt;!&ndash;     url="./upload.php"&ndash;&gt;-->
                 <input  (change)="onFileChange($event)" class="form-control form-control-lg" id="formFileLg" type="file">
         </div>
             <!--<label for="montantGlobal">Montant Global</label>

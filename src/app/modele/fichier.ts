@@ -2,6 +2,8 @@ import {Statut} from "./statut";
 import { Evenement } from './evenement';
 
 export class Fichier {
+
+
     constructor(
         public id?: number,
         public montantGlobal?: number,
@@ -9,7 +11,7 @@ export class Fichier {
         public certification?: boolean,
         public dateChargement?: Date,
         public idUserChargement?: number,
-        public statut?: Statut,
+        public statut: Statut = new Statut(),
         public evenement: Evenement = new Evenement()
     ) {
     }

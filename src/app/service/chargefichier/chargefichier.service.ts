@@ -42,4 +42,9 @@ export class ChargefichierService {
         return this.httpClient.patch<Fichier>(this.baseUrl+"/certifierfichier/"+fichier.id, fichier)
 
     }
+    
+    saveFichier(fichier){
+        console.log(fichier)
+        return this.httpClient.post(this.baseUrl+"/fichier/save",fichier)
+    }
 }
