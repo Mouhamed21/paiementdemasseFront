@@ -15,6 +15,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import * as xlsx from 'xlsx';
 import {Beneficiaire} from "../../modele/beneficiaire";
 import {BeneficiaireService} from "../../service/beneficiaire.service";
+import {DetailBeneficiaireService} from "../../service/detail-beneficiaire.service";
+import {DetailBeneficiaire} from "../../modele/detail-beneficiaire";
 @Component({
   selector: 'app-chargemet-fichier',
   templateUrl: './chargemet-fichier.component.html',
@@ -33,6 +35,9 @@ export class ChargemetFichierComponent implements OnInit {
     fichiers: any;
     worksheet: any;
     filelist: any;
+    panier=[];
+    panierDetail:any;
+    panierDetailBeneficiaire=[];
     wb: xlsx.WorkBook;
     ws: any[];
     file: any;
@@ -47,7 +52,6 @@ export class ChargemetFichierComponent implements OnInit {
     first = 0;
     rows = 10;
     id:number;
-    cpt:number;
     user:any;
     valSwitch:boolean;
     evenements: any;
@@ -56,20 +60,40 @@ export class ChargemetFichierComponent implements OnInit {
     statutFK: Statut;
     uploadForm: FormGroup;
     beneficiaire: Beneficiaire = new Beneficiaire();
-    beneficiair: any[];
-
+    detailBeneficiaire: DetailBeneficiaire = new DetailBeneficiaire();
+    users:any;
+    email:any;
+    charger:boolean;
+    test=[];
+    montant=[];
+    montants:number;
+    montantglobal:number;
+    panierMontant:any[];
+    montantGlobal:number;
     //chargement fichier
     evenementChoisi : Evenement = new Evenement()
     statutChoisi : Statut = new Statut()
     fichierChoisi : Fichier = new Fichier()
+    nameFichier:any;
+    ficchiers:any;
 
 
 
   constructor(private chargefichierService: ChargefichierService, private router: Router,
-              private messageService: MessageService, private confirmationService: ConfirmationService,private userService: UserServiceService,
+              private messageService: MessageService, private confirmationService: ConfirmationService,
+              private userService: UserServiceService,
               public keycloak: KeycloakService, private evenementService: EvenementService,
               private statutService: StatutService, private formBuilder: FormBuilder,
-              private beneficiaireService: BeneficiaireService) {
+              private beneficiaireService: BeneficiaireService, private detailBeneficiaireService:DetailBeneficiaireService) {
+      this.keycloak.loadUserProfile().then( res =>
+      {
+          console.log(res);
+          this.users = res;
+          this.email= res.email;
+          console.log(res.email);
+         this.getUser(res.email);
+
+      });
   }
 
 
@@ -79,6 +103,7 @@ export class ChargemetFichierComponent implements OnInit {
    // this.getAllFichier();
     this.getEvenementsEnCours();
     this.getStatuts();
+    this.getAllFichierName();
 
     this.uploadForm = this.formBuilder.group({
         evenement: ['', Validators.required],
@@ -87,79 +112,185 @@ export class ChargemetFichierComponent implements OnInit {
     });
   }
 
-    onFileSelect(event: any) {
-        if (event.target.files.length > 0) {
-            const file = event.target.files[0];
-            // @ts-ignore
-            this.uploadForm.get('myFile').setValue(file);
-        }
-    }
+    // onFileSelect(event: any) {
+    //     if (event.target.files.length > 0) {
+    //         const file = event.target.files[0];
+    //         // @ts-ignore
+    //         this.uploadForm.get('myFile').setValue(file);
+    //     }
+    // }
 
     onFileChange(event) {
         // console.log()
         console.log(event.target.files)
-        this.saveFichier(this.fichierChoisi)
+        //this.saveFichier(this.fichierChoisi)
+        console.log(this.nameFichier);
+        for (let f=0;f<this.nameFichier.length;f++)
+        {
+            console.log(this.nameFichier[f]);
+
+            const target: DataTransfer = <DataTransfer>(event.target);
+            console.log(target.files);
+            //debugger
+            if (this.nameFichier[f] == target.files[0].name)
+            {
+                console.log('Vous ne pouvez pas charger ce fichier car il a déja été chargé');
+                this.charger = false;
+                break;
+            }
+            else
+            {
+                console.log('Good');
+                this.charger=true;
+                if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+                const reader: FileReader = new FileReader();
+                reader.onload = (e: any) => {
+                    /* read workbook */
+                    let bstr = e.target.result;
+                    this.wb = xlsx.read(bstr, {type: 'binary'});
+
+                    /* grab first sheet */
+                    this.wb.SheetNames.forEach(ele => {
+                        this.ws = xlsx.utils.sheet_to_json(this.wb.Sheets[ele])
+                        console.log(this.ws);
+                    });
+                    /* wire up file reader */
 
 
+                    for (let index = 0; index < this.ws.length; index++) {
 
-        // /* wire up file reader */
-        // const target: DataTransfer = <DataTransfer>(evt.target);
-        // console.log(target.files);
-        // if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-        // const reader: FileReader = new FileReader();
-        // reader.onload = (e: any) => {
-        //     /* read workbook */
-        //     let bstr = e.target.result;
-        //     this.wb = xlsx.read(bstr, {type: 'binary'});
-        //
-        //     /* grab first sheet */
-        //     this.wb.SheetNames.forEach(ele => {
-        //         this.ws = xlsx.utils.sheet_to_json(this.wb.Sheets[ele])
-        //         console.log(this.ws);
-        //     });
-        //     for (let index = 0; index < this.ws.length; index++) {
-        //
-        //             this.ws[index];
-        //             console.log(this.ws[index]);
-        //
-        //             //this.saveBeneficiaire(this.ws[index]);
-        //
-        //     }
-        //     //this.calculemontant(this.ws)
-        //     //console.log(this.ws);
-        //     console.log(this.ws.length);
-        //     for (let i= 0; i<this.ws.length; i++)
-        //     {
-        //         this.beneficiaire.nomPrenom = this.ws[i].NomEtatCivilPrenoms;
-        //         this.beneficiaire.adresse = this.ws[i].Adresse;
-        //         this.beneficiaire.adresseComplementaire = this.ws[i].AdresseComplementaire;
-        //         this.beneficiaire.commune = this.ws[i].Commune;
-        //         this.beneficiaire.civilite = this.ws[i].Civilité;
-        //         this.beneficiaire.codePostal = this.ws[i].CodePostal;
-        //         this.beneficiaire.numPension = this.ws[i].NumPension;
-        //         this.beneficiaire.telephone = this.ws[i].Telephone;
-        //         //this.beneficiaire.dateChargement = new Date();
-        //         console.log(this.beneficiaire);
-        //         this.saveBeneficiaire(this.beneficiaire);
-        //         console.log('save');
-        //        // this.beneficiaire.fileName = this.ws[i].FileName;
-        //     }
-        //
-        //     this.saveFichier(this.fichier)
-        //
-        //
-        // };
-        // reader.readAsBinaryString(target.files[0]);
+                        this.ws[index];
+                        console.log(this.ws[index]);
 
-    
+                        //this.saveBeneficiaire(this.ws[index]);
+
+                    }
+                    //this.calculemontant(this.ws)
+                    //console.log(this.ws);
+                    console.log(this.ws.length);
+
+
+                };
+                reader.readAsBinaryString(target.files[0]);
+            }
+
+        }
+
     }
-    saveBeneficiaire(beneficiaire:Beneficiaire)
-    {
-        //console.log(this.beneficiaire);
-        this.beneficiaireService.saveBeneficiaire(beneficiaire).subscribe(data =>
+
+    public getUser(email){
+        console.log(email);
+        return this.userService.getUserByEmail(email).subscribe(data =>
         {
             console.log(data);
+            this.user = data;
         })
+    }
+    public getAllFichierName(){
+        return this.chargefichierService.getAllFichierName().subscribe((data) =>
+        {
+            console.log(data);
+            this.nameFichier = data;
+            //console.log(this.nameFichier);
+        })
+    }
+    saveBeneficiaire(beneficiaire: Beneficiaire)
+    {
+        //console.log(this.beneficiaire);
+        if (this.charger=true) {
+            for (let i of this.ws) {
+                this.beneficiaire.nomPrenom = i.NomEtatCivilPrenoms;
+                this.beneficiaire.adresse = i.Adresse;
+                this.beneficiaire.adresseComplementaire = i.AdresseComplementaire;
+                this.beneficiaire.commune = i.Commune;
+                this.beneficiaire.civilite = i.Civilité;
+                this.beneficiaire.codePostal = i.CodePostal;
+                this.beneficiaire.numPension = i.NumPension;
+                this.beneficiaire.telephone = i.Telephone;
+                this.montant.push(i.MontantCFA);
+                console.log(this.montant);
+                //this.panierMontant.push({...this.montant});
+                //console.log(this.panierMontant);
+                //this.beneficiaire.dateChargement = new Date();
+                console.log(this.beneficiaire);
+                this.panier.push({...this.beneficiaire});
+
+                //this.saveBeneficiaire(this.beneficiaire);
+
+                // this.beneficiaire.fileName = this.ws[i].FileName;
+
+            }
+
+            console.log(this.panier);
+            this.beneficiaireService.saveBeneficiaire(this.panier).subscribe(data => {
+                console.log(data);
+                // this.test = data;
+
+                // this.panierDetail.push({...data});
+                this.panierDetail = data
+                // this.panierDetail.forEach(res => {
+                //     this.test = res;
+                //     console.log(this.test);
+                // });
+                console.log(this.panierDetail);
+                this.montantGlobal = 0;
+                for (let k = 0; k < this.montant.length; k++) {
+                    this.montantglobal = this.montant[k];
+                    this.montantGlobal = this.montantGlobal + this.montantglobal;
+                }
+                console.log(this.montantGlobal);
+                this.fichierChoisi.montantGlobal = this.montantGlobal;
+                this.fichierChoisi.certification = false;
+                this.fichierChoisi.dateChargement = new Date();
+                this.fichierChoisi.evenement = this.evenementChoisi;
+                this.fichierChoisi.statut = this.statutChoisi;
+                this.fichierChoisi.idUserChargement = this.user.id;
+                this.fichierChoisi.nbrLigne = this.ws.length;
+                console.log(this.fichierChoisi)
+                this.chargefichierService.saveFichier(this.fichierChoisi).subscribe(res => {
+                    console.log(res)
+                    this.fichiers = res;
+                    for (let tes = 0; tes < this.panierDetail.length; tes++) {
+                        console.log('tete');
+                        console.log(this.panierDetail[tes]);
+                        console.log(res);
+                        console.log(this.montant);
+                        console.log(this.user.id);
+                        console.log(this.montant);
+                        this.detailBeneficiaire.beneficiaire = this.panierDetail[tes];
+
+                        console.log(this.panierDetail[tes].montant);
+
+                    }
+                    for (let k = 0; k < this.montant.length; k++) {
+                        this.montants = this.montant[k];
+
+                        // console.log(this.panierDetail[tes].montant);
+                        this.detailBeneficiaire.montant = this.montants;
+                        console.log(this.detailBeneficiaire.montant);
+                        this.detailBeneficiaire.fichier = this.fichiers;
+
+                        this.detailBeneficiaire.statut = this.fichierChoisi.statut;
+                        this.detailBeneficiaire.paye = false;
+                        this.detailBeneficiaire.idUser = this.user.id;
+                        console.log(this.detailBeneficiaire);
+                        this.panierDetailBeneficiaire.push({...this.detailBeneficiaire});
+                    }
+                    console.log(this.panierDetailBeneficiaire);
+
+
+                    this.detailBeneficiaireService.saveDetailBeneficiaire(this.panierDetailBeneficiaire).subscribe(data => {
+                        console.log(data);
+
+                    })
+                })
+                //this.saveFichier(this.fichierChoisi);
+
+            })
+
+            this.classeDialog = false;
+            this.getAllFichierNonCertifier();
+        }
     }
 
     public getEvenementsEnCours(){
@@ -284,18 +415,19 @@ export class ChargemetFichierComponent implements OnInit {
     }
 
     saveFichier(fichier){
-
         fichier.montantGlobal = 999999
         fichier.certification = false
-        fichier.dateChargement = null
+        fichier.dateChargement = new Date();
         fichier.evenement = this.evenementChoisi
         fichier.statut = this.statutChoisi
         fichier.idUserChargement = 2
         console.log(fichier)
-      this.chargefichierService.saveFichier(fichier).subscribe(res=>{
+       this.chargefichierService.saveFichier(fichier).subscribe(res=>{
           console.log(res)
       })
     }
+
+
 
 }
 

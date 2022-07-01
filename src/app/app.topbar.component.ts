@@ -16,7 +16,8 @@ export class AppTopBarComponent {
     email:any;
     items: MenuItem[];
 
-    constructor(public appMain: AppMainComponent, private userService: UserServiceService,
+    constructor(public appMain: AppMainComponent,
+                private userService: UserServiceService,
                 public keycloak: KeycloakService) {
         this.keycloak.loadUserProfile().then( res =>
         {

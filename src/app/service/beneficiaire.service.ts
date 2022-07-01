@@ -38,7 +38,11 @@ export class BeneficiaireService {
         return this.httpClient.put(this.baseUrl + '/edit/beneficiaire/'+id, beneficiaire);
     }
 
-    saveBeneficiaire(beneficiaire: Beneficiaire){
+/*    saveBeneficiaire(beneficiaire: Beneficiaire){
+        return this.httpClient.post(this.baseUrl + '/beneficiaire/save', beneficiaire);
+    }*/
+
+    saveBeneficiaire(beneficiaire:Beneficiaire[]){
         return this.httpClient.post(this.baseUrl + '/beneficiaire/save', beneficiaire);
     }
 

@@ -37,12 +37,17 @@ export class ChargefichierService {
         //{headers: new HttpHeaders({Authorization:'Bearer '+this.kcSecurityService.kc.token})})
     }
 
+    getAllFichierName(){
+        return this.httpClient.get(this.baseUrl+'/showfiles')
+        //{headers: new HttpHeaders({Authorization:'Bearer '+this.kcSecurityService.kc.token})})
+    }
+
     certifie(fichier: Fichier): Observable<Fichier> {
         fichier.certification=!fichier.certification;
         return this.httpClient.patch<Fichier>(this.baseUrl+"/certifierfichier/"+fichier.id, fichier)
 
     }
-    
+
     saveFichier(fichier){
         console.log(fichier)
         return this.httpClient.post(this.baseUrl+"/fichier/save",fichier)
