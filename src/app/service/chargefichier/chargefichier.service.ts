@@ -52,4 +52,15 @@ export class ChargefichierService {
         console.log(fichier)
         return this.httpClient.post(this.baseUrl+"/fichier/save",fichier)
     }
+
+
+    uploadFile(file:File):Observable<any>{
+        const formData: any= new FormData();
+            formData.append('file',file,file.name);
+        return this.httpClient.post(this.baseUrl+"/upload/file",formData);
+    }
+
+    getAllFilesUploaded(){
+        return this.httpClient.get(this.baseUrl+"/showfiles")
+    }
 }

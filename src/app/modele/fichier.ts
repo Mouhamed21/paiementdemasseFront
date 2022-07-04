@@ -12,7 +12,8 @@ export class Fichier {
         public dateChargement?: Date,
         public idUserChargement?: number,
         public statut: Statut = new Statut(),
-        public evenement: Evenement = new Evenement()
+        public evenement: Evenement = new Evenement(),
+        public nomFichier?:String
     ) {
     }
 }

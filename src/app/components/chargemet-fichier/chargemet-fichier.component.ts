@@ -15,8 +15,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import * as xlsx from 'xlsx';
 import {Beneficiaire} from "../../modele/beneficiaire";
 import {BeneficiaireService} from "../../service/beneficiaire.service";
-import {DetailBeneficiaireService} from "../../service/detail-beneficiaire.service";
-import {DetailBeneficiaire} from "../../modele/detail-beneficiaire";
+import { DetailBeneficiaireService } from 'src/app/service/detail-beneficiaire.service';
+import { DetailBeneficiaire } from 'src/app/modele/detail-beneficiaire';
 @Component({
   selector: 'app-chargemet-fichier',
   templateUrl: './chargemet-fichier.component.html',
@@ -52,6 +52,7 @@ export class ChargemetFichierComponent implements OnInit {
     first = 0;
     rows = 10;
     id:number;
+    cpt:number;
     user:any;
     valSwitch:boolean;
     evenements: any;
@@ -78,6 +79,7 @@ export class ChargemetFichierComponent implements OnInit {
     ficchiers:any;
 
 
+    fichiersUploades
 
   constructor(private chargefichierService: ChargefichierService, private router: Router,
               private messageService: MessageService, private confirmationService: ConfirmationService,
@@ -99,6 +101,7 @@ export class ChargemetFichierComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.getAllFilesUploaded()
     this.getAllFichierNonCertifier();
    // this.getAllFichier();
     this.getEvenementsEnCours();
@@ -156,6 +159,11 @@ export class ChargemetFichierComponent implements OnInit {
                     });
                     /* wire up file reader */
 
+        // this.fichierChoisi.nomFichier = event.target.files[0].name
+        // console.log(this.fichierChoisi.nomFichier)
+        // // this.saveFichier(this.fichierChoisi)
+        // // this.uploadFile(event.target.files[0])
+        // this.comparaisonFichiers(event.target.files[0].name)
 
                     for (let index = 0; index < this.ws.length; index++) {
 
@@ -415,6 +423,8 @@ export class ChargemetFichierComponent implements OnInit {
     }
 
     saveFichier(fichier){
+        console.log(fichier)
+
         fichier.montantGlobal = 999999
         fichier.certification = false
         fichier.dateChargement = new Date();
@@ -422,10 +432,33 @@ export class ChargemetFichierComponent implements OnInit {
         fichier.statut = this.statutChoisi
         fichier.idUserChargement = 2
         console.log(fichier)
-       this.chargefichierService.saveFichier(fichier).subscribe(res=>{
-          console.log(res)
-      })
+        // this.chargefichierService.saveFichier(fichier).subscribe(res=>{
+
+        //   console.log(res)
+      // })
     }
+
+    uploadFile(file:File){
+        this.chargefichierService.uploadFile(file).subscribe(res=>{
+            console.log(res)
+        })
+    }
+
+    //recuperer tous les fichiers deja uploadés
+    getAllFilesUploaded(){
+        return this.chargefichierService.getAllFilesUploaded().subscribe(res=>{
+            this.fichiersUploades = res
+            console.log(this.fichiersUploades)
+        })
+    }
+
+    comparaisonFichiers(fileName){
+        this.fichiersUploades.filter(f =>{
+
+            console.log(f)
+        })
+    }
+
 
 
 
