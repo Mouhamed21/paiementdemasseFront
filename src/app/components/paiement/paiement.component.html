@@ -97,20 +97,16 @@
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-details>
-                            <tr *ngIf="!details.paye">
-                                <td>{{details.fichier.evenement.dateCreation | date:'dd/MM/yy'}}</td> <!-- | date:'M/d/yy'-->
+<!--                            <tr *ngIf="!details.paye">-->
+                            <tr>
+                            <td>{{details.fichier.evenement.dateCreation | date:'dd/MM/yy'}}</td> <!-- | date:'M/d/yy'-->
                                 <td>{{details.fichier.evenement.moisCampagne}}</td>
                                 <td>{{details.fichier.evenement.anneeCampagne}}</td>
                                 <td>{{details.fichier.evenement.dateCloture | date:'dd/MM/yy'}}</td>
                                 <td>{{details.fichier.evenement.status}}</td>
-<!--                                <td>{{details.montant}}</td>-->
-<!--                                <td>{{details.statut.libelle}}</td>-->
-<!--                                <td><p-button  styleClass="p-button-text" label="Activate 3rd" style="{'margin-left': '.5em'}"></p-button></td>-->
-                                <button pButton pRipple type="button" label="Choisir" (click)="choix(details)"  (click)="activeIndex1 = 2"  class="p-button-raised mr-2 mb-2"></button>
 
+                                <button *ngIf='details.fichier.evenement.status == "EN COURS"' pButton pRipple type="button" label="Choisir" (click)="choix(details)"  (click)="activeIndex1 = 2"  class="p-button-raised mr-2 mb-2"></button>
 
-                                <!--              g          <td><p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating></td>-->
-                                <!--                        <td><span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span></td>-->
                             </tr>
                         </ng-template>
 <!--                        <ng-template pTemplate="summary">-->
@@ -143,6 +139,9 @@
 
                     <div style="text-align:center" *ngIf="!detailBeneficiaireChoisi.paye">
                         <button style="text-align:center" pButton pRipple type="button"  label="PAYER" (click)="displayDialog=true;verificationPaiement()" class="p-button-raised p-button-info mr-2 mb-2"></button>
+                    </div>
+                    <div style="text-align:center" *ngIf="detailBeneficiaireChoisi.paye">
+                        <p-message severity="error" text="LE PAIEMENT A ÉTÉ DÉJA EFFECTUÉ"></p-message>
                     </div>
                     <p-dialog header="Confirmer le paiement" [(visible)]="displayDialog" modal="modal" showEffect="fade" [style]="{width: '30vw'}" [breakpoints]="{'960px': '75vw'}">
                         <p>Nom : {{beneficiaireByNumPension.nomPrenom}}</p>

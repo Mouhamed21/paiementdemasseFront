@@ -9,6 +9,7 @@ import { KeycloakService } from 'keycloak-angular';
 import { UserServiceService } from 'src/app/service/userService/user-service.service';
 import { Paiement } from 'src/app/modele/paiement';
 import { StatutService } from 'src/app/service/statut.service';
+import { DetailBeneficiaireService } from 'src/app/service/detail-beneficiaire.service';
 
 
 @Component({
@@ -40,15 +41,12 @@ export class PaiementComponent implements OnInit {
     typesDePieces = ["CNI","PASSPORT"]
 
 
-
-
-
     activeIndex1: number = 0;
     activeIndex2: number = 0;
 
     constructor(private beneficiaireService:BeneficiaireService,private paiementService:PaiementService,
                 private keycloakService:KeycloakService,private  userService:UserServiceService,
-                private statutService:StatutService) {
+                private statutService:StatutService,private detailBeneficiaireService:DetailBeneficiaireService) {
         this.keycloakService.loadUserProfile().then( res =>
         {
             console.log(res);
@@ -68,58 +66,67 @@ export class PaiementComponent implements OnInit {
     getBeneficiaireByNumPension(numPension):any{
         this.beneficiaireService.getBeneficiaireByNumPension(numPension).subscribe(res=>{
             this.beneficiaireByNumPension = res
-            console.log(this.beneficiaireByNumPension)
             this.beneficiaireByNumPension.typePiece = "cni"
             console.log(this.beneficiaireByNumPension.detailBeneficiaires)
         })
     }
 
-    choix(choixEvenement:any){
-        this.detailBeneficiaireChoisi = choixEvenement
-        console.log(this.detailBeneficiaireChoisi)
-    }
-
     updateBeneficiaire(){
-
         console.log(this.beneficiaireByNumPension)
         // this.beneficiaireService.updateBeneficiaire(this.beneficiaireByNumPension.id).subscribe(res=>{
         //     console.log(res)
         // })
     }
 
+    choix(detail:any){
+        console.log( this.detailBeneficiaireChoisi)
+        this.detailBeneficiaireChoisi = detail
+        console.log(this.beneficiaireByNumPension.id)
+        console.log(this.detailBeneficiaireChoisi)
+
+        this.detailBeneficiaireChoisi["beneficiaire"] = new Beneficiaire()
+        this.detailBeneficiaireChoisi.beneficiaire.id = this.beneficiaireByNumPension.id
+        console.log(this.detailBeneficiaireChoisi)
+    }
+
+
     verificationPaiement(){
+        console.log(this.detailBeneficiaireChoisi)
         if (!this.user.dg_caisse){
             this.existenceCaisse = false
-        }
+            this.existenceCaisse = true
+        }else{
+        this.paiement.beneficiaire.id = this.beneficiaireByNumPension.id
+        this.paiement.evenement = this.detailBeneficiaireChoisi.fichier.evenement
+        this.paiement.idBureau = 1//this.user.dg_structure.id
+        this.paiement.idCaisse = 1//this.user.dg_caisse.id
+        this.paiement.idUser = 9//this.user.id
 
-        //A METTRE TOUTES LES VERIFICATIONS POUR LE PAIEMENT
+        console.log(this.detailBeneficiaireChoisi.statut)
 
+    }
     }
 
     savePaiement(){
-        this.paiement.beneficiaire.id = this.beneficiaireByNumPension.id
-        this.paiement.evenement = this.detailBeneficiaireChoisi.fichier.evenement
-        this.paiement.idBureau = this.user.dg_structure.id
-        this.paiement.idCaisse = this.user.dg_caisse.id
-        this.paiement.idUser = this.user.id
-        this.detailBeneficiaireChoisi.paye = true
-        // this.detailBeneficiaireChoisi.statut = this.statutSelected
-        // this.detailBeneficiaireChoisi.statut = this.listeDesStatuts.filter(s=>s.libelle =0)
-
-
-        console.log("OKKKK")
-
         console.log(this.paiement)
-/*            this.paiementService.savePaiement(this.paiement).subscribe(res=>{
+            this.paiementService.savePaiement(this.paiement).subscribe(res=>{
+                    console.log(res)
+                })
+        this.updateDetailBeneficiaire(this.detailBeneficiaireChoisi)
+    }
+
+    updateDetailBeneficiaire(detailBeneficiaire){
+
+        detailBeneficiaire.statut = this.listeDesStatuts.find(s => s.libelle == "PAYÉ")
+        detailBeneficiaire.paye = true
+        console.log(detailBeneficiaire)
+        this.detailBeneficiaireService.updateDetailBeneficiaire(detailBeneficiaire).subscribe(res=>{
             console.log(res)
-        })*/
+        })
     }
 
      getUserByEmail(email){
-        return this.userService.getUserByEmail(email).subscribe(data =>
-        {
-            this.user = data;
-        })
+        return this.userService.getUserByEmail(email).subscribe(data => this.user = data)
     }
 
     getAllStatus(){
@@ -127,8 +134,9 @@ export class PaiementComponent implements OnInit {
             this.listeDesStatuts = res
             console.log(this.listeDesStatuts)
         })
+
     }
-    
+
 
 
 }

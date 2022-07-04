@@ -16,4 +16,9 @@ export class DetailBeneficiaireService {
     saveDetailBeneficiaire(detailBeneficiaire:DetailBeneficiaire[]){
         return this.httpClient.post(this.baseUrl + '/detailbeneficiaire/save', detailBeneficiaire);
     }
+
+    updateDetailBeneficiaire(detailBeneficiaire){
+
+        return this.httpClient.put(this.baseUrl+ '/detailbeneficiare/update/'+detailBeneficiaire.id,detailBeneficiaire)
+    }
 }
