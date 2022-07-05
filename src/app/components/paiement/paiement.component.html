@@ -153,7 +153,11 @@
                         <ng-template pTemplate="footer">
 <!--                            <p *ngIf="!existenceCaisse">VOUS NE POSSEDEZ PAS DE CAISSE</p>-->
                             <p-message *ngIf="!existenceCaisse" severity="error" text="VOUS NE POSSEDEZ PAS DE CAISSE"></p-message>
-                            <button *ngIf="existenceCaisse" pButton icon="pi pi-check" (click)="displayDialog=false;savePaiement()" label="Ok" class="p-button-outlined"></button>
+                            <button *ngIf="existenceCaisse" pButton icon="pi pi-check" (click)="displayDialog=false;savePaiement();showSuccess()" label="Ok" class="p-button-outlined"></button>
+                            <p-toast position="top-center" key="tc"></p-toast>
+
+                            <!--                            <button type="button" pButton pRipple (click)="showSuccess()" label="Success" class="p-button-success mb-2"></button>-->
+
 
                         </ng-template>
                     </p-dialog>
@@ -166,6 +170,12 @@
 
 
     </div>
+
+<div  id="testImpression">
+HELLLLLLO
+</div>
+
+<button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
 <!--</div>-->
 
 

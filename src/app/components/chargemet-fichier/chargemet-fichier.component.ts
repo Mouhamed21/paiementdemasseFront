@@ -118,13 +118,6 @@ export class ChargemetFichierComponent implements OnInit {
     });
   }
 
-    // onFileSelect(event: any) {
-    //     if (event.target.files.length > 0) {
-    //         const file = event.target.files[0];
-    //         // @ts-ignore
-    //         this.uploadForm.get('myFile').setValue(file);
-    //     }
-    // }
 
     onFileChange(event) {
         // console.log()
@@ -216,9 +209,13 @@ export class ChargemetFichierComponent implements OnInit {
     }
     saveBeneficiaire(beneficiaire: Beneficiaire)
     {
+
         //console.log(this.beneficiaire);
         if (this.charger==true) {
+
             for (let i of this.ws) {
+                //remplissage table beneficiaire
+                this.beneficiaire.numPension = i.NumPension
                 this.beneficiaire.nomPrenom = i.NomEtatCivilPrenoms;
                 this.beneficiaire.adresse = i.Adresse;
                 this.beneficiaire.adresseComplementaire = i.AdresseComplementaire;
@@ -228,38 +225,43 @@ export class ChargemetFichierComponent implements OnInit {
                 this.beneficiaire.numPension = i.NumPension;
                 this.beneficiaire.telephone = i.Telephone;
                 this.montant.push(i.MontantCFA);
-                console.log(this.montant);
-                //this.panierMontant.push({...this.montant});
-                //console.log(this.panierMontant);
-                //this.beneficiaire.dateChargement = new Date();
+                console.log(i.MontantCFA)
                 console.log(this.beneficiaire);
                 this.panier.push({...this.beneficiaire});
 
+                //calcul du montant global
+                for (let k = 0; k < this.montant.length; k++) {
+                    this.montantglobal = this.montant[k];
+                    this.montantGlobal = 8888888//this.montantGlobal + this.montantglobal;
+                    console.log(this.montantglobal)
+                    console.log(this.montantGlobal)
+                }
+                console.log(this.montantGlobal);
 
-                //this.saveBeneficiaire(this.beneficiaire);
 
-                // this.beneficiaire.fileName = this.ws[i].FileName;
+                // //sauvegarde detail beeficiaire
+                // this.detailBeneficiaire.montant = this.montants;
+                // console.log(this.detailBeneficiaire.montant);
+                // // this.detailBeneficiaire.fichier = this.fichiers;
+                // // this.detailBeneficiaire.statut = this.fichierChoisi.statut;
+                // this.detailBeneficiaire.paye = false;
+                // this.detailBeneficiaire.idUser = this.user.id;
+                // console.log(this.detailBeneficiaire);
+                // this.panierDetailBeneficiaire.push({...this.detailBeneficiaire});
+
 
             }
 
-            console.log(this.panier);
+
+
+
+            //fin parcours fichier
+
+            //sauvegarde table beneficiaire
             this.beneficiaireService.saveBeneficiaire(this.panier).subscribe(data => {
                 console.log(data);
-                // this.test = data;
 
-                //this.panierDetail.push({...data});
-                this.panierDetail = data
-                // this.panierDetail.forEach(res => {
-                //     this.test = res;
-                //     console.log(this.test);
-                // });
-                console.log(this.panierDetail);
-                this.montantGlobal = 0;
-                for (let k = 0; k < this.montant.length; k++) {
-                    this.montantglobal = this.montant[k];
-                    this.montantGlobal = this.montantGlobal + this.montantglobal;
-                }
-                console.log(this.montantGlobal);
+                //sauvegarde et recuperation fichier
                 this.fichierChoisi.montantGlobal = this.montantGlobal;
                 this.fichierChoisi.certification = false;
                 this.fichierChoisi.dateChargement = new Date();
@@ -268,50 +270,80 @@ export class ChargemetFichierComponent implements OnInit {
                 this.fichierChoisi.idUserChargement = this.user.id;
                 this.fichierChoisi.nbrLigne = this.ws.length;
                 console.log(this.fichierChoisi)
+                console.log(this.panier);
+
+                //upload le fichier on recupere les donnees et on les joint au detailbeneficiaire
                 this.chargefichierService.saveFichier(this.fichierChoisi).subscribe(res => {
                     console.log(res)
                     this.fichiers = res;
-                    for (let tes of this.panierDetail) {
-                        console.log('tete');
-                        //console.log(this.panierDetail[tes]);
-                        console.log(tes);
-                        console.log(res);
-                        console.log(this.montant);
-                        console.log(this.user.id);
-                        console.log(this.montant);
-                        this.detailBeneficiaire.beneficiaire = tes;
 
-                        //console.log(this.panierDetail[tes].montant);
 
-                    }
-                    for (let k = 0; k < this.montant.length; k++) {
-                        this.montants = this.montant[k];
-
-                        // console.log(this.panierDetail[tes].montant);
-                        this.detailBeneficiaire.montant = this.montants;
+                    for (let i of this.ws) {
+                        //sauvegarde detail beeficiaire
+                        this.detailBeneficiaire.beneficiaire.numPension = i.NumPension
+                        this.detailBeneficiaire.montant = i.MontantCFA//this.montants;
                         console.log(this.detailBeneficiaire.montant);
                         this.detailBeneficiaire.fichier = this.fichiers;
+                        console.log(this.fichierChoisi)
                         this.detailBeneficiaire.statut = this.fichierChoisi.statut;
                         this.detailBeneficiaire.paye = false;
                         this.detailBeneficiaire.idUser = this.user.id;
                         console.log(this.detailBeneficiaire);
                         this.panierDetailBeneficiaire.push({...this.detailBeneficiaire});
+
                     }
-                    console.log(this.panierDetailBeneficiaire);
+
+                    console.log(this.panierDetailBeneficiaire)
 
 
+                    //
+                    //     this.panierDetailBeneficiaire.filter(b=>{
+                    //     b.fichier = this.fichier
+                    //     b.statut = this.fichierChoisi.statut
+                    //         console.log(b)
+                    // })
+
+                    // for (let i = 0; i < this.panierDetailBeneficiaire.length; i++){
+                    //     this.panierDetailBeneficiaire[i].fichier = this.fichiers
+                    //     this.panierDetailBeneficiaire[i].statut = this.fichierChoisi.statut
+                    // }
+
+                    //sauvegarde detail beneficiaire
                     this.detailBeneficiaireService.saveDetailBeneficiaire(this.panierDetailBeneficiaire).subscribe(data => {
                         console.log(data);
 
                     })
-                })
-                //this.saveFichier(this.fichierChoisi);
 
-            }),
-            this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Fichier Charger', life: 3000});
-            this.beneficiaire=null;
+                })
+                
+
+            })
+
+
+
+
+
+
+
+
+          ,
+
+
+                // this.chargefichierService.saveFichier(this.fichierChoisi).subscribe(res => {
+                //     console.log(res)
+                //     this.fichiers = res;
+                //     })
+
+
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Réussi',
+                    detail: 'Fichier Charger',
+                    life: 3000
+                });
+            this.beneficiaire = null;
             this.fichierChoisi = null;
-            this.detailBeneficiaire=null
+            this.detailBeneficiaire = null
             this.classeDialog = false;
         }
         //this.beneficiaire = [...this.beneficiaire];
@@ -490,4 +522,67 @@ export class ChargemetFichierComponent implements OnInit {
 
 }
 
+
+
+// // this.test = data;
+//
+// //this.panierDetail.push({...data});
+// this.panierDetail = data
+// // this.panierDetail.forEach(res => {
+// //     this.test = res;
+// //     console.log(this.test);
+// // });
+// console.log(this.panierDetail);
+// this.montantGlobal = 0;
+// for (let k = 0; k < this.montant.length; k++) {
+//     this.montantglobal = this.montant[k];
+//     this.montantGlobal = this.montantGlobal + this.montantglobal;
+// }
+// console.log(this.montantGlobal);
+// this.fichierChoisi.montantGlobal = this.montantGlobal;
+// this.fichierChoisi.certification = false;
+// this.fichierChoisi.dateChargement = new Date();
+// this.fichierChoisi.evenement = this.evenementChoisi;
+// this.fichierChoisi.statut = this.statutChoisi;
+// this.fichierChoisi.idUserChargement = this.user.id;
+// this.fichierChoisi.nbrLigne = this.ws.length;
+// console.log(this.fichierChoisi)
+// this.chargefichierService.saveFichier(this.fichierChoisi).subscribe(res => {
+//     console.log(res)
+//     this.fichiers = res;
+//     for (let tes of this.panierDetail) {
+//         console.log('tete');
+//         //console.log(this.panierDetail[tes]);
+//         console.log(tes);
+//         console.log(res);
+//         console.log(this.montant);
+//         console.log(this.user.id);
+//         console.log(this.montant);
+//         this.detailBeneficiaire.beneficiaire = tes;
+//
+//         //console.log(this.panierDetail[tes].montant);
+//
+//     }
+//     for (let k = 0; k < this.montant.length; k++) {
+//         this.montants = this.montant[k];
+//
+//         // console.log(this.panierDetail[tes].montant);
+//         this.detailBeneficiaire.montant = this.montants;
+//         console.log(this.detailBeneficiaire.montant);
+//         this.detailBeneficiaire.fichier = this.fichiers;
+//         this.detailBeneficiaire.statut = this.fichierChoisi.statut;
+//         this.detailBeneficiaire.paye = false;
+//         this.detailBeneficiaire.idUser = this.user.id;
+//         console.log(this.detailBeneficiaire);
+//         this.panierDetailBeneficiaire.push({...this.detailBeneficiaire});
+//     }
+//     console.log(this.panierDetailBeneficiaire);
+//
+//
+//     this.detailBeneficiaireService.saveDetailBeneficiaire(this.panierDetailBeneficiaire).subscribe(data => {
+//         console.log(data);
+//
+//     })
+// })
+// //this.saveFichier(this.fichierChoisi);
 
