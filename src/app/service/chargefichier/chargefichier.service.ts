@@ -63,4 +63,9 @@ export class ChargefichierService {
     getAllFilesUploaded(){
         return this.httpClient.get(this.baseUrl+"/showfiles")
     }
+
+/*    saveFichierName(file){
+        //console.log(fichier)
+        return this.httpClient.post(this.baseUrl+"/upload/file",file)
+    }*/
 }

@@ -4,7 +4,7 @@ import {ConfirmationService, MessageService, SelectItem} from "primeng/api";
 import {ChargefichierService} from "../../service/chargefichier/chargefichier.service";
 import {Router} from "@angular/router";
 import {Fichier} from "../../modele/fichier";
-import {Subject} from "rxjs";
+import {Subject, window} from "rxjs";
 import {UserServiceService} from "../../service/userService/user-service.service";
 import {KeycloakService} from "keycloak-angular";
 import {Evenement} from "../../modele/evenement";
@@ -37,6 +37,7 @@ export class ChargemetFichierComponent implements OnInit {
     filelist: any;
     panier=[];
     panierDetail:any;
+    //panierDetail: any[];
     panierDetailBeneficiaire=[];
     wb: xlsx.WorkBook;
     ws: any[];
@@ -71,12 +72,14 @@ export class ChargemetFichierComponent implements OnInit {
     montantglobal:number;
     panierMontant:any[];
     montantGlobal:number;
+    //data = [];
     //chargement fichier
     evenementChoisi : Evenement = new Evenement()
     statutChoisi : Statut = new Statut()
     fichierChoisi : Fichier = new Fichier()
     nameFichier:any;
     ficchiers:any;
+
 
 
     fichiersUploades
@@ -127,6 +130,7 @@ export class ChargemetFichierComponent implements OnInit {
         // console.log()
         console.log(event.target.files)
         //this.saveFichier(this.fichierChoisi)
+
         console.log(this.nameFichier);
         for (let f=0;f<this.nameFichier.length;f++)
         {
@@ -138,13 +142,21 @@ export class ChargemetFichierComponent implements OnInit {
             if (this.nameFichier[f] == target.files[0].name)
             {
                 console.log('Vous ne pouvez pas charger ce fichier car il a déja été chargé');
+
                 this.charger = false;
                 break;
             }
             else
             {
+                console.log(target.files[0].name);
+
                 console.log('Good');
                 this.charger=true;
+                this.chargefichierService.uploadFile(event.target.files[0]).subscribe(data =>
+                {
+                    console.log(data);
+                })
+
                 if (target.files.length !== 1) throw new Error('Cannot use multiple files');
                 const reader: FileReader = new FileReader();
                 reader.onload = (e: any) => {
@@ -205,7 +217,7 @@ export class ChargemetFichierComponent implements OnInit {
     saveBeneficiaire(beneficiaire: Beneficiaire)
     {
         //console.log(this.beneficiaire);
-        if (this.charger=true) {
+        if (this.charger==true) {
             for (let i of this.ws) {
                 this.beneficiaire.nomPrenom = i.NomEtatCivilPrenoms;
                 this.beneficiaire.adresse = i.Adresse;
@@ -223,6 +235,7 @@ export class ChargemetFichierComponent implements OnInit {
                 console.log(this.beneficiaire);
                 this.panier.push({...this.beneficiaire});
 
+
                 //this.saveBeneficiaire(this.beneficiaire);
 
                 // this.beneficiaire.fileName = this.ws[i].FileName;
@@ -234,7 +247,7 @@ export class ChargemetFichierComponent implements OnInit {
                 console.log(data);
                 // this.test = data;
 
-                // this.panierDetail.push({...data});
+                //this.panierDetail.push({...data});
                 this.panierDetail = data
                 // this.panierDetail.forEach(res => {
                 //     this.test = res;
@@ -258,16 +271,17 @@ export class ChargemetFichierComponent implements OnInit {
                 this.chargefichierService.saveFichier(this.fichierChoisi).subscribe(res => {
                     console.log(res)
                     this.fichiers = res;
-                    for (let tes = 0; tes < this.panierDetail.length; tes++) {
+                    for (let tes of this.panierDetail) {
                         console.log('tete');
-                        console.log(this.panierDetail[tes]);
+                        //console.log(this.panierDetail[tes]);
+                        console.log(tes);
                         console.log(res);
                         console.log(this.montant);
                         console.log(this.user.id);
                         console.log(this.montant);
-                        this.detailBeneficiaire.beneficiaire = this.panierDetail[tes];
+                        this.detailBeneficiaire.beneficiaire = tes;
 
-                        console.log(this.panierDetail[tes].montant);
+                        //console.log(this.panierDetail[tes].montant);
 
                     }
                     for (let k = 0; k < this.montant.length; k++) {
@@ -277,7 +291,6 @@ export class ChargemetFichierComponent implements OnInit {
                         this.detailBeneficiaire.montant = this.montants;
                         console.log(this.detailBeneficiaire.montant);
                         this.detailBeneficiaire.fichier = this.fichiers;
-
                         this.detailBeneficiaire.statut = this.fichierChoisi.statut;
                         this.detailBeneficiaire.paye = false;
                         this.detailBeneficiaire.idUser = this.user.id;
@@ -294,11 +307,21 @@ export class ChargemetFichierComponent implements OnInit {
                 })
                 //this.saveFichier(this.fichierChoisi);
 
-            })
-
+            }),
+            this.messageService.add({severity:'success', summary: 'Réussi', detail: 'Fichier Charger', life: 3000});
+            this.beneficiaire=null;
+            this.fichierChoisi = null;
+            this.detailBeneficiaire=null
             this.classeDialog = false;
-            this.getAllFichierNonCertifier();
         }
+        //this.beneficiaire = [...this.beneficiaire];
+
+
+        this.beneficiaire = new Beneficiaire();
+        this.detailBeneficiaire = new DetailBeneficiaire();
+        this.fichierChoisi = new Fichier();
+
+        this.getAllFichierNonCertifier();
     }
 
     public getEvenementsEnCours(){
@@ -340,8 +363,11 @@ export class ChargemetFichierComponent implements OnInit {
 
     openNew() {
         // this.fichier = {};
+
+        console.log('avant')
         this.submitted = false;
         this.classeDialog = true;
+        console.log('apres')
     }
 
     hideDialog() {
