@@ -311,11 +311,11 @@ export class ChargemetFichierComponent implements OnInit {
                     //sauvegarde detail beneficiaire
                     this.detailBeneficiaireService.saveDetailBeneficiaire(this.panierDetailBeneficiaire).subscribe(data => {
                         console.log(data);
-
+                        this.reloadComponent();
                     })
 
                 })
-                
+
 
             })
 
@@ -517,7 +517,12 @@ export class ChargemetFichierComponent implements OnInit {
         })
     }
 
-
+    reloadComponent() {
+        let currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([currentUrl]);
+    }
 
 
 }

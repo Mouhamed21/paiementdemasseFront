@@ -39,6 +39,7 @@ import {AuthGuard} from "./components/keycloack/auth.guard";
 import {FichierCertifieComponent} from "./components/fichier-certifie/fichier-certifie.component";
 import {BeneficiaireComponent} from "./components/beneficiaire/beneficiaire.component";
 import { PaiementComponent } from './components/paiement/paiement.component';
+import {RapportPaiementComponent} from "./components/rapport-paiement/rapport-paiement.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -79,7 +80,8 @@ import { PaiementComponent } from './components/paiement/paiement.component';
                     {path: 'pmenim/chargefichier', component: ChargemetFichierComponent},
                     {path: 'pmenim/fichiersCertifier', component: FichierCertifieComponent},
                     {path: 'pmenim/beneficiaire', component: BeneficiaireComponent},
-                    {path: 'pmenim/paiement', component: PaiementComponent}
+                    {path: 'pmenim/paiement', component: PaiementComponent},
+                    {path: 'pmenim/paiement/rapport', component: RapportPaiementComponent}
 
 
                 ],

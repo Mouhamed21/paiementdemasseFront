@@ -2,7 +2,7 @@ import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import {LocationStrategy, HashLocationStrategy, DatePipe} from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -153,6 +153,8 @@ import {initializeKeycloak} from "./components/keycloack/app.init";
 import { FichierCertifieComponent } from './components/fichier-certifie/fichier-certifie.component';
 import { BeneficiaireComponent } from './components/beneficiaire/beneficiaire.component';
 import { PaiementComponent } from './components/paiement/paiement.component';
+import { RapportPaiementComponent } from './components/rapport-paiement/rapport-paiement.component';
+
 
 @NgModule({
     imports: [
@@ -298,7 +300,8 @@ import { PaiementComponent } from './components/paiement/paiement.component';
         ChargemetFichierComponent,
         FichierCertifieComponent,
         BeneficiaireComponent,
-        PaiementComponent
+        PaiementComponent,
+        RapportPaiementComponent
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},
@@ -309,7 +312,8 @@ import { PaiementComponent } from './components/paiement/paiement.component';
             useFactory: initializeKeycloak,
             multi: true,
             deps: [KeycloakService],
-        }
+        },
+        DatePipe
     ],
     bootstrap: [AppComponent]
 })

@@ -39,7 +39,7 @@ export class AppTopBarComponent {
     }
     public deconnexion()
     {
-        console.log("fggh");
+        //console.log("fggh");
         return this.keycloak.logout();
     }
 }

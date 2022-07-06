@@ -41,7 +41,7 @@
                     <p-tableCheckbox [value]="fichier"></p-tableCheckbox>
                 </td>
                 <td>{{fichier.evenement.moisCampagne}} - {{fichier.evenement.anneeCampagne}}</td>
-                <td>{{fichier.montantGlobal}}</td>
+                <td>{{fichier.montantGlobal.toLocaleString('fr-FR')}}</td>
                 <td>{{fichier.nbrLigne}}</td>
                 <td>{{fichier.dateChargement | date: 'dd/MM/yyyy'}}</td>
                 <td class="text-center" style="min-width: 8rem;">

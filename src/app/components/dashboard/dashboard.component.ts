@@ -5,7 +5,9 @@ import { ProductService } from '../../service/productservice';
 import { Subscription } from 'rxjs';
 import { ConfigService } from '../../service/app.config.service';
 import { AppConfig } from '../../api/appconfig';
- 
+import {environment} from "../../../environments/environment";
+import {HttpClient} from "@angular/common/http";
+
 @Component({
     templateUrl: './dashboard.component.html',
 })
@@ -23,7 +25,8 @@ export class DashboardComponent implements OnInit {
 
     config: AppConfig;
 
-    constructor(private productService: ProductService, public configService: ConfigService) {}
+    constructor(private productService: ProductService, public configService: ConfigService,
+                private httpClient: HttpClient) {}
 
     ngOnInit() {
         this.config = this.configService.config;
@@ -32,7 +35,7 @@ export class DashboardComponent implements OnInit {
             this.updateChartOptions();
         });
         this.productService.getProductsSmall().then(data => this.products = data);
-          
+
         this.items = [
             {label: 'Add New', icon: 'pi pi-fw pi-plus'},
             {label: 'Remove', icon: 'pi pi-fw pi-minus'}
@@ -128,4 +131,13 @@ export class DashboardComponent implements OnInit {
             }
         };
     }
+
+    baseUrl = environment.urlApi;
+    cleanData(){
+        return this.httpClient.delete(this.baseUrl+"/delete").subscribe(data =>
+        {
+            console.log(data);
+        })
+    }
+
 }

@@ -46,6 +46,15 @@ export class AppMenuComponent implements OnInit {
                     {label: 'Fichiers Certifiés', icon: 'pi pi-fw pi-id-card', routerLink: ['pmenim/fichiersCertifier']},
                     {label: 'Statuts', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pmenim/statut']},
                     {label: "Type D'Operations", icon: 'pi pi-fw pi-id-card', routerLink: ['/pmenim/typeoperation']},
+
+                    {
+                        label: 'Rapport Paiement', icon: 'pi pi-fw pi-bookmark',
+                        items: [
+                                    {label: 'Global', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pmenim/paiement/rapport']},
+                                    {label: 'Par Agent', icon: 'pi pi-fw pi-bookmark'}
+                                ]
+                    },
+
                     {label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/formlayout']},
                     {label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/input']},
                     {label: 'Float Label', icon: 'pi pi-fw pi-bookmark', routerLink: ['/uikit/floatlabel']},

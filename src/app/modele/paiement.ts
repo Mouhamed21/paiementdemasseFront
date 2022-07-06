@@ -6,7 +6,7 @@ export class Paiement {
     idCaisse
     idBureau
     datePaiement
-    beneficiaire:Beneficiaire = new Beneficiaire()
+    beneficiaire?:Beneficiaire
     idUser
-    evenement:Evenement = new Evenement()
+    evenement?:Evenement
 }

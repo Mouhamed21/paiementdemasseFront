@@ -1,0 +1,92 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <div class="row espace">
+                <div class="col-sm">
+                    <span class="p-float-label">
+                        <input pInputText id="date1" type="Date" [(ngModel)]="date1" />
+                        <label htmlFor="Date1">Date 1 : jj-mm-aaaa</label>
+                    </span>
+                </div>
+                <div class="col-sm">
+                    <span class="p-float-label">
+                        <input pInputText id="date2" type="Date" [(ngModel)]="date2" />
+                        <label htmlFor="Date2">Date 2 : jj-mm-aaaa</label>
+                    </span>
+                </div>
+                <div class="col-sm">
+                    <span class="p-float-label">
+                        <input pInputText id="variable3" type="number" [(ngModel)]="variable3" />
+                        <label htmlFor="Date2">Bureau</label>
+                    </span>
+                </div>
+                <div class="col-sm">
+                    <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success mr-2 mb-2"
+                    (click)="recherche(date1, date2, variable3)"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--//////////////////////////////-->
+
+
+<div class="grid" *ngIf="resultRecherches">
+    <div class="col-12">
+        <div class="card">
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                    <button pButton pRipple label="Export exel" icon="pi pi-upload" class="mr-2 inline-block" (click)="dt.exportCSV()"></button>
+                    <button pButton pRipple label="Export csv" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="resultRecherches" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="idCaisse">Caisse <p-sortIcon field="code"></p-sortIcon></th>
+                        <th pSortableColumn="idBureau">Bureau <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="datePaiement">datePaiement <p-sortIcon field="price"></p-sortIcon></th>
+                        <th pSortableColumn="beneficiaire">beneficiaire <p-sortIcon field="category"></p-sortIcon></th>
+                        <th pSortableColumn="idUser">Agent Payeur <p-sortIcon field="rating"></p-sortIcon></th>
+                        <th pSortableColumn="evenement">Evenement <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-resultRecherche>
+                    <tr>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Code</span>
+                            {{resultRecherche.idCaisse}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Code</span>
+                            {{nameBureau}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{resultRecherche.datePaiement}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{resultRecherche.beneficiaire.nomPrenom}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{resultRecherche.idUser}}
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Price</span>
+                            {{resultRecherche.evenement.moisCampagne}}, {{resultRecherche.evenement.anneeCampagne}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+
