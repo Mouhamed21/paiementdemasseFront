@@ -18,8 +18,8 @@ import {BeneficiaireService} from "../../service/beneficiaire.service";
 import { DetailBeneficiaireService } from 'src/app/service/detail-beneficiaire.service';
 import { DetailBeneficiaire } from 'src/app/modele/detail-beneficiaire';
 @Component({
-  selector: 'app-chargemet-fichier',
-  templateUrl: './chargemet-fichier.component.html',
+    selector: 'app-chargemet-fichier',
+    templateUrl: './chargemet-fichier.component.html',
     styles: [`
         :host ::ng-deep .p-dialog .product-image {
             width: 150px;
@@ -27,7 +27,7 @@ import { DetailBeneficiaire } from 'src/app/modele/detail-beneficiaire';
             display: block;
         }
     `],
-  styleUrls: ['./chargemet-fichier.component.scss'],
+    styleUrls: ['./chargemet-fichier.component.scss'],
     providers: [ClasseService,MessageService,ConfirmationService,ChargefichierService]
 })
 export class ChargemetFichierComponent implements OnInit {
@@ -69,9 +69,9 @@ export class ChargemetFichierComponent implements OnInit {
     test=[];
     montant=[];
     montants:number;
-    montantglobal:number;
+    montantglobal=0;
     panierMontant:any[];
-    montantGlobal:number;
+    montantGlobal:number = 0;
     //data = [];
     //chargement fichier
     evenementChoisi : Evenement = new Evenement()
@@ -84,39 +84,39 @@ export class ChargemetFichierComponent implements OnInit {
 
     fichiersUploades
 
-  constructor(private chargefichierService: ChargefichierService, private router: Router,
-              private messageService: MessageService, private confirmationService: ConfirmationService,
-              private userService: UserServiceService,
-              public keycloak: KeycloakService, private evenementService: EvenementService,
-              private statutService: StatutService, private formBuilder: FormBuilder,
-              private beneficiaireService: BeneficiaireService, private detailBeneficiaireService:DetailBeneficiaireService) {
-      this.keycloak.loadUserProfile().then( res =>
-      {
-          console.log(res);
-          this.users = res;
-          this.email= res.email;
-          console.log(res.email);
-         this.getUser(res.email);
+    constructor(private chargefichierService: ChargefichierService, private router: Router,
+                private messageService: MessageService, private confirmationService: ConfirmationService,
+                private userService: UserServiceService,
+                public keycloak: KeycloakService, private evenementService: EvenementService,
+                private statutService: StatutService, private formBuilder: FormBuilder,
+                private beneficiaireService: BeneficiaireService, private detailBeneficiaireService:DetailBeneficiaireService) {
+        this.keycloak.loadUserProfile().then( res =>
+        {
+            console.log(res);
+            this.users = res;
+            this.email= res.email;
+            console.log(res.email);
+            this.getUser(res.email);
 
-      });
-  }
+        });
+    }
 
 
 
-  ngOnInit(): void {
-    this.getAllFilesUploaded()
-    this.getAllFichierNonCertifier();
-   // this.getAllFichier();
-    this.getEvenementsEnCours();
-    this.getStatuts();
-    this.getAllFichierName();
+    ngOnInit(): void {
+        this.getAllFilesUploaded()
+        this.getAllFichierNonCertifier();
+        // this.getAllFichier();
+        this.getEvenementsEnCours();
+        this.getStatuts();
+        this.getAllFichierName();
 
-    this.uploadForm = this.formBuilder.group({
-        evenement: ['', Validators.required],
-        statut: ['', Validators.required],
-        myFile: ['', Validators.required]
-    });
-  }
+        this.uploadForm = this.formBuilder.group({
+            evenement: ['', Validators.required],
+            statut: ['', Validators.required],
+            myFile: ['', Validators.required]
+        });
+    }
 
 
     onFileChange(event) {
@@ -131,61 +131,56 @@ export class ChargemetFichierComponent implements OnInit {
 
             const target: DataTransfer = <DataTransfer>(event.target);
             console.log(target.files);
-            //debugger
-            if (this.nameFichier[f] == target.files[0].name)
+
+//verification existence fichier
+//             if (this.nameFichier[f] == target.files[0].name)
+//             {
+//                 console.log('Vous ne pouvez pas charger ce fichier car il a déja été chargé');
+//
+//                 this.charger = false;
+//                 break;
+//             }
+//             else
+//             {
+            console.log(target.files[0].name);
+
+            console.log('Good');
+            this.charger=true;
+            this.chargefichierService.uploadFile(event.target.files[0]).subscribe(data =>
             {
-                console.log('Vous ne pouvez pas charger ce fichier car il a déja été chargé');
+                console.log(data);
+            })
 
-                this.charger = false;
-                break;
-            }
-            else
-            {
-                console.log(target.files[0].name);
+            if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+            const reader: FileReader = new FileReader();
+            reader.onload = (e: any) => {
+                /* read workbook */
+                let bstr = e.target.result;
+                this.wb = xlsx.read(bstr, {type: 'binary'});
 
-                console.log('Good');
-                this.charger=true;
-                this.chargefichierService.uploadFile(event.target.files[0]).subscribe(data =>
-                {
-                    console.log(data);
-                })
+                /* grab first sheet */
+                this.wb.SheetNames.forEach(ele => {
+                    this.ws = xlsx.utils.sheet_to_json(this.wb.Sheets[ele])
+                    console.log(this.ws);
+                });
+                /* wire up file reader */
 
-                if (target.files.length !== 1) throw new Error('Cannot use multiple files');
-                const reader: FileReader = new FileReader();
-                reader.onload = (e: any) => {
-                    /* read workbook */
-                    let bstr = e.target.result;
-                    this.wb = xlsx.read(bstr, {type: 'binary'});
+                for (let index = 0; index < this.ws.length; index++) {
 
-                    /* grab first sheet */
-                    this.wb.SheetNames.forEach(ele => {
-                        this.ws = xlsx.utils.sheet_to_json(this.wb.Sheets[ele])
-                        console.log(this.ws);
-                    });
-                    /* wire up file reader */
+                    this.ws[index];
+                    console.log(this.ws[index]);
+                    console.log(this.ws[index].MontantCFA)
+                    // this.montant.push(this.ws[index].MontantCFA);
+                    console.log(this.montantGlobal)
+                    this.montantGlobal += this.ws[index].MontantCFA
+                    console.log(this.montantGlobal)
+                }
+                console.log(this.ws.length);
+                console.log(this.montantGlobal);
 
-        // this.fichierChoisi.nomFichier = event.target.files[0].name
-        // console.log(this.fichierChoisi.nomFichier)
-        // // this.saveFichier(this.fichierChoisi)
-        // // this.uploadFile(event.target.files[0])
-        // this.comparaisonFichiers(event.target.files[0].name)
-
-                    for (let index = 0; index < this.ws.length; index++) {
-
-                        this.ws[index];
-                        console.log(this.ws[index]);
-
-                        //this.saveBeneficiaire(this.ws[index]);
-
-                    }
-                    //this.calculemontant(this.ws)
-                    //console.log(this.ws);
-                    console.log(this.ws.length);
-
-
-                };
-                reader.readAsBinaryString(target.files[0]);
-            }
+            };
+            reader.readAsBinaryString(target.files[0]);
+            // }
 
         }
 
@@ -207,11 +202,26 @@ export class ChargemetFichierComponent implements OnInit {
             //console.log(this.nameFichier);
         })
     }
-    saveBeneficiaire(beneficiaire: Beneficiaire)
-    {
+    saveBeneficiaire(beneficiaire: Beneficiaire) {
 
-        //console.log(this.beneficiaire);
-        if (this.charger==true) {
+        //sauvegarde et recuperation fichier
+        this.fichierChoisi.montantGlobal = this.montantGlobal;
+        this.fichierChoisi.certification = false;
+        this.fichierChoisi.dateChargement = new Date();
+        this.fichierChoisi.evenement = this.evenementChoisi;
+        this.fichierChoisi.statut = this.statutChoisi;
+        this.fichierChoisi.idUserChargement = this.user.id;
+        this.fichierChoisi.nbrLigne = this.ws.length;
+        console.log(this.fichierChoisi)
+        console.log(this.panier);
+
+        //sauvegarde du fichier on recupere le résultat et on les joint au detailbeneficiaire
+        // this.chargefichierService.saveFichier(this.fichierChoisi).subscribe(res => {
+        //     console.log(res)
+        //     this.fichiers = res;
+
+        console.log(this.fichierChoisi);
+        if (this.charger == true) {
 
             for (let i of this.ws) {
                 //remplissage table beneficiaire
@@ -224,95 +234,49 @@ export class ChargemetFichierComponent implements OnInit {
                 this.beneficiaire.codePostal = i.CodePostal;
                 this.beneficiaire.numPension = i.NumPension;
                 this.beneficiaire.telephone = i.Telephone;
-                this.montant.push(i.MontantCFA);
-                console.log(i.MontantCFA)
                 console.log(this.beneficiaire);
                 this.panier.push({...this.beneficiaire});
 
-                //calcul du montant global
-                for (let k = 0; k < this.montant.length; k++) {
-                    this.montantglobal = this.montant[k];
-                    this.montantGlobal = 8888888//this.montantGlobal + this.montantglobal;
-                    console.log(this.montantglobal)
-                    console.log(this.montantGlobal)
-                }
-                console.log(this.montantGlobal);
 
+                //sauvegarde detail beneficiaire
 
-                // //sauvegarde detail beeficiaire
-                // this.detailBeneficiaire.montant = this.montants;
-                // console.log(this.detailBeneficiaire.montant);
-                // // this.detailBeneficiaire.fichier = this.fichiers;
-                // // this.detailBeneficiaire.statut = this.fichierChoisi.statut;
-                // this.detailBeneficiaire.paye = false;
-                // this.detailBeneficiaire.idUser = this.user.id;
-                // console.log(this.detailBeneficiaire);
-                // this.panierDetailBeneficiaire.push({...this.detailBeneficiaire});
+                this.detailBeneficiaire.beneficiaire.numPension = i.NumPension//this.beneficiaire
+                this.detailBeneficiaire.montant = i.MontantCFA
+                this.detailBeneficiaire.statut = this.fichierChoisi.statut;
+                this.detailBeneficiaire.paye = false;
+                this.detailBeneficiaire.idUser = this.user.id;
 
+                console.log(this.detailBeneficiaire)
+                console.log(this.detailBeneficiaire.beneficiaire);
+                this.panierDetailBeneficiaire.push({...this.detailBeneficiaire});
+                console.log(this.panierDetailBeneficiaire)
 
             }
+            // console.log(this.panier)
 
 
 
+            //sauvegarde du fichier on recupere le résultat et on les joint au detailbeneficiaire
+            this.chargefichierService.saveFichier(this.fichierChoisi).subscribe(res => {
+                console.log(res)
+                this.fichiers = res;
 
-            //fin parcours fichier
+                console.log(this.panierDetailBeneficiaire)
+                this.panierDetailBeneficiaire.filter(d=>{
+                    console.log(d.beneficiaire)
+                    d.fichier = this.fichiers
+                })
 
-            //sauvegarde table beneficiaire
-            this.beneficiaireService.saveBeneficiaire(this.panier).subscribe(data => {
-                console.log(data);
-
-                //sauvegarde et recuperation fichier
-                this.fichierChoisi.montantGlobal = this.montantGlobal;
-                this.fichierChoisi.certification = false;
-                this.fichierChoisi.dateChargement = new Date();
-                this.fichierChoisi.evenement = this.evenementChoisi;
-                this.fichierChoisi.statut = this.statutChoisi;
-                this.fichierChoisi.idUserChargement = this.user.id;
-                this.fichierChoisi.nbrLigne = this.ws.length;
-                console.log(this.fichierChoisi)
-                console.log(this.panier);
-
-                //upload le fichier on recupere les donnees et on les joint au detailbeneficiaire
-                this.chargefichierService.saveFichier(this.fichierChoisi).subscribe(res => {
-                    console.log(res)
-                    this.fichiers = res;
-
-
-                    for (let i of this.ws) {
-                        //sauvegarde detail beeficiaire
-                        this.detailBeneficiaire.beneficiaire.numPension = i.NumPension
-                        this.detailBeneficiaire.montant = i.MontantCFA//this.montants;
-                        console.log(this.detailBeneficiaire.montant);
-                        this.detailBeneficiaire.fichier = this.fichiers;
-                        console.log(this.fichierChoisi)
-                        this.detailBeneficiaire.statut = this.fichierChoisi.statut;
-                        this.detailBeneficiaire.paye = false;
-                        this.detailBeneficiaire.idUser = this.user.id;
-                        console.log(this.detailBeneficiaire);
-                        this.panierDetailBeneficiaire.push({...this.detailBeneficiaire});
-
-                    }
-
-                    console.log(this.panierDetailBeneficiaire)
-
-
-                    //
-                    //     this.panierDetailBeneficiaire.filter(b=>{
-                    //     b.fichier = this.fichier
-                    //     b.statut = this.fichierChoisi.statut
-                    //         console.log(b)
-                    // })
-
-                    // for (let i = 0; i < this.panierDetailBeneficiaire.length; i++){
-                    //     this.panierDetailBeneficiaire[i].fichier = this.fichiers
-                    //     this.panierDetailBeneficiaire[i].statut = this.fichierChoisi.statut
-                    // }
+                //sauvegarde table beneficiaire
+                this.beneficiaireService.saveBeneficiaire(this.panier).subscribe(data => {
+                    console.log(data);
 
                     //sauvegarde detail beneficiaire
                     this.detailBeneficiaireService.saveDetailBeneficiaire(this.panierDetailBeneficiaire).subscribe(data => {
                         console.log(data);
-                        this.reloadComponent();
+
                     })
+
 
                 })
 
@@ -320,13 +284,9 @@ export class ChargemetFichierComponent implements OnInit {
             })
 
 
+                // })
 
-
-
-
-
-
-          ,
+                ,
 
 
                 // this.chargefichierService.saveFichier(this.fichierChoisi).subscribe(res => {
@@ -346,24 +306,25 @@ export class ChargemetFichierComponent implements OnInit {
             this.detailBeneficiaire = null
             this.classeDialog = false;
         }
+        // })
         //this.beneficiaire = [...this.beneficiaire];
 
-
-        this.beneficiaire = new Beneficiaire();
-        this.detailBeneficiaire = new DetailBeneficiaire();
-        this.fichierChoisi = new Fichier();
+        //
+        // this.beneficiaire = new Beneficiaire();
+        // this.detailBeneficiaire = new DetailBeneficiaire();
+        // this.fichierChoisi = new Fichier();
 
         this.getAllFichierNonCertifier();
     }
 
     public getEvenementsEnCours(){
-      return this.evenementService.getEvenementsEnCours().subscribe(data => {
-          this.evenements = data;
-          //console.log(data)
-      }, err => {
-          console.log(err);
-      });
-  }
+        return this.evenementService.getEvenementsEnCours().subscribe(data => {
+            this.evenements = data;
+            //console.log(data)
+        }, err => {
+            console.log(err);
+        });
+    }
 
     getEvenement(evenement:Evenement){
         this.evenementFK = JSON.parse(JSON.stringify(evenement));
@@ -371,12 +332,12 @@ export class ChargemetFichierComponent implements OnInit {
     }
 
     getStatuts(){
-      return this.statutService.getStatuts().subscribe(data => {
-          this.statuts = data;
-          console.log(data)
-      }, err => {
-          console.log(err);
-      });
+        return this.statutService.getStatuts().subscribe(data => {
+            this.statuts = data;
+            console.log(data)
+        }, err => {
+            console.log(err);
+        });
     }
 
     getStatut(statut:Statut){
@@ -493,7 +454,7 @@ export class ChargemetFichierComponent implements OnInit {
         // this.chargefichierService.saveFichier(fichier).subscribe(res=>{
 
         //   console.log(res)
-      // })
+        // })
     }
 
     uploadFile(file:File){
@@ -517,12 +478,7 @@ export class ChargemetFichierComponent implements OnInit {
         })
     }
 
-    reloadComponent() {
-        let currentUrl = this.router.url;
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate([currentUrl]);
-    }
+
 
 
 }
