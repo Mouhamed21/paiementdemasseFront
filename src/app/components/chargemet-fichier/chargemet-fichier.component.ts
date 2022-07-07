@@ -79,8 +79,8 @@ export class ChargemetFichierComponent implements OnInit {
     fichierChoisi : Fichier = new Fichier()
     nameFichier:any;
     ficchiers:any;
-    
-    
+
+
     test1
 
 
@@ -123,6 +123,9 @@ export class ChargemetFichierComponent implements OnInit {
 
 
     onFileChange(event) {
+
+        // for (let f=0;f<this.nameFichier.length;f++)
+        // {
         // console.log()
         console.log(event.target.files)
 
@@ -130,15 +133,15 @@ export class ChargemetFichierComponent implements OnInit {
             console.log(target.files);
 
 //verification existence fichier
-//             if (this.nameFichier[f] == target.files[0].name)
-//             {
-//                 console.log('Vous ne pouvez pas charger ce fichier car il a déja été chargé');
-//
-//                 this.charger = false;
-//                 break;
-//             }
-//             else
-//             {
+            if (this.comparaisonFichiers(target.files[0].name))
+            {
+                console.log('Vous ne pouvez pas charger ce fichier car il a déja été chargé');
+
+                this.charger = false;
+                // break;
+            }
+            else
+            {
             console.log(target.files[0].name);
             this.fichierChoisi.nomFichier = target.files[0].name
 
@@ -179,7 +182,7 @@ export class ChargemetFichierComponent implements OnInit {
 
             };
             reader.readAsBinaryString(target.files[0]);
-            // }
+            }
     }
 
     public getUser(email){
@@ -190,20 +193,13 @@ export class ChargemetFichierComponent implements OnInit {
             this.user = data;
         })
     }
-    public getAllFichierName(){
-        return this.chargefichierService.getAllFichierName().subscribe((data) =>
-        {
-            console.log(data);
-            this.nameFichier = data;
-            //console.log(this.nameFichier);
-        })
-    }
+
     saveBeneficiaire(beneficiaire: Beneficiaire) {
         if (this.charger == true) {
 
             for (let i of this.ws) {
                 console.log(i)
-              
+
                 //remplissage panier beneficiaire
                 this.beneficiaire.numPension = i.NumPension
                 this.beneficiaire.nomPrenom = i.NomEtatCivilPrenoms;
@@ -289,8 +285,8 @@ export class ChargemetFichierComponent implements OnInit {
             this.classeDialog = false;
             // debugger
             // this.getAllFichierNonCertifier()
-            
-            
+
+
         }
         // this.getAllFichierNonCertifier();
 
@@ -437,10 +433,26 @@ export class ChargemetFichierComponent implements OnInit {
         })
     }
 
-    comparaisonFichiers(fileName){
-        this.fichiersUploades.filter(f =>{
+     comparaisonFichiers(fileName):boolean{
+        let res:boolean;
+        this.nameFichier.filter(f =>{
+            if (f == fileName){
+                res =true
+            }
+            else {
+                res = false
+            }
+            // console.log(f)
+        })
+         console.log(res)
+         return res
+    }
 
-            console.log(f)
+    public getAllFichierName(){
+        return this.chargefichierService.getAllFichierName().subscribe((data) =>
+        {
+            console.log(data);
+            this.nameFichier = data;
         })
     }
 
