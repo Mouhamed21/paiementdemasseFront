@@ -18,7 +18,7 @@ export class RapportPaiementComponent implements OnInit {
     resultRecherche: Paiement;
     bureau: Object;
     nameBureau: string;
-    caisse: Object;
+    caisseName: string;
 
   constructor(private rapportPaiementService: RapportPaiementService,
               public datepipe: DatePipe) { }
@@ -33,7 +33,7 @@ export class RapportPaiementComponent implements OnInit {
                                                         variable3).subscribe(response => {
                 this.resultRecherches = response;
                 this.getBureauById(JSON.parse(JSON.stringify(response[0])).idBureau)
-                //this.nameBureau = this.bureau.libelle
+                this.getCaisseById(JSON.parse(JSON.stringify(response[0])).idCaisse)
                 console.log(this.resultRecherches)
             }, err => {
                 console.log(err);
@@ -43,9 +43,17 @@ export class RapportPaiementComponent implements OnInit {
 
     getBureauById(idBureau: number) {
       this.rapportPaiementService.getBureau(idBureau).subscribe(response => {
-            //this.bureau = JSON.parse(JSON.stringify(response)) ;
             this.nameBureau=JSON.parse(JSON.stringify(response)).libelle;
             console.log(this.nameBureau);
+        }, err => {
+            console.log(err);
+        });
+    }
+
+    getCaisseById(idCaisse: number) {
+        this.rapportPaiementService.getCaisse(idCaisse).subscribe(response => {
+            this.caisseName=JSON.parse(JSON.stringify(response)).libelle;
+            console.log(this.caisseName);
         }, err => {
             console.log(err);
         });

@@ -22,7 +22,7 @@ export class RapportPaiementService {
     }
 
     getCaisse(idCaisse: number) {
-        return this.httpClient.get(this.baseUrl + '/bureau/'+idCaisse )
+        return this.httpClient.get(this.baseUrl + '/caisse/'+idCaisse )
     }
 
 }

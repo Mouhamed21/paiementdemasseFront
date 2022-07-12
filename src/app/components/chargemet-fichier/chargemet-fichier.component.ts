@@ -98,8 +98,8 @@ export class ChargemetFichierComponent implements OnInit {
             console.log(res.email);
             this.getUser(res.email);
 
-        });
-    }
+      });
+  }
 
 
 
@@ -237,7 +237,6 @@ export class ChargemetFichierComponent implements OnInit {
                 console.log(this.beneficiaire);
                 this.panier.push({...this.beneficiaire});
 
-
                 //sauvegarde detail beneficiaire
 
                 this.detailBeneficiaire.beneficiaire.numPension = i.NumPension//this.beneficiaire
@@ -250,7 +249,6 @@ export class ChargemetFichierComponent implements OnInit {
                 console.log(this.detailBeneficiaire.beneficiaire);
                 this.panierDetailBeneficiaire.push({...this.detailBeneficiaire});
                 console.log(this.panierDetailBeneficiaire)
-
             }
             // console.log(this.panier)
 
@@ -478,7 +476,12 @@ export class ChargemetFichierComponent implements OnInit {
         })
     }
 
-
+    reloadComponent() {
+        let currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([currentUrl]);
+    }
 
 
 }

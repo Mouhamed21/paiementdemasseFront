@@ -3,16 +3,12 @@
         <div class="card">
             <div class="row espace">
                 <div class="col-sm">
-                    <span class="p-float-label">
-                        <input pInputText id="date1" type="Date" [(ngModel)]="date1" />
-                        <label htmlFor="Date1">Date 1 : jj-mm-aaaa</label>
-                    </span>
+                    <label htmlFor="Date1">Date 1 : jj-mm-aaaa</label>
+                    <input pInputText id="date1" type="Date" [(ngModel)]="date1" />
                 </div>
                 <div class="col-sm">
-                    <span class="p-float-label">
-                        <input pInputText id="date2" type="Date" [(ngModel)]="date2" />
-                        <label htmlFor="Date2">Date 2 : jj-mm-aaaa</label>
-                    </span>
+                    <label htmlFor="Date2">Date 2 : jj-mm-aaaa</label>
+                    <input pInputText id="date2" type="Date" [(ngModel)]="date2" />
                 </div>
                 <div class="col-sm">
                     <span class="p-float-label">
@@ -60,8 +56,8 @@
                 <ng-template pTemplate="body" let-resultRecherche>
                     <tr>
                         <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Code</span>
-                            {{resultRecherche.idCaisse}}
+                            <span class="p-column-title">Code1</span>
+                            {{caisseName}}
                         </td>
                         <td style="width:14%; min-width:10rem;">
                             <span class="p-column-title">Code</span>
