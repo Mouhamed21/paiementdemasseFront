@@ -107,7 +107,7 @@ export class ChargemetFichierComponent implements OnInit {
 
 
     ngOnInit(): void {
-        this.getAllFilesUploaded()
+        // this.getAllFilesUploaded()
         this.getAllFichierNonCertifier();
         // this.getAllFichier();
         this.getEvenementsEnCours();
@@ -202,7 +202,7 @@ export class ChargemetFichierComponent implements OnInit {
 
                 //remplissage panier beneficiaire
                 this.beneficiaire.numPension = i.NumPension
-                this.beneficiaire.nomPrenom = i.NomEtatCivilPrenoms;
+                this.beneficiaire.nomPrenom = i["NomEtatCivil Prenoms"];
                 this.beneficiaire.adresse = i.Adresse;
                 this.beneficiaire.adresseComplementaire = i.AdresseComplementaire;
                 this.beneficiaire.commune = i.Commune;
@@ -426,12 +426,12 @@ export class ChargemetFichierComponent implements OnInit {
     }
 
     //recuperer tous les fichiers deja uploadés
-    getAllFilesUploaded(){
-        return this.chargefichierService.getAllFilesUploaded().subscribe(res=>{
-            this.fichiersUploades = res
-            console.log(this.fichiersUploades)
-        })
-    }
+    // getAllFilesUploaded(){
+    //     return this.chargefichierService.getAllFilesUploaded().subscribe(res=>{
+    //         this.fichiersUploades = res
+    //         console.log(this.fichiersUploades)
+    //     })
+    // }
 
      comparaisonFichiers(fileName):boolean{
         let res:boolean;

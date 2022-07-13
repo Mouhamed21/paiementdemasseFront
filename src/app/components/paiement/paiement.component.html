@@ -153,7 +153,7 @@
                         <ng-template pTemplate="footer">
 <!--                            <p *ngIf="!existenceCaisse">VOUS NE POSSEDEZ PAS DE CAISSE</p>-->
                             <p-message *ngIf="!existenceCaisse" severity="error" text="VOUS NE POSSEDEZ PAS DE CAISSE"></p-message>
-                            <button *ngIf="existenceCaisse" pButton icon="pi pi-check" (click)="displayDialog=false;savePaiement();showSuccess()" label="Ok" class="p-button-outlined"></button>
+                            <button *ngIf="existenceCaisse" pButton icon="pi pi-check" (click)="displayDialog=false;savePaiement();showSuccess();test=true;" label="Ok" class="p-button-outlined"></button>
                             <p-toast position="top-center" key="tc"></p-toast>
 
                             <!--                            <button type="button" pButton pRipple (click)="showSuccess()" label="Success" class="p-button-success mb-2"></button>-->
@@ -166,112 +166,202 @@
 
             </p-tabView>
 <!--        </div>-->
-
-
-
     </div>
 
-<div  id="testImpression">
-<!--    <table>
-        <tr>
-            <td rowspan="4">
-                azertyuiop
-            </td>
-        </tr>
-        <br>
-        <tr>
-            <td rowspan="4">dfghjk</td>
-            <td rowspan="4" >dfghjkdddddd</td>
-        </tr>
-    </table>-->
-<div class="recu">
-    <div class="ligne">
-        <img src="assets/layout/images/laposte.png" class="logo" alt="logo">
-    </div>
-    <div class="ligne">
-        <p id="donnee">
-            Pension ID: 2345678 <br>
-            Sequence ID: 567890 <br>
-            Mois Echéance: Juillet
-        </p>
-        <p id="donneecentre">
-            Date d'envoi: 26/07/2021 <br>
-            Date de paiement: 26/07/2022 <br>
-        </p>
-        <p id="donneedroite">
-            Statut: Payé <br>
-            Payé par: Mouhamed DIALLO <br>
-        </p>
+<!--<p-dialog  header="Header" [(visible)]="test" [style]="{width: '850px'}">-->
 
-    </div>
-    <div class="deux">
-        <div class="gauche">
-            <p class="donnee">
-                Destinataire
-            </p>
+<p-dialog [(visible)]="test" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true"
+          [draggable]="false" [resizable]="false">
+
+    <div id="testIMP">
+    <div class="recu">
+        <div class="ligne">
+            <img src="assets/layout/images/laposte.png" class="logo" alt="logo">
         </div>
-        <div class="droite">
-            <p class="donnees">
-                JE NE SAIS PAS<br>
-                OUEROR <br>
-                Sénégal
+        <div class="ligne">
+            <p class="donneel2">
+                Pension ID: {{beneficiaireByNumPension.numPension}} <br>
+                Sequence ID: XXXXXXX <br>
+                Mois Echéance: {{detailBeneficiaireChoisi.fichier.evenement.moisCampagne}}
             </p>
-            <p class="donneecentre">
-                 <br>
-                Montant <br>
+            <p class="donneecentrel2">
+                <!--            Date d'envoi: XXXXXXX <br>-->
+                Date de paiement: {{today | date: 'shortDate'}} <br>
             </p>
-            <p class="donneedroite">
-                 <br>
-                XOF 64,484 <br>
-            </p>
-        </div>
-    </div>
-    <div class="deux">
-        <div class="gauche">
-            <p class="donnee">
-                Agent Employeur
-            </p>
-        </div>
-        <div class="droite">
-            <p class="donnees">
-                ENIM<br>
-                4 Aenue Eric <br>
-                Sénégal - 3000007
-            </p>
-        </div>
-    </div>
-    <div class="deux">
-        <div class="gauche">
-            <p class="donnee">
-                Agent Payeur
-            </p>
-        </div>
-        <div class="droite">
-            <p class="donnees">
-                SINDIA<br>
-                MBOUR <br>
-                Sénégal - 116 200
+            <p class="donneedroitel2">
+                Statut: Payé <br>
+                Payé par: {{user.prenom}} {{user.nom}} <br>
             </p>
 
         </div>
-    </div>
-    <div class="deux">
-        <div class="droite1">
-            <p class="signature">
-                Signature Agent
-            </p>
 
+        <div class="deux">
+            <div class="gauche">
+                <p class="donnee">
+                    Destinataire
+                </p>
+            </div>
+            <div class="droite">
+                <p class="donnees">
+                    {{beneficiaireByNumPension.nomPrenom}}<br>
+                    {{beneficiaireByNumPension.adresse}} <br>
+                    Sénégal
+                </p>
+                <p class="donneecentre">
+                    <br>
+                    Montant <br>
+                </p>
+                <p class="donneedroite">
+                    <br>
+                    XOF {{detailBeneficiaireChoisi.montant}} <br>
+                </p>
+            </div>
         </div>
-        <div class="gauche1">
-            <p class="signature">
-                Signature Client
-            </p>
+        <div class="deux">
+            <div class="gauche">
+                <p class="donnee">
+                    Agent Employeur
+                </p>
+            </div>
+            <div class="droite">
+                <p class="donnees">
+                    ENIM<br>
+                    4 Aenue Eric <br>
+                    Sénégal - 3000007
+                </p>
+            </div>
+        </div>
+        <div class="deux">
+            <div class="gauche">
+                <p class="donnee">
+                    Agent Payeur
+                </p>
+            </div>
+            <div class="droite">
+                <p class="donnees">
+                    XXXXXXX<br>
+                    {{user.dg_structure.libelle}} <br>
+                    Sénégal - 116 200
+                </p>
+
+            </div>
+        </div>
+        <div class="deux">
+            <div class="droite1">
+                <p class="signature">
+                    Signature Agent
+                </p>
+
+            </div>
+            <div class="gauche1">
+                <p class="signature">
+                    Signature Client
+                </p>
+            </div>
         </div>
     </div>
+<!--        PARTIE RECU 2-->
+
+        <div class="recu">
+            <div class="ligne">
+                <img src="assets/layout/images/laposte.png" class="logo" alt="logo">
+            </div>
+            <div class="ligne">
+                <p class="donneel2">
+                    Pension ID: {{beneficiaireByNumPension.numPension}} <br>
+                    Sequence ID: XXXXXXX <br>
+                    Mois Echéance: {{detailBeneficiaireChoisi.fichier.evenement.moisCampagne}}
+                </p>
+                <p class="donneecentrel2">
+                    <!--            Date d'envoi: XXXXXXX <br>-->
+                    Date de paiement: {{today | date: 'shortDate'}} <br>
+                </p>
+                <p class="donneedroitel2">
+                    Statut: Payé <br>
+                    Payé par: {{user.prenom}} {{user.nom}} <br>
+                </p>
+
+            </div>
+
+            <div class="deux">
+                <div class="gauche">
+                    <p class="donnee">
+                        Destinataire
+                    </p>
+                </div>
+                <div class="droite">
+                    <p class="donnees">
+                        {{beneficiaireByNumPension.nomPrenom}}<br>
+                        {{beneficiaireByNumPension.adresse}} <br>
+                        Sénégal
+                    </p>
+                    <p class="donneecentre">
+                        <br>
+                        Montant <br>
+                    </p>
+                    <p class="donneedroite">
+                        <br>
+                        XOF {{detailBeneficiaireChoisi.montant}} <br>
+                    </p>
+                </div>
+            </div>
+            <div class="deux">
+                <div class="gauche">
+                    <p class="donnee">
+                        Agent Employeur
+                    </p>
+                </div>
+                <div class="droite">
+                    <p class="donnees">
+                        ENIM<br>
+                        4 Aenue Eric <br>
+                        Sénégal - 3000007
+                    </p>
+                </div>
+            </div>
+            <div class="deux">
+                <div class="gauche">
+                    <p class="donnee">
+                        Agent Payeur
+                    </p>
+                </div>
+                <div class="droite">
+                    <p class="donnees">
+                        XXXXXXX<br>
+                        {{user.dg_structure.libelle}} <br>
+                        Sénégal - 116 200
+                    </p>
+
+                </div>
+            </div>
+            <div class="deux">
+                <div class="droite1">
+                    <p class="signature">
+                        Signature Agent
+                    </p>
+
+                </div>
+                <div class="gauche1">
+                    <p class="signature">
+                        Signature Client
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="test=false;exportPdf()" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
+
+<div  id="testImpression" hidden="true">
+<!--    <ng-template pTemplate="impression">-->
+
+<!--    </ng-template>-->
 </div>
-
-</div>
-
 
 <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
 <!--</div>-->
