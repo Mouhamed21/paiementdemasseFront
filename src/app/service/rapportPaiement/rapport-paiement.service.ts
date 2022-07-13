@@ -17,6 +17,11 @@ export class RapportPaiementService {
         return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/bureau/'+variable3 )
     }
 
+    recherchePaiementsParGuichetier(date1: string, date2: string, variable3: any) {
+        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/guichetier/'+variable3 )
+    }
+
+
     getBureau(idBureau: number) {
         return this.httpClient.get(this.baseUrl + '/bureau/'+idBureau )
     }

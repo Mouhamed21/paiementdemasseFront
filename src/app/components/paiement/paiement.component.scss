@@ -6,9 +6,121 @@
 #testImpression{
     background-color: white;
     //width:200px;
-    //height:200px;
+    height:500px;
+
     //color:black;
     //line-height: 200px;
     //text-align: center;
     //text-decoration: underline;
+}
+
+.recu
+{
+    //border: 1px solid;
+    position: relative;
+    left: 5%;
+    justify-content: center;
+    height: 500px;
+}
+
+
+.gauche1{
+    width: 15%;
+}
+.ligne
+{
+    display: flex;
+    border-left: 2px solid;
+    border-right: 2px solid;
+    border-top: 2px solid;
+    width: 90%;
+    height: 15%;
+}
+.deux
+{
+    display: flex;
+    height: 15%;
+    width: 90%;
+    border-left: 2px solid;
+    border-right: 2px solid;
+    border-top: 2px solid;
+}
+.gauche {
+    width: 25%;
+}
+
+.droite {
+    width: 75%;
+    border-left: 2px solid;
+    display: flex;
+}
+
+.gauche1 {
+    width: 50%;
+    border-bottom: 2px solid;
+
+}
+
+.droite1 {
+    width: 50%;
+    border-bottom: 2px solid;
+    border-right: 2px solid;
+}
+
+p{
+    color: #0b7ad1;
+    font-size: 15px;
+    font-weight: bold;
+}
+#donnee
+{
+    position: relative;
+    left: 1%;
+}
+
+.donnee
+{
+    position: relative;
+    left: 4%;
+    top: 4%;
+}
+
+#donneecentre
+{
+    position: relative;
+    left: 16%;
+}
+
+#donneedroite
+{
+    position: relative;
+    left: 27%;
+}
+
+.donnees
+{
+    position: relative;
+    left: 1%;
+    top: 4%;
+}
+.donneecentre
+{
+    position: relative;
+    left: 35%;
+}
+
+.donneedroite
+{
+    position: relative;
+    left: 51%;
+}
+.logo
+{
+    width: 100px;
+}
+
+.signature{
+    position: relative;
+    left: 30%;
+    top: 69%;
 }
