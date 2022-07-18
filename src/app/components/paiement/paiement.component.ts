@@ -61,7 +61,7 @@ export class PaiementComponent implements OnInit {
     today = new Date()
 
     //impression
-    test=false
+    displayImpressionDialog=false
 
 
 
@@ -72,24 +72,20 @@ export class PaiementComponent implements OnInit {
                 private messageService: MessageService) {
         this.keycloakService.loadUserProfile().then( res =>
         {
-            // console.log(res);
             this.user = res;
             this.email= res.email;
-            // console.log(res.email);
             this.getUserByEmail(res.email);
 
         });    }
 
     ngOnInit(): void {
         this.getAllStatus()
-        // this.getBeneficiaireByNumPension(23658974)
         console.log(1611326)
     }
 
     getBeneficiaireByNumPension(numPension):any{
         this.beneficiaireService.getBeneficiaireByNumPension(numPension).subscribe(res=>{
             this.beneficiaireByNumPension = res
-            // this.beneficiaireByNumPension.typePiece = "cni"
             console.log(this.beneficiaireByNumPension)
         })
     }
@@ -102,14 +98,10 @@ export class PaiementComponent implements OnInit {
     }
 
     choix(detail:any){
-        // console.log( this.detailBeneficiaireChoisi)
         this.detailBeneficiaireChoisi = detail
-        // console.log(this.beneficiaireByNumPension.id)
-        // console.log(this.detailBeneficiaireChoisi)
 
         this.detailBeneficiaireChoisi["beneficiaire"] = new Beneficiaire()
         this.detailBeneficiaireChoisi.beneficiaire.numPension = this.beneficiaireByNumPension.numPension
-        // console.log(this.detailBeneficiaireChoisi)
     }
 
 
@@ -125,7 +117,6 @@ export class PaiementComponent implements OnInit {
         this.paiement.idCaisse = this.user.dg_caisse.id
         this.paiement.idUser = this.user.id
 
-        // console.log(this.detailBeneficiaireChoisi.statut)
 
     }
     }
@@ -142,7 +133,6 @@ export class PaiementComponent implements OnInit {
 
         detailBeneficiaire.statut = this.listeDesStatuts.find(s => s.libelle == "PAYÉ")
         detailBeneficiaire.paye = true
-        console.log(detailBeneficiaire)
         this.detailBeneficiaireService.updateDetailBeneficiaire(detailBeneficiaire).subscribe(res=>{
             console.log(res)
         })
@@ -164,14 +154,11 @@ export class PaiementComponent implements OnInit {
     showSuccess(){
         this.messageService.add({key: 'tc', severity:'success', summary: 'PAIEMENT EFFECTUÉ AVEC SUCCÈS', detail: 'Génération du recu en cours'});
     }
-    
-    testF(){
-        this.test = true
 
-    }
 
     exportPdf() {
-        var data = document.getElementById('testIMP');
+     
+        var data = document.getElementById('impression');
         html2canvas(data).then(canvas => {
             const imgData = canvas.toDataURL('image/jpeg')
 
@@ -188,6 +175,9 @@ export class PaiementComponent implements OnInit {
 
             pdf.save('MYPdf.pdf')
         })
+        
+        this.showSuccess()
+
 
 
 

@@ -1,3 +1,5 @@
+<p-toast position="top-center" key="tc"></p-toast>
+
 <div class="card">
     <h5>Rechercher un bénéficiaire</h5>
 
@@ -60,7 +62,7 @@
 
                             <div class="field col-12 md:col-6">
                                 <label htmlFor="zip">Date d'expiration Piece</label>
-                                <input pInputText id="dateExpirationPiece" value="{{beneficiaireByNumPension.dateExpirationPiece}}" [(ngModel)]="beneficiaireByNumPension.dateExpirationPiece" style="color :black" type="text" />
+                                <input pInputText id="dateExpirationPiece" value="{{beneficiaireByNumPension.dateExpirationPiece}}" [(ngModel)]="beneficiaireByNumPension.dateExpirationPiece" style="color :black" type="datetime-local" />
                             </div>
                         </div>
 <!--                    </div>-->
@@ -153,27 +155,24 @@
                         <ng-template pTemplate="footer">
 <!--                            <p *ngIf="!existenceCaisse">VOUS NE POSSEDEZ PAS DE CAISSE</p>-->
                             <p-message *ngIf="!existenceCaisse" severity="error" text="VOUS NE POSSEDEZ PAS DE CAISSE"></p-message>
-                            <button *ngIf="existenceCaisse" pButton icon="pi pi-check" (click)="displayDialog=false;savePaiement();showSuccess();test=true;" label="Ok" class="p-button-outlined"></button>
-                            <p-toast position="top-center" key="tc"></p-toast>
+                            <button *ngIf="existenceCaisse" pButton icon="pi pi-check" (click)="displayDialog=false;savePaiement();showSuccess();displayImpressionDialog=true;" label="Ok" class="p-button-outlined"></button>
 
                             <!--                            <button type="button" pButton pRipple (click)="showSuccess()" label="Success" class="p-button-success mb-2"></button>-->
 
 
                         </ng-template>
                     </p-dialog>
-
                 </p-tabPanel>
 
             </p-tabView>
 <!--        </div>-->
     </div>
 
-<!--<p-dialog  header="Header" [(visible)]="test" [style]="{width: '850px'}">-->
 
-<p-dialog [(visible)]="test" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true"
-          [draggable]="false" [resizable]="false">
+<p-dialog header="IMPRESSION" [(visible)]="displayImpressionDialog" [modal]="true" [breakpoints]="{'1500px': '200vw'}" [style]="{width: '50vw'}"
+          [maximizable]="true" [draggable]="false" [resizable]="false">
 
-    <div id="testIMP">
+    <div id="impression" *ngIf="detailBeneficiaireChoisi.paye == true">
     <div class="recu">
         <div class="ligne">
             <img src="assets/layout/images/laposte.png" class="logo" alt="logo">
@@ -353,17 +352,11 @@
 
 
     <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="test=false;exportPdf()" label="Ok" styleClass="p-button-text"></p-button>
+        <p-button icon="pi pi-check" (click)="displayImpressionDialog=false;exportPdf()" label="IMPRIMER" styleClass="p-button-text"></p-button>
     </ng-template>
 </p-dialog>
 
-<div  id="testImpression" hidden="true">
-<!--    <ng-template pTemplate="impression">-->
 
-<!--    </ng-template>-->
-</div>
-
-<button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
 <!--</div>-->
 
 
