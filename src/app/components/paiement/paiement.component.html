@@ -1,3 +1,5 @@
+<p-toast position="top-center" key="tc"></p-toast>
+
 <div class="card">
     <h5>Rechercher un bénéficiaire</h5>
 
@@ -60,7 +62,7 @@
 
                             <div class="field col-12 md:col-6">
                                 <label htmlFor="zip">Date d'expiration Piece</label>
-                                <input pInputText id="dateExpirationPiece" value="{{beneficiaireByNumPension.dateExpirationPiece}}" [(ngModel)]="beneficiaireByNumPension.dateExpirationPiece" style="color :black" type="text" />
+                                <input pInputText id="dateExpirationPiece" value="{{beneficiaireByNumPension.dateExpirationPiece}}" [(ngModel)]="beneficiaireByNumPension.dateExpirationPiece" style="color :black" type="datetime-local" />
                             </div>
                         </div>
 <!--                    </div>-->
@@ -153,29 +155,208 @@
                         <ng-template pTemplate="footer">
 <!--                            <p *ngIf="!existenceCaisse">VOUS NE POSSEDEZ PAS DE CAISSE</p>-->
                             <p-message *ngIf="!existenceCaisse" severity="error" text="VOUS NE POSSEDEZ PAS DE CAISSE"></p-message>
-                            <button *ngIf="existenceCaisse" pButton icon="pi pi-check" (click)="displayDialog=false;savePaiement();showSuccess()" label="Ok" class="p-button-outlined"></button>
-                            <p-toast position="top-center" key="tc"></p-toast>
+                            <button *ngIf="existenceCaisse" pButton icon="pi pi-check" (click)="displayDialog=false;savePaiement();showSuccess();displayImpressionDialog=true;" label="Ok" class="p-button-outlined"></button>
 
                             <!--                            <button type="button" pButton pRipple (click)="showSuccess()" label="Success" class="p-button-success mb-2"></button>-->
 
 
                         </ng-template>
                     </p-dialog>
-
                 </p-tabPanel>
 
             </p-tabView>
 <!--        </div>-->
-
-
-
     </div>
 
-<div  id="testImpression">
-HELLLLLLO
-</div>
 
-<button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+<p-dialog header="IMPRESSION" [(visible)]="displayImpressionDialog" [modal]="true" [breakpoints]="{'1500px': '200vw'}" [style]="{width: '50vw'}"
+          [maximizable]="true" [draggable]="false" [resizable]="false">
+
+    <div id="impression" *ngIf="detailBeneficiaireChoisi.paye == true">
+    <div class="recu">
+        <div class="ligne">
+            <img src="assets/layout/images/laposte.png" class="logo" alt="logo">
+        </div>
+        <div class="ligne">
+            <p class="donneel2">
+                Pension ID: {{beneficiaireByNumPension.numPension}} <br>
+                Sequence ID: XXXXXXX <br>
+                Mois Echéance: {{detailBeneficiaireChoisi.fichier.evenement.moisCampagne}}
+            </p>
+            <p class="donneecentrel2">
+                <!--            Date d'envoi: XXXXXXX <br>-->
+                Date de paiement: {{today | date: 'shortDate'}} <br>
+            </p>
+            <p class="donneedroitel2">
+                Statut: Payé <br>
+                Payé par: {{user.prenom}} {{user.nom}} <br>
+            </p>
+
+        </div>
+
+        <div class="deux">
+            <div class="gauche">
+                <p class="donnee">
+                    Destinataire
+                </p>
+            </div>
+            <div class="droite">
+                <p class="donnees">
+                    {{beneficiaireByNumPension.nomPrenom}}<br>
+                    {{beneficiaireByNumPension.adresse}} <br>
+                    Sénégal
+                </p>
+                <p class="donneecentre">
+                    <br>
+                    Montant <br>
+                </p>
+                <p class="donneedroite">
+                    <br>
+                    XOF {{detailBeneficiaireChoisi.montant}} <br>
+                </p>
+            </div>
+        </div>
+        <div class="deux">
+            <div class="gauche">
+                <p class="donnee">
+                    Agent Employeur
+                </p>
+            </div>
+            <div class="droite">
+                <p class="donnees">
+                    ENIM<br>
+                    4 Aenue Eric <br>
+                    Sénégal - 3000007
+                </p>
+            </div>
+        </div>
+        <div class="deux">
+            <div class="gauche">
+                <p class="donnee">
+                    Agent Payeur
+                </p>
+            </div>
+            <div class="droite">
+                <p class="donnees">
+                    XXXXXXX<br>
+                    {{user.dg_structure.libelle}} <br>
+                    Sénégal - 116 200
+                </p>
+
+            </div>
+        </div>
+        <div class="deux">
+            <div class="droite1">
+                <p class="signature">
+                    Signature Agent
+                </p>
+
+            </div>
+            <div class="gauche1">
+                <p class="signature">
+                    Signature Client
+                </p>
+            </div>
+        </div>
+    </div>
+<!--        PARTIE RECU 2-->
+
+        <div class="recu">
+            <div class="ligne">
+                <img src="assets/layout/images/laposte.png" class="logo" alt="logo">
+            </div>
+            <div class="ligne">
+                <p class="donneel2">
+                    Pension ID: {{beneficiaireByNumPension.numPension}} <br>
+                    Sequence ID: XXXXXXX <br>
+                    Mois Echéance: {{detailBeneficiaireChoisi.fichier.evenement.moisCampagne}}
+                </p>
+                <p class="donneecentrel2">
+                    <!--            Date d'envoi: XXXXXXX <br>-->
+                    Date de paiement: {{today | date: 'shortDate'}} <br>
+                </p>
+                <p class="donneedroitel2">
+                    Statut: Payé <br>
+                    Payé par: {{user.prenom}} {{user.nom}} <br>
+                </p>
+
+            </div>
+
+            <div class="deux">
+                <div class="gauche">
+                    <p class="donnee">
+                        Destinataire
+                    </p>
+                </div>
+                <div class="droite">
+                    <p class="donnees">
+                        {{beneficiaireByNumPension.nomPrenom}}<br>
+                        {{beneficiaireByNumPension.adresse}} <br>
+                        Sénégal
+                    </p>
+                    <p class="donneecentre">
+                        <br>
+                        Montant <br>
+                    </p>
+                    <p class="donneedroite">
+                        <br>
+                        XOF {{detailBeneficiaireChoisi.montant}} <br>
+                    </p>
+                </div>
+            </div>
+            <div class="deux">
+                <div class="gauche">
+                    <p class="donnee">
+                        Agent Employeur
+                    </p>
+                </div>
+                <div class="droite">
+                    <p class="donnees">
+                        ENIM<br>
+                        4 Aenue Eric <br>
+                        Sénégal - 3000007
+                    </p>
+                </div>
+            </div>
+            <div class="deux">
+                <div class="gauche">
+                    <p class="donnee">
+                        Agent Payeur
+                    </p>
+                </div>
+                <div class="droite">
+                    <p class="donnees">
+                        XXXXXXX<br>
+                        {{user.dg_structure.libelle}} <br>
+                        Sénégal - 116 200
+                    </p>
+
+                </div>
+            </div>
+            <div class="deux">
+                <div class="droite1">
+                    <p class="signature">
+                        Signature Agent
+                    </p>
+
+                </div>
+                <div class="gauche1">
+                    <p class="signature">
+                        Signature Client
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="displayImpressionDialog=false;exportPdf()" label="IMPRIMER" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
+
+
 <!--</div>-->
 
 

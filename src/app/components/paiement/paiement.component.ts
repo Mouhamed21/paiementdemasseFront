@@ -57,7 +57,12 @@ export class PaiementComponent implements OnInit {
     activeIndex2: number = 0;
 
 
+    //date d'aujourd'hui
+    today = new Date()
+
     //impression
+    displayImpressionDialog=false
+
 
 
 
@@ -67,44 +72,36 @@ export class PaiementComponent implements OnInit {
                 private messageService: MessageService) {
         this.keycloakService.loadUserProfile().then( res =>
         {
-            console.log(res);
             this.user = res;
             this.email= res.email;
-            console.log(res.email);
             this.getUserByEmail(res.email);
 
         });    }
 
     ngOnInit(): void {
         this.getAllStatus()
-        // this.getBeneficiaireByNumPension(23658974)
-        console.log(23658974)
+        console.log(1611326)
     }
 
     getBeneficiaireByNumPension(numPension):any{
         this.beneficiaireService.getBeneficiaireByNumPension(numPension).subscribe(res=>{
             this.beneficiaireByNumPension = res
-            this.beneficiaireByNumPension.typePiece = "cni"
-            console.log(this.beneficiaireByNumPension.detailBeneficiaires)
+            console.log(this.beneficiaireByNumPension)
         })
     }
 
     updateBeneficiaire(){
         console.log(this.beneficiaireByNumPension)
-        this.beneficiaireService.updateBeneficiaire(this.beneficiaireByNumPension.id,this.beneficiaireByNumPension).subscribe(res=>{
+        this.beneficiaireService.updateBeneficiaire(this.beneficiaireByNumPension.numPension,this.beneficiaireByNumPension).subscribe(res=>{
             console.log(res)
         })
     }
 
     choix(detail:any){
-        console.log( this.detailBeneficiaireChoisi)
         this.detailBeneficiaireChoisi = detail
-        console.log(this.beneficiaireByNumPension.id)
-        console.log(this.detailBeneficiaireChoisi)
 
         this.detailBeneficiaireChoisi["beneficiaire"] = new Beneficiaire()
-        this.detailBeneficiaireChoisi.beneficiaire.id = this.beneficiaireByNumPension.id
-        console.log(this.detailBeneficiaireChoisi)
+        this.detailBeneficiaireChoisi.beneficiaire.numPension = this.beneficiaireByNumPension.numPension
     }
 
 
@@ -114,13 +111,12 @@ export class PaiementComponent implements OnInit {
             this.existenceCaisse = false
             this.existenceCaisse = true
         }else{
-        this.paiement.beneficiaire.id = this.beneficiaireByNumPension.id
+        this.paiement.beneficiaire.numPension = this.beneficiaireByNumPension.numPension
         this.paiement.evenement = this.detailBeneficiaireChoisi.fichier.evenement
         this.paiement.idBureau = this.user.dg_structure.id
         this.paiement.idCaisse = this.user.dg_caisse.id
         this.paiement.idUser = this.user.id
 
-        console.log(this.detailBeneficiaireChoisi.statut)
 
     }
     }
@@ -137,7 +133,6 @@ export class PaiementComponent implements OnInit {
 
         detailBeneficiaire.statut = this.listeDesStatuts.find(s => s.libelle == "PAYÉ")
         detailBeneficiaire.paye = true
-        console.log(detailBeneficiaire)
         this.detailBeneficiaireService.updateDetailBeneficiaire(detailBeneficiaire).subscribe(res=>{
             console.log(res)
         })
@@ -152,47 +147,18 @@ export class PaiementComponent implements OnInit {
     getAllStatus(){
         this.statutService.getStatuts().subscribe(res=>{
             this.listeDesStatuts = res
-            console.log(this.listeDesStatuts)
+            // console.log(this.listeDesStatuts)
         })
     }
 
     showSuccess(){
-        this.messageService.add({key: 'tc', severity:'success', summary: 'Success', detail: 'PAIEMENT EFFECTUÉ AVEC SUCCÈS\n Génération du recu en cours'});
+        this.messageService.add({key: 'tc', severity:'success', summary: 'PAIEMENT EFFECTUÉ AVEC SUCCÈS', detail: 'Génération du recu en cours'});
     }
 
+
     exportPdf() {
-
-        // const elementToPrint = document.getElementById('testImpression'); //The html element to become a pdf
-        // console.log(elementToPrint)
-        // const pdf = new jsPDF('p', 'pt', 'a4');
-        // pdf.html(elementToPrint);
-        // pdf.save("tetst.pdf")
-
-
-        // const doc = new jsPDF()
-        // // doc.text("hello",10,10)
-        //
-        // doc.html(document.getElementById("testImpression"))
-        // doc.save("tetst.pdf")
-
-
-        var data = document.getElementById('testImpression');
-        // html2canvas(data).then(canvas => {
-        //     // Few necessary setting options
-        //     var imgWidth = 208;
-        //     var pageHeight = 295;
-        //     var imgHeight = canvas.height * imgWidth / canvas.width;
-        //     var heightLeft = imgHeight;
-        //
-        //     const contentDataURL = canvas.toDataURL('image/png')
-        //     let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-        //
-        //     var position = 0;
-        //     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-        //     // pdf.html()
-        //     pdf.save('MYPdf.pdf'); // Generated PDF
-        // });
-
+     
+        var data = document.getElementById('impression');
         html2canvas(data).then(canvas => {
             const imgData = canvas.toDataURL('image/jpeg')
 
@@ -209,6 +175,9 @@ export class PaiementComponent implements OnInit {
 
             pdf.save('MYPdf.pdf')
         })
+        
+        this.showSuccess()
+
 
 
 
