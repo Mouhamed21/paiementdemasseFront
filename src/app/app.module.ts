@@ -154,6 +154,7 @@ import { FichierCertifieComponent } from './components/fichier-certifie/fichier-
 import { BeneficiaireComponent } from './components/beneficiaire/beneficiaire.component';
 import { PaiementComponent } from './components/paiement/paiement.component';
 import { RapportPaiementComponent } from './components/rapport-paiement/rapport-paiement.component';
+import { RapportPaiementGuichetierComponent } from './components/rapport-paiement-guichetier/rapport-paiement-guichetier.component';
 
 
 @NgModule({
@@ -301,7 +302,8 @@ import { RapportPaiementComponent } from './components/rapport-paiement/rapport-
         FichierCertifieComponent,
         BeneficiaireComponent,
         PaiementComponent,
-        RapportPaiementComponent
+        RapportPaiementComponent,
+        RapportPaiementGuichetierComponent
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

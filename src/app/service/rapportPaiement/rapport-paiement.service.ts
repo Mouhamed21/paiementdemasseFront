@@ -17,8 +17,8 @@ export class RapportPaiementService {
         return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/bureau/'+variable3 )
     }
 
-    recherchePaiementsParGuichetier(date1: string, date2: string, variable3: any) {
-        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/guichetier/'+variable3 )
+    recherchePaiementsParGuichetier(date1: string, date2: string, variable3: any, variable4:any) {
+        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/user/'+variable3 +'/'+ variable4 )
     }
 
 
@@ -26,8 +26,8 @@ export class RapportPaiementService {
         return this.httpClient.get(this.baseUrl + '/bureau/'+idBureau )
     }
 
-    getCaisse(idCaisse: number) {
-        return this.httpClient.get(this.baseUrl + '/bureau/'+idCaisse )
+    getCaisse(id: number) {
+        return this.httpClient.get(this.baseUrl + '/caisse/'+id )
     }
 
 }
