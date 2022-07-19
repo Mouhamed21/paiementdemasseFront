@@ -110,12 +110,19 @@ export class PaiementComponent implements OnInit {
         if (!this.user.dg_caisse){
             this.existenceCaisse = false
             this.existenceCaisse = true
+
         }else{
-        this.paiement.beneficiaire.numPension = this.beneficiaireByNumPension.numPension
-        this.paiement.evenement = this.detailBeneficiaireChoisi.fichier.evenement
+        // this.paiement.beneficiaire.numPension = this.beneficiaireByNumPension.numPension
+            console.log(this.detailBeneficiaireChoisi.id)
+            this.paiement.detailBeneficiaire.id = this.detailBeneficiaireChoisi.id
+            console.log(this.paiement.detailBeneficiaire.id)
+            this.paiement.evenement = this.detailBeneficiaireChoisi.fichier.evenement
         this.paiement.idBureau = this.user.dg_structure.id
         this.paiement.idCaisse = this.user.dg_caisse.id
         this.paiement.idUser = this.user.id
+
+            console.log(this.paiement)
+
 
 
     }
@@ -157,7 +164,7 @@ export class PaiementComponent implements OnInit {
 
 
     exportPdf() {
-     
+
         var data = document.getElementById('impression');
         html2canvas(data).then(canvas => {
             const imgData = canvas.toDataURL('image/jpeg')
@@ -175,13 +182,8 @@ export class PaiementComponent implements OnInit {
 
             pdf.save('MYPdf.pdf')
         })
-        
+
         this.showSuccess()
-
-
-
-
-
 }
 
 
