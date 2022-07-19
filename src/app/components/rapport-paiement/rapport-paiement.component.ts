@@ -20,6 +20,7 @@ export class RapportPaiementComponent implements OnInit {
     resultRecherche: Paiement;
     bureau: Object;
     nameBureau: string;
+    nameCaisse:string;
     caisse: Object;
     users:any;
     email:any;
@@ -27,18 +28,10 @@ export class RapportPaiementComponent implements OnInit {
 
   constructor(private rapportPaiementService: RapportPaiementService, private userService: UserServiceService, public keycloak: KeycloakService,
               public datepipe: DatePipe) {
-      this.keycloak.loadUserProfile().then( res =>
-      {
-          console.log(res);
-          this.users = res;
-          this.email= res.email;
-          console.log(res.email);
-          this.getUser(res.email);
-
-      });
   }
 
   ngOnInit(): void {
+      //this.getUser(this.email)
   }
 
 
@@ -48,33 +41,13 @@ export class RapportPaiementComponent implements OnInit {
                                                         variable3).subscribe(response => {
                 this.resultRecherches = response;
                 this.getBureauById(JSON.parse(JSON.stringify(response[0])).idBureau)
-                //this.nameBureau = this.bureau.libelle
+                this.getCaisseById(JSON.parse(JSON.stringify(response[0])).idCaisse)
+
+            //this.nameBureau = this.bureau.libelle
                 console.log(this.resultRecherches)
             }, err => {
                 console.log(err);
             });
-    }
-
- /*   recherchePaiementsGuichetier(date1: string, date2: string, variable3: number) {
-        this.variable3 = this.user.idUser;
-        this.rapportPaiementService.recherchePaiementsParGuichetier(this.datepipe.transform(this.date1, 'dd-MM-yyyy'),
-            this.datepipe.transform(this.date2, 'dd-MM-yyyy'),
-            variable3).subscribe(response => {
-            this.resultRecherches = response;
-           // this.getUser(JSON.parse(JSON.stringify(response[0])).idUser)
-            //this.nameBureau = this.bureau.libelle
-            console.log(this.resultRecherches)
-        }, err => {
-            console.log(err);
-        });
-    }*/
-    public getUser(email){
-        console.log(email);
-        return this.userService.getUserByEmail(email).subscribe(data =>
-        {
-            console.log(data);
-            this.user = data;
-        })
     }
 
 
@@ -83,6 +56,16 @@ export class RapportPaiementComponent implements OnInit {
             //this.bureau = JSON.parse(JSON.stringify(response)) ;
             this.nameBureau=JSON.parse(JSON.stringify(response)).libelle;
             console.log(this.nameBureau);
+        }, err => {
+            console.log(err);
+        });
+    }
+
+    getCaisseById(idCaisse: number) {
+        this.rapportPaiementService.getCaisse(idCaisse).subscribe(response => {
+            //this.bureau = JSON.parse(JSON.stringify(response)) ;
+            this.nameCaisse=JSON.parse(JSON.stringify(response)).libelle;
+            console.log(this.nameCaisse);
         }, err => {
             console.log(err);
         });
