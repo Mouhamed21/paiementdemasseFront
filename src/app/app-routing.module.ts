@@ -40,6 +40,9 @@ import {FichierCertifieComponent} from "./components/fichier-certifie/fichier-ce
 import {BeneficiaireComponent} from "./components/beneficiaire/beneficiaire.component";
 import { PaiementComponent } from './components/paiement/paiement.component';
 import {RapportPaiementComponent} from "./components/rapport-paiement/rapport-paiement.component";
+import {
+    RapportPaiementGuichetierComponent
+} from "./components/rapport-paiement-guichetier/rapport-paiement-guichetier.component";
 // @ts-ignore
 @NgModule({
     imports: [
@@ -81,9 +84,8 @@ import {RapportPaiementComponent} from "./components/rapport-paiement/rapport-pa
                     {path: 'pmenim/fichiersCertifier', component: FichierCertifieComponent},
                     {path: 'pmenim/beneficiaire', component: BeneficiaireComponent},
                     {path: 'pmenim/paiement', component: PaiementComponent},
-                    {path: 'pmenim/paiement/rapport', component: RapportPaiementComponent}
-
-
+                    {path: 'pmenim/paiement/rapport', component: RapportPaiementComponent},
+                    {path: 'pmenim/paiement/rapportGuichet', component: RapportPaiementGuichetierComponent}
                 ],
             },
             {path:'pages/landing', component: LandingComponent},
