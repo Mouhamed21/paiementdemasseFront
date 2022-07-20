@@ -13,8 +13,8 @@ export class RapportPaiementService {
 
   constructor(private httpClient: HttpClient) { }
 
-    recherchePaiements(date1: string, date2: string, variable3: any) {
-        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/bureau/'+variable3 )
+    recherchePaiementsByBureau(date1: string, date2: string, bureau: any) {
+        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/bureau/'+bureau )
     }
 
     recherchePaiementsParGuichetier(date1: string, date2: string, variable3: any, variable4:any) {
@@ -28,6 +28,10 @@ export class RapportPaiementService {
 
     getCaisse(id: number) {
         return this.httpClient.get(this.baseUrl + '/caisse/'+id )
+    }
+
+    getAgentPayeurById(id: number) {
+        return this.httpClient.get(this.baseUrl + '/user/'+id )
     }
 
 }

@@ -51,7 +51,7 @@
                         <th pSortableColumn="beneficiaire">Beneficiaire <p-sortIcon field="category"></p-sortIcon></th>
                         <th pSortableColumn="idUser">Agent Payeur <p-sortIcon field="rating"></p-sortIcon></th>
                         <th pSortableColumn="evenement">Evenement <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
-                        <th pSortableColumn="montant">Montant <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                        <th pSortableColumn="montant">Montant (FCFA) <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
 
                     </tr>
                 </ng-template>
@@ -79,7 +79,7 @@
                         </td>
                         <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">Montant</span>
-                            {{resultRecherche.detailBeneficiaire.montant}}
+                            {{resultRecherche.detailBeneficiaire.montant.toLocaleString('fr-FR')}}
 
                         </td>
                     </tr>
