@@ -19,7 +19,11 @@ export class RapportPaiementGuichetierComponent implements OnInit {
     date2: string;
     date1: string;
     resultRecherches: any;
+    nombrePaiementsReussi:any;
+    nombrePaiementsAnnule:any;
     resultRecherche: Paiement;
+    resultRecherchesAnnules:any;
+    resultRecherchesAnnule:Paiement;
     bureau: Object;
     nameBureau: string;
     nameCaisse:string;
@@ -31,6 +35,7 @@ export class RapportPaiementGuichetierComponent implements OnInit {
     nom:string;
     libelleCaisse:string;
     caisseIdentifiant:any;
+    montantGlobal:number=0;
 
     constructor(private rapportPaiementService: RapportPaiementService, private userService: UserServiceService, public keycloak: KeycloakService,
                 public datepipe: DatePipe) {
@@ -41,7 +46,6 @@ export class RapportPaiementGuichetierComponent implements OnInit {
             this.email= res.email;
             console.log(res.email);
             this.getUser(res.email);
-
         });
     }
 
@@ -65,6 +69,20 @@ export class RapportPaiementGuichetierComponent implements OnInit {
         this.nom = this.user.nom;
         console.log(this.user.prenom)
 
+        this.rapportPaiementService.nombrePaiementsParGuichetier(this.datepipe.transform(this.date1, 'yyyy-MM-dd'),
+            this.datepipe.transform(this.date2, 'yyyy-MM-dd'),
+            this.variable3,this.variable4).subscribe(data => {
+            this.nombrePaiementsReussi = data;
+            console.log(this.nombrePaiementsReussi);
+        });
+
+        this.rapportPaiementService.nombrePaiementsAnnuleParGuichetier(this.datepipe.transform(this.date1, 'yyyy-MM-dd'),
+            this.datepipe.transform(this.date2, 'yyyy-MM-dd'),
+            this.variable3,this.variable4).subscribe(data => {
+            this.nombrePaiementsAnnule = data;
+            console.log(this.nombrePaiementsAnnule);
+        });
+
         //debugger
         this.rapportPaiementService.recherchePaiementsParGuichetier(this.datepipe.transform(this.date1, 'yyyy-MM-dd'),
             this.datepipe.transform(this.date2, 'yyyy-MM-dd'),
@@ -72,10 +90,13 @@ export class RapportPaiementGuichetierComponent implements OnInit {
             this.resultRecherches = response;
             console.log(response);
             console.log(JSON.parse(JSON.stringify(response)));
+            //console.log(this.resultRecherches.detailBeneficiaire.montant);
+
             for (let i=0; i<this.resultRecherches.length; i++){
              //this.resultRecherches[i].addAttribute(libelleCaisse) =
                 //console.log(this.getCaisseById(this.resultRecherches[i].idCaisse));
-
+                console.log(this.resultRecherches[i].detailBeneficiaire.montant);
+               this.montantGlobal += this.resultRecherches[i].detailBeneficiaire.montant;
                 this.rapportPaiementService.getCaisse(this.resultRecherches[i].idCaisse).subscribe(res=>{
                     this.resultRecherches[i].idCaisse = res
                     console.log(this.resultRecherches[i].idCaisse)
@@ -88,6 +109,7 @@ export class RapportPaiementGuichetierComponent implements OnInit {
 
 
             }
+            console.log(this.montantGlobal)
             //this.nom
             console.log(this.nom)
             //this.nameBureau = this.bureau.libelle
@@ -95,6 +117,34 @@ export class RapportPaiementGuichetierComponent implements OnInit {
         }, err => {
             console.log(err);
         });
+
+        this.rapportPaiementService.recherchePaiementsAnnuleParGuichetier(this.datepipe.transform(this.date1, 'yyyy-MM-dd'),
+            this.datepipe.transform(this.date2, 'yyyy-MM-dd'),
+            this.variable3,this.variable4).subscribe(res => {
+            this.resultRecherchesAnnules = res;
+            console.log(res);
+            console.log(JSON.parse(JSON.stringify(res)));
+            //console.log(this.resultRecherches.detailBeneficiaire.montant);
+
+            for (let i=0; i<this.resultRecherchesAnnules.length; i++){
+                //this.resultRecherches[i].addAttribute(libelleCaisse) =
+                //console.log(this.getCaisseById(this.resultRecherches[i].idCaisse));
+                //console.log(this.resultRecherches[i].detailBeneficiaire.montant);
+                //this.montantGlobal += this.resultRecherches[i].detailBeneficiaire.montant;
+                this.rapportPaiementService.getCaisse(this.resultRecherchesAnnules[i].idCaisse).subscribe(res=>{
+                    this.resultRecherchesAnnules[i].idCaisse = res
+                    console.log(this.resultRecherchesAnnules[i].idCaisse)
+                })
+            }
+            //console.log(this.montantGlobal)
+            //this.nom
+            console.log(this.nom)
+            //this.nameBureau = this.bureau.libelle
+            console.log(this.resultRecherchesAnnules)
+        }, err => {
+            console.log(err);
+        });
+
     }
 
     getBureauById(idBureau: number) {

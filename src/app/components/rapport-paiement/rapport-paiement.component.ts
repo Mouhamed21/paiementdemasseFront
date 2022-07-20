@@ -27,6 +27,8 @@ export class RapportPaiementComponent implements OnInit {
     user:any;
     montantTotal:number=0;
     agentPayeur:any;
+    resultRecherchesAnnulesBureaus:any;
+    resultRecherchesAnnuleBureau:Paiement;
 
   constructor(private rapportPaiementService: RapportPaiementService, private userService: UserServiceService, public keycloak: KeycloakService,
               public datepipe: DatePipe) {
@@ -56,8 +58,8 @@ export class RapportPaiementComponent implements OnInit {
 
 
     rechercheByBureau(date1: string, date2: string) {
-        this.rapportPaiementService.recherchePaiementsByBureau(this.datepipe.transform(this.date1, 'dd-MM-yyyy'),
-                                                        this.datepipe.transform(this.date2, 'dd-MM-yyyy'),
+        this.rapportPaiementService.recherchePaiementsByBureau(this.datepipe.transform(this.date1, 'yyyy-MM-dd'),
+                                                        this.datepipe.transform(this.date2, 'yyyy-MM-dd'),
             this.user.dg_structure.id).subscribe(response => {
                 this.resultRecherches = response;
                 //this.getBureauById(JSON.parse(JSON.stringify(response)).idBureau)
@@ -79,7 +81,39 @@ export class RapportPaiementComponent implements OnInit {
             }, err => {
                 console.log(err);
             });
+        console.log(this.resultRecherches);
+
+        this.rapportPaiementService.recherchePaiementsAnnuleParBureau(this.datepipe.transform(this.date1, 'yyyy-MM-dd'),
+            this.datepipe.transform(this.date2, 'yyyy-MM-dd'),
+            this.user.dg_structure.id).subscribe(res => {
+            this.resultRecherchesAnnulesBureaus = res;
+            console.log(this.resultRecherchesAnnulesBureaus);
+            console.log(JSON.parse(JSON.stringify(res)));
+            //console.log(this.resultRecherches.detailBeneficiaire.montant);
+
+            for (let i=0; i<this.resultRecherchesAnnulesBureaus.length; i++){
+                this.rapportPaiementService.getCaisse(this.resultRecherchesAnnulesBureaus[i].idCaisse).subscribe(res=>{
+                    this.resultRecherchesAnnulesBureaus[i].idCaisse = res
+                    //console.log(this.resultRecherches[i].idCaisse)
+                })
+
+               // this.montantTotal += this.resultRecherchesAnnulesBureaus[i].detailBeneficiaire.montant
+
+                this.rapportPaiementService.getAgentPayeurById(this.resultRecherchesAnnulesBureaus[i].idUser).subscribe(res=>{
+                    this.resultRecherchesAnnulesBureaus[i].idUser = res
+                    //console.log(this.resultRecherches[i].idCaisse)
+                })
+            }
+            //console.log(this.montantGlobal)
+            //this.nom
+           // console.log(this.nom)
+            //this.nameBureau = this.bureau.libelle
+            console.log(this.resultRecherchesAnnulesBureaus)
+        }, err => {
+            console.log(err);
+        });
     }
+
 
 
     getBureauById(idBureau: number) {

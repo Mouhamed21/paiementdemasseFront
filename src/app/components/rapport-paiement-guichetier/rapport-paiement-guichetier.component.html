@@ -16,8 +16,8 @@
                         <label htmlFor="Date2"></label>
                     </span>
                 </div>
-                <div class="col-sm">
-                    <button pButton pRipple type="button" icon="pi pi-search" class="p-button-rounded p-button-success mr-2 mb-2"
+                <div class="col-md">
+                    <button pButton pRipple type="button" label="Rechercher" icon="pi pi-search" class="p-button-rounded p-button-success mr-2 mb-2"
                             (click)="recherchePaiementsGuichetier(date1, date2)"></button>
                 </div>
             </div>
@@ -33,14 +33,31 @@
     <div class="col-12">
         <div class="card">
             <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <b>{{user.dg_structure.libelle}}</b>
-                </ng-template>
 
                 <ng-template pTemplate="right">
                     <button pButton pRipple label="Export exel" icon="pi pi-upload" class="mr-2 inline-block" (click)="dt.exportCSV()"></button>
                     <button pButton pRipple label="Export csv" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
                 </ng-template>
+
+            </p-toolbar>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+<!--                    <b>Liste des Paiements Effectives</b>-->
+                    Bureau:<b>{{user.dg_structure.libelle}}</b>
+                    <div class="paiement">
+                        Nombre de Paiments Effectués: <b>{{nombrePaiementsReussi}}</b>
+                    </div>
+
+
+                </ng-template>
+                <ng-template pTemplate="right">
+                   Montant Global: <b>{{montantGlobal.toLocaleString('fr-FR')}} FCFA</b>
+                </ng-template>
+
+<!--                <ng-template pTemplate="right">
+                    <button pButton pRipple label="Export exel" icon="pi pi-upload" class="mr-2 inline-block" (click)="dt.exportCSV()"></button>
+                    <button pButton pRipple label="Export csv" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                </ng-template>-->
             </p-toolbar>
 
             <p-table #dt [value]="resultRecherches" responsiveLayout="scroll">
@@ -49,9 +66,10 @@
                         <th pSortableColumn="idCaisse">Caisse <p-sortIcon field="code"></p-sortIcon></th>
                         <th pSortableColumn="datePaiement">Date Paiement <p-sortIcon field="price"></p-sortIcon></th>
                         <th pSortableColumn="beneficiaire">Beneficiaire <p-sortIcon field="category"></p-sortIcon></th>
-                        <th pSortableColumn="idUser">Agent Payeur <p-sortIcon field="rating"></p-sortIcon></th>
+                        <th pSortableColumn="idUser">Payeur <p-sortIcon field="rating"></p-sortIcon></th>
                         <th pSortableColumn="evenement">Evenement <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
                         <th pSortableColumn="montant">Montant (FCFA) <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                        <th pSortableColumn="statut">Statut <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
 
                     </tr>
                 </ng-template>
@@ -82,8 +100,75 @@
                             {{resultRecherche.detailBeneficiaire.montant.toLocaleString('fr-FR')}}
 
                         </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Statut</span>
+                            {{resultRecherche.detailBeneficiaire.statut.libelle}}
+                        </td>
                     </tr>
                 </ng-template>
+<!--                <ng-template pTemplate="body">
+                    azertyuiop
+                </ng-template>-->
+            </p-table>
+            <br>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                   <b>Liste des Paiements Annulés</b>
+                    <div class="paiement">
+                        Nombre de Paiments Annulés:<b>{{nombrePaiementsAnnule}}</b>
+                    </div>
+                </ng-template>
+
+
+            </p-toolbar>
+            <p-table #dt [value]="resultRecherchesAnnules" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="idCaisse">Caisse <p-sortIcon field="code"></p-sortIcon></th>
+                        <th pSortableColumn="datePaiement">Date Paiement <p-sortIcon field="price"></p-sortIcon></th>
+                        <th pSortableColumn="beneficiaire">Beneficiaire <p-sortIcon field="category"></p-sortIcon></th>
+                        <th pSortableColumn="idUser">Payeur <p-sortIcon field="rating"></p-sortIcon></th>
+                        <th pSortableColumn="evenement">Evenement <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                        <th pSortableColumn="montant">Montant (FCFA) <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                        <th pSortableColumn="statut">Statut <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-resultRecherchesAnnule>
+                    <tr>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Code</span>
+                            {{resultRecherchesAnnule.idCaisse.libelle}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{resultRecherchesAnnule.datePaiement | date: 'dd/MM/yyyy' }}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{resultRecherchesAnnule.detailBeneficiaire.beneficiaire.nomPrenom}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Name</span>
+                            {{prenom}} {{nom}}
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Evenement</span>
+                            {{resultRecherchesAnnule.evenement.moisCampagne}}, {{resultRecherchesAnnule.evenement.anneeCampagne}}
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Montant</span>
+                            {{resultRecherchesAnnule.detailBeneficiaire.montant.toLocaleString('fr-FR')}}
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Statut</span>
+                            <p class="p-error">{{resultRecherchesAnnule.detailBeneficiaire.statut.libelle}}</p>
+                        </td>
+                    </tr>
+                </ng-template>
+                <!--                <ng-template pTemplate="body">
+                                    azertyuiop
+                                </ng-template>-->
             </p-table>
         </div>
     </div>

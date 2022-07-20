@@ -18,9 +18,24 @@ export class RapportPaiementService {
     }
 
     recherchePaiementsParGuichetier(date1: string, date2: string, variable3: any, variable4:any) {
-        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/user/'+variable3 +'/'+ variable4 )
+        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/user/'+variable3 +'/'+ variable4)
     }
 
+    nombrePaiementsParGuichetier(date1: string, date2: string, variable3: any, variable4:any) {
+        return this.httpClient.get(this.baseUrl + '/nbrpaiement/'+date1+'/'+date2+'/user/'+variable3 +'/'+ variable4)
+    }
+
+    nombrePaiementsAnnuleParGuichetier(date1: string, date2: string, variable3: any, variable4:any) {
+        return this.httpClient.get(this.baseUrl + '/nbrpaiement/'+date1+'/'+date2+'/annule/'+variable3 +'/'+ variable4)
+    }
+
+    recherchePaiementsAnnuleParGuichetier(date1: string, date2: string, variable3: any, variable4:any) {
+        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/annule/'+variable3 +'/'+ variable4)
+    }
+
+    recherchePaiementsAnnuleParBureau(date1: string, date2: string, variable3: any) {
+        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/annule/'+variable3)
+    }
 
     getBureau(idBureau: number) {
         return this.httpClient.get(this.baseUrl + '/bureau/'+idBureau )
