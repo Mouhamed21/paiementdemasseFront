@@ -41,6 +41,8 @@ export class AppMenuComponent implements OnInit {
                     {label: 'Bénéficiaires', icon: 'pi pi-fw pi-mobile', routerLink: ['/pmenim/beneficiaire']},
 
                     {label: 'Paiement', icon: 'pi pi-fw pi-check-square', routerLink: ['/pmenim/paiement']},
+                    {label: 'Gestion Paiements', icon: 'pi pi-fw pi-check-square', routerLink: ['/pmenim/gestionPaiements']},
+                    
                     {label: 'Evenements', icon: 'pi pi-fw pi-check-square', routerLink: ['/pmenim/evenement']},
                     {label: 'Fichiers', icon: 'pi pi-fw pi-id-card', routerLink: ['pmenim/chargefichier']},
                     {label: 'Fichiers Certifiés', icon: 'pi pi-fw pi-id-card', routerLink: ['pmenim/fichiersCertifier']},

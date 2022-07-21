@@ -155,6 +155,7 @@ import { BeneficiaireComponent } from './components/beneficiaire/beneficiaire.co
 import { PaiementComponent } from './components/paiement/paiement.component';
 import { RapportPaiementComponent } from './components/rapport-paiement/rapport-paiement.component';
 import { RapportPaiementGuichetierComponent } from './components/rapport-paiement-guichetier/rapport-paiement-guichetier.component';
+import { GestionPaiementsComponent } from './components/gestion-paiements/gestion-paiements.component';
 
 
 @NgModule({
@@ -303,7 +304,8 @@ import { RapportPaiementGuichetierComponent } from './components/rapport-paiemen
         BeneficiaireComponent,
         PaiementComponent,
         RapportPaiementComponent,
-        RapportPaiementGuichetierComponent
+        RapportPaiementGuichetierComponent,
+        GestionPaiementsComponent
     ],
     providers: [
         {provide: LocationStrategy, useClass: HashLocationStrategy},

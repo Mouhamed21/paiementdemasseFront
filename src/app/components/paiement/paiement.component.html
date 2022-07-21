@@ -15,6 +15,7 @@
 </div>
 
 
+
 <!--<div class="col-12" >-->
     <div class="card" [hidden]="displayResults">
 <!--        <div class="card">-->
@@ -169,6 +170,9 @@
     </div>
 
 
+
+
+
 <p-dialog header="IMPRESSION" [(visible)]="displayImpressionDialog" [modal]="true" [breakpoints]="{'1500px': '200vw'}" [style]="{width: '50vw'}"
           [maximizable]="true" [draggable]="false" [resizable]="false">
 
@@ -238,7 +242,7 @@
             </div>
             <div class="droite">
                 <p class="donnees">
-                    XXXXXXX<br>
+                    {{user.prenom}} {{user.nom}}<br>
                     {{user.dg_structure.libelle}} <br>
                     Sénégal - 116 200
                 </p>
@@ -326,7 +330,7 @@
                 </div>
                 <div class="droite">
                     <p class="donnees">
-                        XXXXXXX<br>
+                        {{user.prenom}} {{user.nom}}<br>
                         {{user.dg_structure.libelle}} <br>
                         Sénégal - 116 200
                     </p>
@@ -362,5 +366,3 @@
 
 <!--<p-dropdown [options]="listeDesStatuts" [(ngModel)]="statutSelected" placeholder="Select a City" optionLabel="libelle" [showClear]="true"></p-dropdown>
 -->
-
-

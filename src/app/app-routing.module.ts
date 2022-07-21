@@ -43,6 +43,7 @@ import {RapportPaiementComponent} from "./components/rapport-paiement/rapport-pa
 import {
     RapportPaiementGuichetierComponent
 } from "./components/rapport-paiement-guichetier/rapport-paiement-guichetier.component";
+import { GestionPaiementsComponent } from './components/gestion-paiements/gestion-paiements.component';
 // @ts-ignore
 @NgModule({
     imports: [
@@ -85,7 +86,10 @@ import {
                     {path: 'pmenim/beneficiaire', component: BeneficiaireComponent},
                     {path: 'pmenim/paiement', component: PaiementComponent},
                     {path: 'pmenim/paiement/rapport', component: RapportPaiementComponent},
-                    {path: 'pmenim/paiement/rapportGuichet', component: RapportPaiementGuichetierComponent}
+                    {path: 'pmenim/paiement/rapportGuichet', component: RapportPaiementGuichetierComponent},
+                    {path: 'pmenim/gestionPaiements', component: GestionPaiementsComponent},
+
+                    
                 ],
             },
             {path:'pages/landing', component: LandingComponent},

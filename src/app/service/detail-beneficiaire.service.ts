@@ -18,7 +18,6 @@ export class DetailBeneficiaireService {
     }
 
     updateDetailBeneficiaire(detailBeneficiaire){
-
         return this.httpClient.put(this.baseUrl+ '/detailbeneficiare/update/'+detailBeneficiaire.id,detailBeneficiaire)
     }
 }

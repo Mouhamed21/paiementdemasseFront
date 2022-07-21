@@ -17,7 +17,7 @@ import jsPDF from "jspdf";
 import html2canvas from 'html2canvas';
 import html2PDF from 'jspdf-html2canvas';
 
-//pour effectur le paiement il faut que
+//pour effectuer le paiement il faut que
 //  l'evenement soit en cours
 //  le fichier soit certifié et non expiré
 //  le user possede une caisse
@@ -75,7 +75,6 @@ export class PaiementComponent implements OnInit {
             this.user = res;
             this.email= res.email;
             this.getUserByEmail(res.email);
-
         });    }
 
     ngOnInit(): void {
@@ -122,7 +121,6 @@ export class PaiementComponent implements OnInit {
         this.paiement.idUser = this.user.id
 
             console.log(this.paiement)
-
 
 
     }
@@ -187,6 +185,13 @@ export class PaiementComponent implements OnInit {
 }
 
 
+    onPrint() {
+        const printContents = document.getElementById('impression').innerHTML;
+        const originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
 
 
 

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../environments/environment";
+import { environment } from 'src/environments/environment';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import { Paiement } from '../modele/paiement';
 import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class PaiementService {
+export class SuiviBeneficiaireService {
 
     baseUrl = environment.urlApi;
 
@@ -21,11 +21,13 @@ export class PaiementService {
             })
         };
 
-    savePaiement(paiement) {
-        return this.httpClient.post(this.baseUrl+"/paiement", paiement)
+
+    getSuiviBeneficiaire() {
+        return this.httpClient.get(this.baseUrl + '/allTypeOperation');
     }
 
-    paiementsByBeneficiaire(numPension):Observable<any>{
-        return this.httpClient.get(this.baseUrl+"/paiement/beneficiaire/"+numPension)
+    postSuiviBeneficiaire(suiviBeneficiaire) {
+        return this.httpClient.post(this.baseUrl + '/suiviBeneficiaire', suiviBeneficiaire)
     }
+
 }
