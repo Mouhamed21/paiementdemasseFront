@@ -96,7 +96,7 @@ export class RapportPaiementGuichetierComponent implements OnInit {
              //this.resultRecherches[i].addAttribute(libelleCaisse) =
                 //console.log(this.getCaisseById(this.resultRecherches[i].idCaisse));
                 console.log(this.resultRecherches[i].detailBeneficiaire.montant);
-               this.montantGlobal += this.resultRecherches[i].detailBeneficiaire.montant;
+                this.montantGlobal += this.resultRecherches[i].detailBeneficiaire.montant;
                 this.rapportPaiementService.getCaisse(this.resultRecherches[i].idCaisse).subscribe(res=>{
                     this.resultRecherches[i].idCaisse = res
                     console.log(this.resultRecherches[i].idCaisse)

@@ -29,6 +29,8 @@ export class RapportPaiementComponent implements OnInit {
     agentPayeur:any;
     resultRecherchesAnnulesBureaus:any;
     resultRecherchesAnnuleBureau:Paiement;
+    nombrePaiementsReussi:any;
+    nombrePaiementsAnnule:any;
 
   constructor(private rapportPaiementService: RapportPaiementService, private userService: UserServiceService, public keycloak: KeycloakService,
               public datepipe: DatePipe) {
@@ -58,6 +60,20 @@ export class RapportPaiementComponent implements OnInit {
 
 
     rechercheByBureau(date1: string, date2: string) {
+
+        this.rapportPaiementService.nombrePaiementsByBureau(this.datepipe.transform(this.date1, 'yyyy-MM-dd'),
+            this.datepipe.transform(this.date2, 'yyyy-MM-dd'),
+            this.user.dg_structure.id).subscribe(data => {
+            this.nombrePaiementsReussi = data;
+            console.log(this.nombrePaiementsReussi);
+        });
+
+        this.rapportPaiementService.nombrePaiementsAnnuleByBureau(this.datepipe.transform(this.date1, 'yyyy-MM-dd'),
+            this.datepipe.transform(this.date2, 'yyyy-MM-dd'),
+            this.user.dg_structure.id).subscribe(data => {
+            this.nombrePaiementsAnnule = data;
+            console.log(this.nombrePaiementsAnnule);
+        });
         this.rapportPaiementService.recherchePaiementsByBureau(this.datepipe.transform(this.date1, 'yyyy-MM-dd'),
                                                         this.datepipe.transform(this.date2, 'yyyy-MM-dd'),
             this.user.dg_structure.id).subscribe(response => {
