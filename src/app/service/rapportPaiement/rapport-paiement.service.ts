@@ -29,6 +29,15 @@ export class RapportPaiementService {
         return this.httpClient.get(this.baseUrl + '/nbrpaiement/'+date1+'/'+date2+'/annule/'+variable3 +'/'+ variable4)
     }
 
+    nombrePaiementsByBureau(date1: string, date2: string, variable3: any) {
+        return this.httpClient.get(this.baseUrl + '/nbrpaiement/'+date1+'/'+date2+'/bureau/'+variable3)
+    }
+
+    nombrePaiementsAnnuleByBureau(date1: string, date2: string, variable3: any) {
+        return this.httpClient.get(this.baseUrl + '/nbrpaiement/'+date1+'/'+date2+'/annule/'+variable3)
+    }
+
+
     recherchePaiementsAnnuleParGuichetier(date1: string, date2: string, variable3: any, variable4:any) {
         return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/annule/'+variable3 +'/'+ variable4)
     }
