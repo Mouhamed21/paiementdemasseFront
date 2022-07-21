@@ -13,14 +13,29 @@ export class RapportPaiementService {
 
   constructor(private httpClient: HttpClient) { }
 
-    recherchePaiements(date1: string, date2: string, variable3: any) {
-        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/bureau/'+variable3 )
+    recherchePaiementsByBureau(date1: string, date2: string, bureau: any) {
+        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/bureau/'+bureau )
     }
 
     recherchePaiementsParGuichetier(date1: string, date2: string, variable3: any, variable4:any) {
-        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/user/'+variable3 +'/'+ variable4 )
+        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/user/'+variable3 +'/'+ variable4)
     }
 
+    nombrePaiementsParGuichetier(date1: string, date2: string, variable3: any, variable4:any) {
+        return this.httpClient.get(this.baseUrl + '/nbrpaiement/'+date1+'/'+date2+'/user/'+variable3 +'/'+ variable4)
+    }
+
+    nombrePaiementsAnnuleParGuichetier(date1: string, date2: string, variable3: any, variable4:any) {
+        return this.httpClient.get(this.baseUrl + '/nbrpaiement/'+date1+'/'+date2+'/annule/'+variable3 +'/'+ variable4)
+    }
+
+    recherchePaiementsAnnuleParGuichetier(date1: string, date2: string, variable3: any, variable4:any) {
+        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/annule/'+variable3 +'/'+ variable4)
+    }
+
+    recherchePaiementsAnnuleParBureau(date1: string, date2: string, variable3: any) {
+        return this.httpClient.get(this.baseUrl + '/paiement/'+date1+'/'+date2+'/annule/'+variable3)
+    }
 
     getBureau(idBureau: number) {
         return this.httpClient.get(this.baseUrl + '/bureau/'+idBureau )
@@ -28,6 +43,10 @@ export class RapportPaiementService {
 
     getCaisse(id: number) {
         return this.httpClient.get(this.baseUrl + '/caisse/'+id )
+    }
+
+    getAgentPayeurById(id: number) {
+        return this.httpClient.get(this.baseUrl + '/user/'+id )
     }
 
 }

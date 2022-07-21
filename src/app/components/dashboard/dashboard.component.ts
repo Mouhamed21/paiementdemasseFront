@@ -7,9 +7,11 @@ import { ConfigService } from '../../service/app.config.service';
 import { AppConfig } from '../../api/appconfig';
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
     templateUrl: './dashboard.component.html',
+    providers: [ConfirmationService, MessageService]
 })
 export class DashboardComponent implements OnInit {
 
@@ -26,7 +28,8 @@ export class DashboardComponent implements OnInit {
     config: AppConfig;
 
     constructor(private productService: ProductService, public configService: ConfigService,
-                private httpClient: HttpClient) {}
+                private httpClient: HttpClient, private confirmationService: ConfirmationService,
+                private messageService: MessageService,) {}
 
     ngOnInit() {
         this.config = this.configService.config;
@@ -133,11 +136,33 @@ export class DashboardComponent implements OnInit {
     }
 
     baseUrl = environment.urlApi;
+    testCleanData = false;
     cleanData(){
         return this.httpClient.delete(this.baseUrl+"/delete").subscribe(data =>
         {
-            console.log(data);
+            this.testCleanData=true;
+            console.log(this.testCleanData);
         })
+    }
+
+    confirm2(event: Event) {
+        this.confirmationService.confirm({
+            key: 'confirm2',
+            target: event.target,
+            message: 'Are you sure that you want to proceed?',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.cleanData()
+                if (this.testCleanData){
+                    this.messageService.add({severity: 'info', summary: 'Confirmed', detail: 'You have accepted'});
+                }else {
+                    this.messageService.add({severity: 'error', summary: 'Echec', detail: 'L\'opération a échoué'});
+                }
+            },
+            reject: () => {
+                this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected'});
+            }
+        });
     }
 
 }

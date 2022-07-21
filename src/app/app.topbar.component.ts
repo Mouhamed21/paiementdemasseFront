@@ -37,6 +37,7 @@ export class AppTopBarComponent {
             this.user = data;
         })
     }
+
     public deconnexion()
     {
         //console.log("fggh");

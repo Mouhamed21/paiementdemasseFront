@@ -18,37 +18,102 @@ export class RapportPaiementComponent implements OnInit {
     date1: string;
     resultRecherches: any;
     resultRecherche: Paiement;
-    bureau: Object;
+    bureau: string;
     nameBureau: string;
     nameCaisse:string;
     caisse: Object;
     users:any;
     email:any;
     user:any;
+    montantTotal:number=0;
+    agentPayeur:any;
+    resultRecherchesAnnulesBureaus:any;
+    resultRecherchesAnnuleBureau:Paiement;
 
   constructor(private rapportPaiementService: RapportPaiementService, private userService: UserServiceService, public keycloak: KeycloakService,
               public datepipe: DatePipe) {
+      this.keycloak.loadUserProfile().then( res =>
+      {
+          console.log(res);
+          this.users = res;
+          this.email= res.email;
+          console.log(res.email);
+          this.getUser(res.email);
+      });
   }
 
   ngOnInit(): void {
       //this.getUser(this.email)
   }
 
+    public getUser(email){
+        console.log(email);
+        return this.userService.getUserByEmail(email).subscribe(data =>
+        {
+            console.log(data);
+            this.user = data;
+            console.log(this.user);
+        })
+    }
 
-    recherche(date1: string, date2: string, variable3: string) {
-        this.rapportPaiementService.recherchePaiements(this.datepipe.transform(this.date1, 'dd-MM-yyyy'),
-                                                        this.datepipe.transform(this.date2, 'dd-MM-yyyy'),
-                                                        variable3).subscribe(response => {
+
+    rechercheByBureau(date1: string, date2: string) {
+        this.rapportPaiementService.recherchePaiementsByBureau(this.datepipe.transform(this.date1, 'yyyy-MM-dd'),
+                                                        this.datepipe.transform(this.date2, 'yyyy-MM-dd'),
+            this.user.dg_structure.id).subscribe(response => {
                 this.resultRecherches = response;
-                this.getBureauById(JSON.parse(JSON.stringify(response[0])).idBureau)
-                this.getCaisseById(JSON.parse(JSON.stringify(response[0])).idCaisse)
+                //this.getBureauById(JSON.parse(JSON.stringify(response)).idBureau)
+                //this.getCaisseById(JSON.parse(JSON.stringify(response)).idCaisse)
 
-            //this.nameBureau = this.bureau.libelle
-                console.log(this.resultRecherches)
+            for (let i=0; i<this.resultRecherches.length; i++){
+                this.rapportPaiementService.getCaisse(this.resultRecherches[i].idCaisse).subscribe(res=>{
+                    this.resultRecherches[i].idCaisse = res
+                    //console.log(this.resultRecherches[i].idCaisse)
+                })
+
+                this.montantTotal += this.resultRecherches[i].detailBeneficiaire.montant
+
+                this.rapportPaiementService.getAgentPayeurById(this.resultRecherches[i].idUser).subscribe(res=>{
+                    this.resultRecherches[i].idUser = res
+                    //console.log(this.resultRecherches[i].idCaisse)
+                })
+            }
             }, err => {
                 console.log(err);
             });
+        console.log(this.resultRecherches);
+
+        this.rapportPaiementService.recherchePaiementsAnnuleParBureau(this.datepipe.transform(this.date1, 'yyyy-MM-dd'),
+            this.datepipe.transform(this.date2, 'yyyy-MM-dd'),
+            this.user.dg_structure.id).subscribe(res => {
+            this.resultRecherchesAnnulesBureaus = res;
+            console.log(this.resultRecherchesAnnulesBureaus);
+            console.log(JSON.parse(JSON.stringify(res)));
+            //console.log(this.resultRecherches.detailBeneficiaire.montant);
+
+            for (let i=0; i<this.resultRecherchesAnnulesBureaus.length; i++){
+                this.rapportPaiementService.getCaisse(this.resultRecherchesAnnulesBureaus[i].idCaisse).subscribe(res=>{
+                    this.resultRecherchesAnnulesBureaus[i].idCaisse = res
+                    //console.log(this.resultRecherches[i].idCaisse)
+                })
+
+               // this.montantTotal += this.resultRecherchesAnnulesBureaus[i].detailBeneficiaire.montant
+
+                this.rapportPaiementService.getAgentPayeurById(this.resultRecherchesAnnulesBureaus[i].idUser).subscribe(res=>{
+                    this.resultRecherchesAnnulesBureaus[i].idUser = res
+                    //console.log(this.resultRecherches[i].idCaisse)
+                })
+            }
+            //console.log(this.montantGlobal)
+            //this.nom
+           // console.log(this.nom)
+            //this.nameBureau = this.bureau.libelle
+            console.log(this.resultRecherchesAnnulesBureaus)
+        }, err => {
+            console.log(err);
+        });
     }
+
 
 
     getBureauById(idBureau: number) {
@@ -66,6 +131,14 @@ export class RapportPaiementComponent implements OnInit {
             //this.bureau = JSON.parse(JSON.stringify(response)) ;
             this.nameCaisse=JSON.parse(JSON.stringify(response)).libelle;
             console.log(this.nameCaisse);
+        }, err => {
+            console.log(err);
+        });
+    }
+
+    getAgentPayeurById(idAgentPayeur: number) {
+        this.rapportPaiementService.getAgentPayeurById(idAgentPayeur).subscribe(response => {
+            this.agentPayeur=JSON.parse(JSON.stringify(response));
         }, err => {
             console.log(err);
         });
